@@ -1,0 +1,31 @@
+.ant-steps-item-title {
+  font-weight: 600 !important;
+}
+
+.ant-steps-item-process .ant-steps-item-title {
+  color: #15d4ed !important;
+}
+
+.ant-steps-item-finish .ant-steps-item-title {
+  color: #74e11d !important;
+}
+
+.evaluation-advantages {
+  width: 100%;
+}
+
+.evaluation-suggestions {
+  cursor: pointer;
+  margin-bottom: 10px;
+  list-style: none;
+  padding-left: 10px;
+  line-height: 22px;
+}
+
+.evaluation-suggestions li:hover {
+  background-color: rgb(90, 172, 248);
+}
+
+.ant-dropdown-menu-without-submenu {
+  max-width: 350px;
+}

@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <PackageJsonName Condition="$(PackageJsonName) == ''">staff-assessment-management-system</PackageJsonName>
+    <PackageJsonPrivate Condition="$(PackageJsonPrivate) == ''">true</PackageJsonPrivate>
+    <PackageJsonType Condition="$(PackageJsonType) == ''">module</PackageJsonType>
+    <PackageJsonVersion Condition="$(PackageJsonVersion) == ''">0.0.1</PackageJsonVersion>
+    <PackageJsonDescription Condition="$(PackageJsonDescription) == ''">A React typescript vite js project, with antd,eslint,prettier,so on</PackageJsonDescription>
+    <PackageJsonLicense Condition="$(PackageJsonLicense) == ''">MIT</PackageJsonLicense>
+    <PackageJsonAuthor Condition="$(PackageJsonAuthor) == ''">cuongnx2015@gmail.com</PackageJsonAuthor>
+    <PackageJsonScriptsDev Condition="$(PackageJsonScriptsDev) == ''">vite --open</PackageJsonScriptsDev>
+    <PackageJsonScriptsBuild Condition="$(PackageJsonScriptsBuild) == ''">tsc &amp;&amp; vite build</PackageJsonScriptsBuild>
+    <PackageJsonScriptsPreview Condition="$(PackageJsonScriptsPreview) == ''">yarn build &amp;&amp; vite preview --host</PackageJsonScriptsPreview>
+    <PackageJsonScriptsLint Condition="$(PackageJsonScriptsLint) == ''">eslint --ext ts,tsx src/</PackageJsonScriptsLint>
+    <PackageJsonScriptsLintFix Condition="$(PackageJsonScriptsLintFix) == ''">eslint --fix --ext ts,tsx src/</PackageJsonScriptsLintFix>
+    <PackageJsonScriptsPrettier Condition="$(PackageJsonScriptsPrettier) == ''">prettier --check "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}"</PackageJsonScriptsPrettier>
+    <PackageJsonScriptsPrettierFix Condition="$(PackageJsonScriptsPrettierFix) == ''">prettier --write "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}"</PackageJsonScriptsPrettierFix>
+    <PackageJsonScriptsFormat Condition="$(PackageJsonScriptsFormat) == ''">npm run prettier:fix &amp;&amp; npm run lint:fix</PackageJsonScriptsFormat>
+    <PackageJsonScriptsRemoveNodeModules Condition="$(PackageJsonScriptsRemoveNodeModules) == ''">npx rimraf --glob **/node_modules</PackageJsonScriptsRemoveNodeModules>
+    <PackageJsonScriptsYarnCacheClean Condition="$(PackageJsonScriptsYarnCacheClean) == ''">yarn cache clean</PackageJsonScriptsYarnCacheClean>
+    <PackageJsonDependenciesAntDesignCharts Condition="$(PackageJsonDependenciesAntDesignCharts) == ''">^1.4.1</PackageJsonDependenciesAntDesignCharts>
+    <PackageJsonDependenciesAntDesignPlots Condition="$(PackageJsonDependenciesAntDesignPlots) == ''">^2.2.5</PackageJsonDependenciesAntDesignPlots>
+    <PackageJsonDependenciesAntDesignProForm Condition="$(PackageJsonDependenciesAntDesignProForm) == ''">^1.70.0</PackageJsonDependenciesAntDesignProForm>
+    <PackageJsonDependenciesDndKitCore Condition="$(PackageJsonDependenciesDndKitCore) == ''">^6.0.8</PackageJsonDependenciesDndKitCore>
+    <PackageJsonDependenciesDndKitModifiers Condition="$(PackageJsonDependenciesDndKitModifiers) == ''">^6.0.1</PackageJsonDependenciesDndKitModifiers>
+    <PackageJsonDependenciesDndKitSortable Condition="$(PackageJsonDependenciesDndKitSortable) == ''">^7.0.2</PackageJsonDependenciesDndKitSortable>
+    <PackageJsonDependenciesDndKitUtilities Condition="$(PackageJsonDependenciesDndKitUtilities) == ''">^3.2.2</PackageJsonDependenciesDndKitUtilities>
+    <PackageJsonDependenciesReduxjsToolkit Condition="$(PackageJsonDependenciesReduxjsToolkit) == ''">^1.9.5</PackageJsonDependenciesReduxjsToolkit>
+    <PackageJsonDependenciesAntd Condition="$(PackageJsonDependenciesAntd) == ''">^5.8.3</PackageJsonDependenciesAntd>
+    <PackageJsonDependenciesAntdImgCrop Condition="$(PackageJsonDependenciesAntdImgCrop) == ''">^4.12.2</PackageJsonDependenciesAntdImgCrop>
+    <PackageJsonDependenciesAxios Condition="$(PackageJsonDependenciesAxios) == ''">^1.4.0</PackageJsonDependenciesAxios>
+    <PackageJsonDependenciesBraftEditor Condition="$(PackageJsonDependenciesBraftEditor) == ''">^2.3.9</PackageJsonDependenciesBraftEditor>
+    <PackageJsonDependenciesDayjs Condition="$(PackageJsonDependenciesDayjs) == ''">1.11.9</PackageJsonDependenciesDayjs>
+    <PackageJsonDependenciesFileSaver Condition="$(PackageJsonDependenciesFileSaver) == ''">^2.0.5</PackageJsonDependenciesFileSaver>
+    <PackageJsonDependenciesRcUtil Condition="$(PackageJsonDependenciesRcUtil) == ''">^5.35.0</PackageJsonDependenciesRcUtil>
+    <PackageJsonDependenciesReact Condition="$(PackageJsonDependenciesReact) == ''">18.2.0</PackageJsonDependenciesReact>
+    <PackageJsonDependenciesReactBeautifulDnd Condition="$(PackageJsonDependenciesReactBeautifulDnd) == ''">^13.1.1</PackageJsonDependenciesReactBeautifulDnd>
+    <PackageJsonDependenciesReactDom Condition="$(PackageJsonDependenciesReactDom) == ''">18.2.0</PackageJsonDependenciesReactDom>
+    <PackageJsonDependenciesReactDraggable Condition="$(PackageJsonDependenciesReactDraggable) == ''">^4.4.5</PackageJsonDependenciesReactDraggable>
+    <PackageJsonDependenciesReactErrorBoundary Condition="$(PackageJsonDependenciesReactErrorBoundary) == ''">^4.0.4</PackageJsonDependenciesReactErrorBoundary>
+    <PackageJsonDependenciesReactLazyLoadImageComponent Condition="$(PackageJsonDependenciesReactLazyLoadImageComponent) == ''">^1.6.0</PackageJsonDependenciesReactLazyLoadImageComponent>
+    <PackageJsonDependenciesReactRedux Condition="$(PackageJsonDependenciesReactRedux) == ''">8.1.1</PackageJsonDependenciesReactRedux>
+    <PackageJsonDependenciesReactRouterDom Condition="$(PackageJsonDependenciesReactRouterDom) == ''">6.14.0</PackageJsonDependenciesReactRouterDom>
+    <PackageJsonDependenciesReactScripts Condition="$(PackageJsonDependenciesReactScripts) == ''">5.0.1</PackageJsonDependenciesReactScripts>
+    <PackageJsonDependenciesReduxLogger Condition="$(PackageJsonDependenciesReduxLogger) == ''">^3.0.6</PackageJsonDependenciesReduxLogger>
+    <PackageJsonDependenciesReduxSaga Condition="$(PackageJsonDependenciesReduxSaga) == ''">1.2.3</PackageJsonDependenciesReduxSaga>
+    <PackageJsonDependenciesWebVitals Condition="$(PackageJsonDependenciesWebVitals) == ''">3.4.0</PackageJsonDependenciesWebVitals>
+    <PackageJsonDevdependenciesTypesBodyParser Condition="$(PackageJsonDevdependenciesTypesBodyParser) == ''">^1.19.2</PackageJsonDevdependenciesTypesBodyParser>
+    <PackageJsonDevdependenciesTypesFileSaver Condition="$(PackageJsonDevdependenciesTypesFileSaver) == ''">^2.0.7</PackageJsonDevdependenciesTypesFileSaver>
+    <PackageJsonDevdependenciesTypesNode Condition="$(PackageJsonDevdependenciesTypesNode) == ''">^20.2.3</PackageJsonDevdependenciesTypesNode>
+    <PackageJsonDevdependenciesTypesReact Condition="$(PackageJsonDevdependenciesTypesReact) == ''">18.2.6</PackageJsonDevdependenciesTypesReact>
+    <PackageJsonDevdependenciesTypesReactBeautifulDnd Condition="$(PackageJsonDevdependenciesTypesReactBeautifulDnd) == ''">^13.1.4</PackageJsonDevdependenciesTypesReactBeautifulDnd>
+    <PackageJsonDevdependenciesTypesReactDom Condition="$(PackageJsonDevdependenciesTypesReactDom) == ''">18.2.4</PackageJsonDevdependenciesTypesReactDom>
+    <PackageJsonDevdependenciesTypesReactLazyLoadImageComponent Condition="$(PackageJsonDevdependenciesTypesReactLazyLoadImageComponent) == ''">^1.5.3</PackageJsonDevdependenciesTypesReactLazyLoadImageComponent>
+    <PackageJsonDevdependenciesTypesReactRouterDom Condition="$(PackageJsonDevdependenciesTypesReactRouterDom) == ''">^5.3.3</PackageJsonDevdependenciesTypesReactRouterDom>
+    <PackageJsonDevdependenciesTypesReduxLogger Condition="$(PackageJsonDevdependenciesTypesReduxLogger) == ''">^3.0.9</PackageJsonDevdependenciesTypesReduxLogger>
+    <PackageJsonDevdependenciesTypescriptEslintEslintPlugin Condition="$(PackageJsonDevdependenciesTypescriptEslintEslintPlugin) == ''">^5.59.7</PackageJsonDevdependenciesTypescriptEslintEslintPlugin>
+    <PackageJsonDevdependenciesTypescriptEslintParser Condition="$(PackageJsonDevdependenciesTypescriptEslintParser) == ''">^5.59.7</PackageJsonDevdependenciesTypescriptEslintParser>
+    <PackageJsonDevdependenciesVitejsPluginReact Condition="$(PackageJsonDevdependenciesVitejsPluginReact) == ''">^4.0.0</PackageJsonDevdependenciesVitejsPluginReact>
+    <PackageJsonDevdependenciesEslint Condition="$(PackageJsonDevdependenciesEslint) == ''">^8.41.0</PackageJsonDevdependenciesEslint>
+    <PackageJsonDevdependenciesEslintConfigPrettier Condition="$(PackageJsonDevdependenciesEslintConfigPrettier) == ''">^8.8.0</PackageJsonDevdependenciesEslintConfigPrettier>
+    <PackageJsonDevdependenciesEslintPluginImport Condition="$(PackageJsonDevdependenciesEslintPluginImport) == ''">^2.27.5</PackageJsonDevdependenciesEslintPluginImport>
+    <PackageJsonDevdependenciesEslintPluginJsxA11y Condition="$(PackageJsonDevdependenciesEslintPluginJsxA11y) == ''">^6.7.1</PackageJsonDevdependenciesEslintPluginJsxA11y>
+    <PackageJsonDevdependenciesEslintPluginPrettier Condition="$(PackageJsonDevdependenciesEslintPluginPrettier) == ''">^4.0.0</PackageJsonDevdependenciesEslintPluginPrettier>
+    <PackageJsonDevdependenciesEslintPluginReact Condition="$(PackageJsonDevdependenciesEslintPluginReact) == ''">^7.32.2</PackageJsonDevdependenciesEslintPluginReact>
+    <PackageJsonDevdependenciesEslintPluginReactHooks Condition="$(PackageJsonDevdependenciesEslintPluginReactHooks) == ''">^4.5.0</PackageJsonDevdependenciesEslintPluginReactHooks>
+    <PackageJsonDevdependenciesPrettier Condition="$(PackageJsonDevdependenciesPrettier) == ''">^2.8.8</PackageJsonDevdependenciesPrettier>
+    <PackageJsonDevdependenciesTypescript Condition="$(PackageJsonDevdependenciesTypescript) == ''">^5.0.4</PackageJsonDevdependenciesTypescript>
+    <PackageJsonDevdependenciesVite Condition="$(PackageJsonDevdependenciesVite) == ''">4.3.9</PackageJsonDevdependenciesVite>
+    <PackageJsonDevdependenciesViteTsconfigPaths Condition="$(PackageJsonDevdependenciesViteTsconfigPaths) == ''">^4.2.0</PackageJsonDevdependenciesViteTsconfigPaths>
+    <PackageJsonPackagemanager Condition="$(PackageJsonPackagemanager) == ''">yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e</PackageJsonPackagemanager>
+  </PropertyGroup>
+</Project>

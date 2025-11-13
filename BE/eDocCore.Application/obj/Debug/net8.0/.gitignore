@@ -1,0 +1,14 @@
+*.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+/eDocCore.Application.AssemblyInfoInputs.cache
+/eDocCore.Application.GeneratedMSBuildEditorConfig.editorconfig
+/eDocCore.Application.GlobalUsings.g.cs
+/eDocCore.Application.assets.cache
+/eDocCore.Application.csproj.AssemblyReference.cache
+/eDocCore.Application.csproj.CoreCompileInputs.cache
+/eDocCore.Application.csproj.FileListAbsolute.txt
+/eDocCore.Application.dll
+/eDocCore.Application.pdb
+/eDocCore.C491CC11.Up2Date
+/eDocCore.Application.AssemblyInfo.cs
+*.sourcelink.json
+*.Application.csproj.BuildWithSkipAnalyzers

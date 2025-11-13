@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Sdk Name="Aspire.AppHost.Sdk" Version="9.3.0" />
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UserSecretsId>49aefbb2-1f1e-4198-a56b-f3a2558fc1e2</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="9.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\eDocCore.API\eDocCore.API.csproj" />
+    <ProjectReference Include="..\..\eDocCore.Application\eDocCore.Application.csproj" />
+    <ProjectReference Include="..\..\eDocCore.Domain\eDocCore.Domain.csproj" />
+    <ProjectReference Include="..\..\eDocCore.Infrastructure\eDocCore.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

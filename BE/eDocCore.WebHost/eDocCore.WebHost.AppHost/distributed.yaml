@@ -1,0 +1,8 @@
+services:
+  eDocCoreUIClient:
+    executable: npm
+    workingDirectory: ../../eDocCore.UI/edoccore.ui.client
+    args: ["run dev"]
+    bindings:
+      - protocol: http
+        port: 3000

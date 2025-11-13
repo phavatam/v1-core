@@ -1,0 +1,1 @@
+﻿Trách nhiệm: Chứa các quy tắc nghiệp vụ cốt lõi của doanh nghiệp. Không phụ thuộc vào bất kỳ lớp nào khác.

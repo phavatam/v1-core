@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "TamPV",
+  "classifications": [ "eDocCore Feature" ],
+  "name": "eDocCore Feature",
+  "identity": "eDocCore.Feature",
+  "shortName": "edocfeature",
+  "tags": {
+    "language": "C#",
+    "type": "item"
+  },
+  "sourceName": "__FeatureName__",
+  "symbols": {
+    "namespace": {
+      "type": "parameter",
+      "datatype": "text",
+      "replaces": "eDocCore"
+    },
+    "ModelName": {
+      "type": "parameter",
+      "datatype": "text",
+      "replaces": "__ModelName__",
+      "description": "Tên của Model (entity) tương ứng.",
+      "defaultValue": "__FeatureName__"
+    }
+  }
+}

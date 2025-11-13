@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "eDocCore.API\\eDocCore.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "eDocCore.WebHost\\eDocCore.WebHost.AppHost\\eDocCore.WebHost.AppHost.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

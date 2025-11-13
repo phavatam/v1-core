@@ -1,0 +1,1 @@
+﻿Trách nhiệm: Triển khai các thành phần bên ngoài như cơ sở dữ liệu, dịch vụ email, hệ thống file, xác thực. Phụ thuộc vào 

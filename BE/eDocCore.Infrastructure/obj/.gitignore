@@ -1,0 +1,7 @@
+/eDocCore.Infrastructure.EntityFrameworkCore.targets
+/eDocCore.Infrastructure.csproj.EntityFrameworkCore.targets
+/eDocCore.Infrastructure.csproj.nuget.dgspec.json
+/eDocCore.Infrastructure.csproj.nuget.g.props
+/eDocCore.Infrastructure.csproj.nuget.g.targets
+/project.assets.json
+/project.nuget.cache

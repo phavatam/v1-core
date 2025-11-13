@@ -1,0 +1,2 @@
+﻿// Chạy lệnh generate database
+dotnet ef dbcontext scaffold "Server=.;Database=eDocCoreDB;User Id=sa;Password=Matkhau1;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -o ../eDocCore.Domain/Entities --context-dir Persistence --context ApplicationDbContext -f --project eDocCore.Infrastructure

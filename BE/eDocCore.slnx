@@ -1,0 +1,9 @@
+<Solution>
+  <Project Path="eDocCore.API/eDocCore.API.csproj" />
+  <Project Path="eDocCore.Application/eDocCore.Application.csproj" />
+  <Project Path="eDocCore.Domain/eDocCore.Domain.csproj" />
+  <Project Path="eDocCore.Infrastructure/eDocCore.Infrastructure.csproj" />
+  <Project Path="eDocCore.Tests/eDocCore.Tests.csproj" Id="b7f488ff-ff5f-4893-88d2-c36203d4e076" />
+  <Project Path="eDocCore.WebHost/eDocCore.WebHost.AppHost/eDocCore.WebHost.AppHost.csproj" Id="642a4cf7-a42d-4280-ae2e-3421c3419019" />
+  <Project Path="eDocCore.WebHost/eDocCore.WebHost.ServiceDefaults/eDocCore.WebHost.ServiceDefaults.csproj" />
+</Solution>

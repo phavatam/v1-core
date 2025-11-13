@@ -1,0 +1,1 @@
+﻿Trách nhiệm: Chứa logic ứng dụng, điều phối dữ liệu và quy trình nghiệp vụ. Chỉ phụ thuộc vào eDocCore.Domain.

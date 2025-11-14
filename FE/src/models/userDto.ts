@@ -3,8 +3,12 @@ import { RoleDto } from "@models/roleDTO";
 
 export interface UserDTO {
   id: string;
+  loginName: string;
   fullName: string;
-  // description: string;
+  gender: boolean;
+  email: string;
+  created: Date;
+  modified: Date;
   // password: string;
   // email: string;
   // phone: string;
@@ -27,6 +31,4 @@ export interface UserDTO {
 
 export interface UserResponse {
   data: UserDTO;
-  roleList: UserRoleDTO[];
-  isAdmin: boolean;
 }

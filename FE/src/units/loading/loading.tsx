@@ -1,9 +1,9 @@
 import "./loading.css";
-import { Flex, Spin } from 'antd';
+import { Flex, Spin } from "antd";
 
 export default function Loading() {
   return (
-      <Flex  align="center" gap="middle">
+    <Flex align="center" gap="middle">
       <Spin size="small" />
     </Flex>
   );

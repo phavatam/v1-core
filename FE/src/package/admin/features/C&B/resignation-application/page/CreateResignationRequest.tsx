@@ -1,6 +1,6 @@
 import WithErrorBoundaryCustom from "@units/errorBounDary/WithErrorBoundaryCustom";
 import { Card, Col, Row } from "antd";
-import { NewAndUpdateInternRequest } from "@admin/features/internRequest";
+import { NewAndUpdateResignationRequest } from "@admin/features/C&B/resignation-application";
 import { useNavigate } from "react-router-dom";
 
 function _CreateResignationRequest() {
@@ -9,8 +9,8 @@ function _CreateResignationRequest() {
     <div className="CreateInternRequest">
       <Row>
         <Col span={24}>
-          <Card title="Quản lý yêu cầu nghỉ việc" bordered={false}>
-            <NewAndUpdateInternRequest AfterSave={() => navigation("/admin/MENU_YEU_CAU_THUC_TAP")} />
+          <Card title="Tạo phiếu nghỉ việc" bordered={false}>
+            <NewAndUpdateResignationRequest AfterSave={() => navigation("/admin/MENU_YEU_CAU_THUC_TAP")} />
           </Card>
         </Col>
       </Row>

@@ -118,7 +118,7 @@ function _Header({ isOpenSideBar, setIsOpenSideBar }: PropsHeader) {
                   />
                 }
               >
-                <Typography.Text>{user?.data?.fullname}</Typography.Text>
+                <Typography.Text>{user?.data?.fullName}</Typography.Text>
               </Button>
             </Dropdown>
             <Drawer

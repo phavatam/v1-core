@@ -103,7 +103,7 @@ type MenuComponentMap = {
 };
 
 export function Admin() {
-  const { data } = useGetListNavigationByTokenQuery({ pageNumber: 0, pageSize: 0 });
+  const { data, isLoading } = useGetListNavigationByTokenQuery({ pageNumber: 0, pageSize: 0 });
   const navigate = useNavigate();
   const path = useLocation();
 
@@ -205,6 +205,24 @@ export function Admin() {
     "resignation-application": <CreateResignation />
   };
   const menuMap = data?.data?.map((item: any) => item.navigationsChild)?.flat() as Navigation[];
+
+  if (isLoading || !menuMap) {
+    return (
+      <div
+        style={{
+          display: "grid",
+          placeItems: "center",
+          zIndex: "100",
+          width: "100vw",
+          height: "100vh",
+          backgroundColor: JSON.parse(localStorage.getItem("setting")!).darkMode ? "#000000" : "#ffffff"
+        }}
+      >
+        <Loading />
+      </div>
+    );
+  }
+
   return (
     <Suspense
       fallback={

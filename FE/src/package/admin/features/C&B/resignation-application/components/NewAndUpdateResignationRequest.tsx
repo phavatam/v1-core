@@ -7,11 +7,12 @@ import {
 } from "@API/services/InternRequestApis.service";
 import { useGetListUnitQuery } from "@API/services/UnitApis.service";
 import { useGetListCategoryPositionAvailableQuery } from "@API/services/CategoryPositionApis.service";
-import { Button, Col, Form, Input, Row, Select, Space, Spin } from "antd";
+import { Button, Col, Form, Input, Row, Select, Space, Spin, DatePicker, Checkbox, InputNumber, Radio } from "antd";
 import { CheckCircleOutlined, RetweetOutlined } from "@ant-design/icons";
 import { CustomUploadFileDrag, HandleError, normFile } from "@admin/components";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useGetListEmployeeQuery } from "@API/services/Employee.service";
+import { useGetUserQuery } from "@API/services/UserApis.service";
 
 interface Props {
   id?: string;
@@ -19,11 +20,20 @@ interface Props {
 }
 
 function _NewAndUpdateResignationRequest(props: Props) {
+  const { data: currentUser } = useGetUserQuery({ fetch: false });
+  const [isExpiredLaborContractDate, setIsExpiredLaborContractDate] = useState(false);
   const { id, AfterSave } = props;
   const { data: InternRequest, isLoading: LoadingInternRequest } = useGetInternRequestByIdQuery(
     { idInternRequest: id! },
     { skip: !id }
   );
+
+  const reasonList = [
+    { value: "reason1", code: "Reason 1" },
+    { value: "reason2", code: "Reason 2" },
+    { value: "reason3", code: "Reason 3" }
+  ];
+
   const { data: ListUnit, isLoading: LoadingListUnit } = useGetListUnitQuery({ pageNumber: 0, pageSize: 0 });
   const { data: ListCategoryPosition, isLoading: LoadingListCategoryPosition } =
     useGetListCategoryPositionAvailableQuery({
@@ -39,6 +49,7 @@ function _NewAndUpdateResignationRequest(props: Props) {
   const [formRef] = Form.useForm();
   useEffect(() => {
     formRef.resetFields();
+    console.log("Có set nè");
     if (InternRequest?.payload && id) {
       formRef.setFieldsValue(InternRequest?.payload);
       if (InternRequest?.payload?.attachments) {
@@ -58,6 +69,14 @@ function _NewAndUpdateResignationRequest(props: Props) {
       }
     } else {
       formRef.resetFields();
+      formRef.setFieldsValue({
+        sapCode: "123",
+        fullName: currentUser?.data?.fullName,
+        positionName: "Tech",
+        departmentName: "IT",
+        divisionName: "AEON",
+        workLocationName: "TP Hồ Chí Minh"
+      });
     }
   }, [InternRequest?.payload, formRef, id]);
 
@@ -100,9 +119,109 @@ function _NewAndUpdateResignationRequest(props: Props) {
     <div className="NewAndUpdateInternRequest">
       <Spin spinning={LoadingInternRequest}>
         <Row>
+          {/* prettier-ignore */}
           <Col xs={24} sm={24} md={24} lg={24} xl={24}>
             <Form layout={"vertical"} form={formRef} onFinish={onfinish}>
               <Form.Item name={"id"} hidden />
+              <Row gutter={16}>
+                <Col xs={24} lg={12}>
+                  <Form.Item label="Mã SAP" name={"sapCode"}>
+                    <Input disabled/>
+                  </Form.Item>
+                </Col>
+                <Col xs={24} lg={12}>
+                  <Form.Item label="Ngày vào làm" name={"startDate"}>
+                    <DatePicker placeholder="Ngày vào làm" />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col xs={24} lg={12}>
+                  <Form.Item label="Họ và tên" name={"fullName"}>
+                    <Input disabled />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} lg={12}>
+                  <Form.Item label="Trường hợp đặc biệt (hết hạn HĐ, nghỉ việc trước thời hạn,...):"
+                    name={"isExpiredLaborContractDate"}>
+                    <Checkbox checked={isExpiredLaborContractDate} onChange={() => {setIsExpiredLaborContractDate(!isExpiredLaborContractDate)}}/>
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col xs={24} lg={12}>
+                  <Form.Item label="Vị trí" name={"positionName"}>
+                    <Input disabled/>
+                  </Form.Item>
+                </Col>
+                <Col xs={24} lg={12}>
+                  <Form.Item label="Ngày chính thức nghỉ việc" name={"officialDate"}>
+                    <DatePicker placeholder="Ngày chính thức nghỉ việc" disabled={isExpiredLaborContractDate } />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col xs={24} lg={12}>
+                  <Form.Item label="Phòng ban/ Ngành hàng" name={"departmentName"}>
+                    <Input disabled/>
+                  </Form.Item>
+                </Col>
+                <Col xs={24} lg={12}>
+                  <Form.Item label="Số ngày phép dư tính đến ngày nghỉ việc: *" name={"unusedLeaveDate"}>
+                    <InputNumber min={0} max={10}/>
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col xs={24} lg={12}>
+                  <Form.Item label="Bộ phận/ Nhóm" name={"divisionName"}>
+                    <Input disabled />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} lg={12}>
+                  <Form.Item label="Số bảo hiểm" name={"shuiBookName"}>
+                    <Radio.Group>
+                      <Radio value="0">Nhân viên giữ</Radio>
+                      <Radio value="1">Công ty giữ</Radio>
+                      <Radio value="2">Chưa tham gia bảo hiểm</Radio>
+                    </Radio.Group>
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col xs={24} lg={12}>
+                  <Form.Item label="Nơi làm việc" name={"workLocationName"}>
+                    <Input disabled />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} lg={12}>
+                  <Form.Item label="Lý do nghỉ việc" name={"reasonForActionCode"}>
+                    <Select allowClear>
+                      {reasonList.map((item) => {
+                        return (
+                          <Select.Option value={item.code}>{item.name}</Select.Option>
+                        );
+                      })}
+                    </Select>
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={16}>
+                <Col xs={24} lg={12}>
+                </Col>
+                <Col xs={24} lg={12}>
+                  <Form.Item name={"isAgree"}>
+                    <Checkbox>
+                      Tôi đồng ý bồi thường tiền lương của những ngày không báo trước
+                      <br />
+                      I agree to compensate for un - notice days as required by law
+                    </Checkbox >
+                  </Form.Item>
+                </Col>
+              </Row>
+              {/*<Form.Item label="Mã SapCode" name={"description"}>
+                <Input />
+              </Form.Item>
               <Form.Item label="Mô tả" name={"description"}>
                 <Input.TextArea />
               </Form.Item>
@@ -184,8 +303,7 @@ function _NewAndUpdateResignationRequest(props: Props) {
               </Form.Item>
               <Form.Item label="File đính kèm" name={"Files"} getValueFromEvent={normFile} valuePropName="fileList">
                 <CustomUploadFileDrag multiple={false} maxCount={1} />
-              </Form.Item>
-
+              </Form.Item>*/}
               <Form.Item>
                 <Space
                   style={{
@@ -193,14 +311,14 @@ function _NewAndUpdateResignationRequest(props: Props) {
                     justifyContent: "flex-end"
                   }}
                 >
-                  <Button
+                  {/*<Button
                     type="default"
                     htmlType="reset"
                     loading={LoadingInsertInternRequest || LoadingUpdateInternRequest}
                     icon={<RetweetOutlined />}
                   >
                     Xóa
-                  </Button>
+                  </Button>*/}
                   <Button
                     type="primary"
                     htmlType="submit"

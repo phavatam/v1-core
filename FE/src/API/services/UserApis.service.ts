@@ -59,9 +59,9 @@ export const UserApisService = createApi({
         return [{ type: "UserApisService", id: "LIST" }];
       }
     }),
-    GetUser: builder.query<ListResponse<UserResponse>, { fetch: boolean }>({
+    GetUser: builder.query<CoreResponse<UserResponse>, { fetch: boolean }>({
       query: (fetch: { fetch: boolean }): any => ({
-        url: `/User/Get-User`,
+        url: `/user/get-user`,
         method: "GET",
         caching: fetch
       }),

@@ -36,7 +36,7 @@ function _LoginAdminLayout() {
   return (
     <Layout className="layout-default layout-signin" style={{ height: "100vh" }}>
       <Header>
-        <div className="header-col header-brand" style={{ textAlign: "center" }}>
+        {/*<div className="header-col header-brand" style={{ textAlign: "center" }}>
           <Image
             src={logoTachNen}
             alt="background"
@@ -49,10 +49,22 @@ function _LoginAdminLayout() {
               padding: JSON.parse(localStorage.getItem("setting")!).darkMode ? "10px" : "0"
             }}
           />
-        </div>
+        </div>*/}
       </Header>
       <Content className="signin">
         <Row gutter={[24, 0]} justify="space-around">
+          <Col className="sign-img" style={{ padding: 12 }} xs={24} lg={12} md={12}>
+            <Image
+              src={Illustration3}
+              alt="background"
+              preview={false}
+              width={"100%"}
+              style={{
+                objectFit: "cover",
+                margin: "auto"
+              }}
+            />
+          </Col>
           <Col xs={{ span: 24, offset: 0 }} lg={{ span: 7, offset: 2 }} md={{ span: 12 }}>
             <Card bordered={false} className="criclebox">
               <Typography.Title level={1}>Đăng nhập</Typography.Title>
@@ -124,18 +136,6 @@ function _LoginAdminLayout() {
                 </Form.Item>
               </Form>
             </Card>
-          </Col>
-          <Col className="sign-img" style={{ padding: 12 }} xs={24} lg={12} md={12}>
-            <Image
-              src={Illustration3}
-              alt="background"
-              preview={false}
-              width={"100%"}
-              style={{
-                objectFit: "cover",
-                margin: "auto"
-              }}
-            />
           </Col>
         </Row>
       </Content>

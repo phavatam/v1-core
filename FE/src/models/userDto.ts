@@ -24,7 +24,7 @@ export interface UserDTO {
   // createdBy: string;
   // activeCode: string;
   // avatar: string;
-  // refreshToken: string;
+  refreshToken: string;
   // positions: string;
   // roles: RoleDto[];
 }

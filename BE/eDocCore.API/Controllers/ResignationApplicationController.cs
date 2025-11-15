@@ -1,29 +1,30 @@
 ﻿using eDocCore.Application.Common;
 using eDocCore.Application.Common.Models;
-using eDocCore.Application.Features.__FeatureName__s.DTOs;
-using eDocCore.Application.Features.__FeatureName__s.DTOs.Request;
-using eDocCore.Application.Features.__FeatureName__s.Services;
+using eDocCore.Application.Features.ResignationApplications.DTOs;
+using eDocCore.Application.Features.ResignationApplications.DTOs.Request;
+using eDocCore.Application.Features.ResignationApplications.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 
 namespace eDocCore.API.FeatureTemplate.eDocCore.API.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class __FeatureName__Controller : ControllerBase
+    public class ResignationApplicationController : ControllerBase
     {
-        private readonly I__FeatureName__Service ___FeatureName__Service;
-        public __FeatureName__Controller(I__FeatureName__Service __FeatureName__Service)
+        private readonly IResignationApplicationService _ResignationApplicationService;
+        public ResignationApplicationController(IResignationApplicationService ResignationApplicationService)
         {
-            ___FeatureName__Service = __FeatureName__Service;
+            _ResignationApplicationService = ResignationApplicationService;
         }
 
         [HttpGet]
-        public async Task<ActionResult> Get([FromQuery(Name = "page_number")] int pageNumber, [FromQuery(Name = "page_size")] int pageSize) 
+        public async Task<ActionResult> Get([FromQuery(Name = "page_number"), Required] int pageNumber, [FromQuery(Name = "page_size"), Required] int pageSize) 
         {
             try
             {
-                var result = await ___FeatureName__Service.Get(pageNumber, pageSize);
+                var result = await _ResignationApplicationService.Get(pageNumber, pageSize);
                 if (!result.IsSuccess)
                 {
                     return Ok(ResultDTO.Failure(400, "Lấy danh sách thất bại!", HttpContext.TraceIdentifier));
@@ -41,7 +42,7 @@ namespace eDocCore.API.FeatureTemplate.eDocCore.API.Controllers
         {
             try
             {
-                var result = await ___FeatureName__Service.Get(id);
+                var result = await _ResignationApplicationService.Get(id);
                 return Ok(result != null ? ResultDTO<object>.Success(result) : ResultDTO.Failure(400, "Item not found!"));
             }
             catch (Exception ex)
@@ -51,11 +52,11 @@ namespace eDocCore.API.FeatureTemplate.eDocCore.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(Create__FeatureName__Request args)
+        public async Task<ActionResult> Create([FromForm] CreateResignationApplicationRequest args)
         {
             try
             {
-                var result = await ___FeatureName__Service.Create(args);
+                var result = await _ResignationApplicationService.Create(args);
                 if (!result.IsSuccess)
                 {
                     return BadRequest(ResultDTO.Failure(400, result.Message ?? "", HttpContext.TraceIdentifier));
@@ -69,11 +70,11 @@ namespace eDocCore.API.FeatureTemplate.eDocCore.API.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> Update(Update__FeatureName__Request args)
+        public async Task<ActionResult> Update([FromForm]UpdateResignationApplicationRequest args)
         {
             try
             {
-                var result = await ___FeatureName__Service.Update(args);
+                var result = await _ResignationApplicationService.Update(args);
                 if (!result.IsSuccess)
                 {
                     return BadRequest(ResultDTO.Failure(400, result.Message ?? "", HttpContext.TraceIdentifier));
@@ -91,7 +92,7 @@ namespace eDocCore.API.FeatureTemplate.eDocCore.API.Controllers
         {
             try
             {
-                var result = await ___FeatureName__Service.Delete(id);
+                var result = await _ResignationApplicationService.Delete(id);
                 return Ok(result);
             }
             catch (Exception ex)

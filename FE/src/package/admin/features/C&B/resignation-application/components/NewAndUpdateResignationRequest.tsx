@@ -5,14 +5,38 @@ import {
   useInsertInternRequestMutation,
   useUpdateInternRequestMutation
 } from "@API/services/InternRequestApis.service";
+import {
+  useCreateMutation,
+  useUpdateMutation,
+  useDeleteMutation,
+  useDeleteMultipleMutation,
+  useGetQuery,
+  useGetListQuery
+} from "@API/services/C&B/ResignationApplication.service";
 import { useGetListUnitQuery } from "@API/services/UnitApis.service";
 import { useGetListCategoryPositionAvailableQuery } from "@API/services/CategoryPositionApis.service";
-import { Button, Col, Form, Input, Row, Select, Space, Spin, DatePicker, Checkbox, InputNumber, Radio } from "antd";
+import {
+  Typography,
+  Button,
+  Col,
+  Form,
+  Input,
+  Row,
+  Select,
+  Space,
+  Spin,
+  DatePicker,
+  Checkbox,
+  InputNumber,
+  Radio
+} from "antd";
 import { CheckCircleOutlined, RetweetOutlined } from "@ant-design/icons";
 import { CustomUploadFileDrag, HandleError, normFile } from "@admin/components";
 import { useEffect, useState } from "react";
 import { useGetListEmployeeQuery } from "@API/services/Employee.service";
 import { useGetUserQuery } from "@API/services/UserApis.service";
+import moment from "moment";
+import dayjs from "dayjs";
 
 interface Props {
   id?: string;
@@ -23,50 +47,57 @@ function _NewAndUpdateResignationRequest(props: Props) {
   const { data: currentUser } = useGetUserQuery({ fetch: false });
   const [isExpiredLaborContractDate, setIsExpiredLaborContractDate] = useState(false);
   const { id, AfterSave } = props;
-  const { data: InternRequest, isLoading: LoadingInternRequest } = useGetInternRequestByIdQuery(
-    { idInternRequest: id! },
-    { skip: !id }
-  );
+  const { data: resultData, isLoading: LoadingResultData, refetch } = useGetQuery({ id: id! }, { skip: !id });
 
   const reasonList = [
-    { value: "reason1", code: "Reason 1" },
-    { value: "reason2", code: "Reason 2" },
-    { value: "reason3", code: "Reason 3" }
+    { value: "Lương thấp", code: "1" },
+    { value: "Không thích công việc", code: "2" },
+    { value: "Không thích môi trường làm việc", code: "3" },
+    { value: "Không thích vị trí công việc", code: "4" },
+    { value: "Không thích công ty", code: "5" }
   ];
 
-  const { data: ListUnit, isLoading: LoadingListUnit } = useGetListUnitQuery({ pageNumber: 0, pageSize: 0 });
-  const { data: ListCategoryPosition, isLoading: LoadingListCategoryPosition } =
-    useGetListCategoryPositionAvailableQuery({
-      pageNumber: 0,
-      pageSize: 0
-    });
-  const { data: ListEmployee, isLoading: LoadingListEmployee } = useGetListEmployeeQuery({
-    pageNumber: 0,
-    pageSize: 0
-  });
-  const [newInternRequest, { isLoading: LoadingInsertInternRequest }] = useInsertInternRequestMutation();
-  const [updateInternRequest, { isLoading: LoadingUpdateInternRequest }] = useUpdateInternRequestMutation();
+  // const { data: ListUnit, isLoading: LoadingListUnit } = useGetListUnitQuery({ pageNumber: 0, pageSize: 0 });
+  // const { data: ListCategoryPosition, isLoading: LoadingListCategoryPosition } =
+  //   useGetListCategoryPositionAvailableQuery({
+  //     pageNumber: 0,
+  //     pageSize: 0
+  //   });
+  // const { data: ListEmployee, isLoading: LoadingListEmployee } = useGetListEmployeeQuery({
+  //   pageNumber: 0,
+  //   pageSize: 0
+  // });
+  const [newResignationRequest, { isLoading: LoadingCreateResignation }] = useCreateMutation();
+  const [updateResignationRequest, { isLoading: LoadingUpdateResignation }] = useUpdateMutation();
   const [formRef] = Form.useForm();
   useEffect(() => {
     formRef.resetFields();
-    console.log("Có set nè");
-    if (InternRequest?.payload && id) {
-      formRef.setFieldsValue(InternRequest?.payload);
-      if (InternRequest?.payload?.attachments) {
-        formRef.setFieldsValue({
-          Files: [
-            {
-              idFIle: InternRequest?.payload.id,
-              uid: "-1",
-              name: InternRequest?.payload.attachments,
-              status: "done",
-              url: getFileInternRequest(
-                InternRequest.payload.id + "." + InternRequest?.payload?.attachments?.split(".")?.at(1)
-              )
-            }
-          ]
-        });
-      }
+    if (resultData?.data && id) {
+      const data = {
+        ...resultData.data,
+        officialResignationDate: resultData.data.officialResignationDate
+          ? moment(resultData.data.officialResignationDate)
+          : null,
+        startDate: resultData.data.officialResignationDate ? moment(resultData.data.officialResignationDate) : null,
+        shuibookCode: typeof resultData.data.shuibookCode === "number" ? resultData.data.shuibookCode : undefined
+      };
+      console.log(data);
+      formRef.setFieldsValue(data);
+      // if (resultData?.payload?.attachments) {
+      //   formRef.setFieldsValue({
+      //     Files: [
+      //       {
+      //         idFIle: resultData?.payload.id,
+      //         uid: "-1",
+      //         name: resultData?.payload.attachments,
+      //         status: "done",
+      //         url: getFileInternRequest(
+      //           resultData.payload.id + "." + resultData?.payload?.attachments?.split(".")?.at(1)
+      //         )
+      //       }
+      //     ]
+      //   });
+      // }
     } else {
       formRef.resetFields();
       formRef.setFieldsValue({
@@ -78,38 +109,46 @@ function _NewAndUpdateResignationRequest(props: Props) {
         workLocationName: "TP Hồ Chí Minh"
       });
     }
-  }, [InternRequest?.payload, formRef, id]);
+  }, [resultData?.data, formRef, id]);
 
   const onfinish = async (values: any) => {
     try {
-      const newDataInternRequest = new FormData();
+      const newDataResignationRequest = new FormData();
       Object.entries(values).forEach(([key, value]) => {
         if (key === "Files") return;
-        const processedValue = value || ("" as any);
-        newDataInternRequest.append(key, processedValue);
+        let processedValue = value === undefined || value === null ? "" : value;
+
+        // Nếu là ngày, format lại
+        if (key === "officialResignationDate" && processedValue) {
+          processedValue = dayjs(processedValue).isValid() ? dayjs(processedValue).format("YYYY-MM-DD HH:mm:ss") : "";
+        }
+
+        newDataResignationRequest.append(key, processedValue);
       });
       if (!(values.Files?.length > 0 && values.Files?.at(0)?.uid !== "-1")) {
         if (values.Files?.length > 0 && values.Files?.at(0)?.uid === "-1") {
           // không chỉnh sửa file
-          newDataInternRequest.append("idFile", values.Files?.at(0)?.idFIle as string);
+          newDataResignationRequest.append("idFile", values.Files?.at(0)?.idFIle as string);
         } else if (values.Files?.length === 0) {
           // xóa file
-          newDataInternRequest.append("idFile", "");
+          newDataResignationRequest.append("idFile", "");
         }
       } else {
         // đã chỉnh sửa file
-        newDataInternRequest.append("Files", values.Files?.at(0)?.originFileObj as Blob);
+        newDataResignationRequest.append("Files", values.Files?.at(0)?.originFileObj as Blob);
       }
 
       const result = id
-        ? await updateInternRequest({
-            internRequest: newDataInternRequest as any
+        ? await updateResignationRequest({
+            payload: newDataResignationRequest as any
           }).unwrap()
-        : await newInternRequest({
-            internRequest: newDataInternRequest as any
+        : await newResignationRequest({
+            payload: newDataResignationRequest as any
           }).unwrap();
-      if (result.success) {
-        AfterSave && AfterSave();
+      if (result.isSuccess) {
+        // AfterSave && AfterSave();
+        await refetch();
+        formRef.resetFields();
       }
     } catch (e: any) {
       await HandleError(e);
@@ -117,7 +156,7 @@ function _NewAndUpdateResignationRequest(props: Props) {
   };
   return (
     <div className="NewAndUpdateInternRequest">
-      <Spin spinning={LoadingInternRequest}>
+      <Spin spinning={LoadingResultData}>
         <Row>
           {/* prettier-ignore */}
           <Col xs={24} sm={24} md={24} lg={24} xl={24}>
@@ -130,8 +169,16 @@ function _NewAndUpdateResignationRequest(props: Props) {
                   </Form.Item>
                 </Col>
                 <Col xs={24} lg={12}>
-                  <Form.Item label="Ngày vào làm" name={"startDate"}>
-                    <DatePicker placeholder="Ngày vào làm" />
+                  <Form.Item required
+                    rules={[
+                    {
+                      required: true,
+                      message: "Ngày vào làm không được bỏ trống"
+                    }
+                  ]}
+                    label="Ngày vào làm" name={"startDate"}>
+                    <DatePicker
+                    format="DD/MM/YYYY HH:mm" placeholder="Ngày vào làm" />
                   </Form.Item>
                 </Col>
               </Row>
@@ -142,10 +189,12 @@ function _NewAndUpdateResignationRequest(props: Props) {
                   </Form.Item>
                 </Col>
                 <Col xs={24} lg={12}>
-                  <Form.Item label="Trường hợp đặc biệt (hết hạn HĐ, nghỉ việc trước thời hạn,...):"
-                    name={"isExpiredLaborContractDate"}>
+                  <Form.Item label="Trường hợp đặc biệt (hết hạn HĐ, nghỉ việc trước thời hạn,...)"
+                    name={"isExpiredLaborContractDate"}
+                    valuePropName="checked"
+                  >
                     <Checkbox checked={isExpiredLaborContractDate} onChange={() => {setIsExpiredLaborContractDate(!isExpiredLaborContractDate)}}/>
-                  </Form.Item>
+                    </Form.Item>
                 </Col>
               </Row>
               <Row gutter={16}>
@@ -155,8 +204,8 @@ function _NewAndUpdateResignationRequest(props: Props) {
                   </Form.Item>
                 </Col>
                 <Col xs={24} lg={12}>
-                  <Form.Item label="Ngày chính thức nghỉ việc" name={"officialDate"}>
-                    <DatePicker placeholder="Ngày chính thức nghỉ việc" disabled={isExpiredLaborContractDate } />
+                  <Form.Item label="Ngày chính thức nghỉ việc" name={"officialResignationDate"}>
+                    <DatePicker  placeholder="Ngày chính thức nghỉ việc" disabled={!isExpiredLaborContractDate } />
                   </Form.Item>
                 </Col>
               </Row>
@@ -179,11 +228,12 @@ function _NewAndUpdateResignationRequest(props: Props) {
                   </Form.Item>
                 </Col>
                 <Col xs={24} lg={12}>
-                  <Form.Item label="Số bảo hiểm" name={"shuiBookName"}>
+                  <Form.Item
+                    label="Số bảo hiểm" name={"shuibookCode"}>
                     <Radio.Group>
-                      <Radio value="0">Nhân viên giữ</Radio>
-                      <Radio value="1">Công ty giữ</Radio>
-                      <Radio value="2">Chưa tham gia bảo hiểm</Radio>
+                      <Radio value={0}>Nhân viên giữ</Radio>
+                      <Radio value={1}>Công ty giữ</Radio>
+                      <Radio value={2}>Chưa tham gia bảo hiểm</Radio>
                     </Radio.Group>
                   </Form.Item>
                 </Col>
@@ -210,7 +260,8 @@ function _NewAndUpdateResignationRequest(props: Props) {
                 <Col xs={24} lg={12}>
                 </Col>
                 <Col xs={24} lg={12}>
-                  <Form.Item name={"isAgree"}>
+                  <Form.Item name={"isAgree"}
+                    valuePropName="checked">
                     <Checkbox>
                       Tôi đồng ý bồi thường tiền lương của những ngày không báo trước
                       <br />
@@ -322,7 +373,7 @@ function _NewAndUpdateResignationRequest(props: Props) {
                   <Button
                     type="primary"
                     htmlType="submit"
-                    loading={LoadingInsertInternRequest || LoadingUpdateInternRequest}
+                    loading={LoadingCreateResignation || LoadingUpdateResignation}
                     icon={<CheckCircleOutlined />}
                   >
                     Lưu

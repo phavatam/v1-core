@@ -61,7 +61,7 @@ namespace eDocCore.Application.Features.__FeatureName__s.Services
                 __FeatureName__ = await ___FeatureName__Repository.AddAsync(__FeatureName__);
 
                 await _unitOfWork.CommitAsync();
-                return ResultDTO< __FeatureName__Dto >.Success(_mapper.Map<__FeatureName__Dto>(__FeatureName__));
+                return ResultDTO< __FeatureName__Dto >.Success();
             }
             catch (Exception ex)
             {
@@ -87,7 +87,7 @@ namespace eDocCore.Application.Features.__FeatureName__s.Services
                     await _unitOfWork.CommitAsync();
                     _logger.LogInformation("Updated __FeatureName__ {__FeatureName__Id} by {UserId}", request.Id, _currentUser.UserId);
                 }
-                return ResultDTO<__FeatureName__Dto>.Success(_mapper.Map<__FeatureName__Dto>(existing));
+                return ResultDTO<__FeatureName__Dto>.Success();
             }
             catch (Exception ex)
             {

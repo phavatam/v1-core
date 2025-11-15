@@ -308,9 +308,7 @@ export function Admin() {
               }
             />
             {menuMap?.map((item) => {
-              console.log(item + " - " + item.path);
               const Component = menuComponentMap[item.menuCode];
-              console.log(Component);
               return <Route path={item.path} element={Component as React.ReactNode} key={item.id} />;
             })}
           </Route>

@@ -20,4 +20,4 @@ dotnet new edocfeature -n TênFeature -o ./ĐườngDẫnTớiThưMụcChứaFea
 
 dotnet new edocfeature --name {{NameFeature}} --output .
 
-dotnet new edocfeature --name UserTypes --ModelName UserTypes --output .
+dotnet new edocfeature --name ResignationApplication --ModelName ResignationApplication --output .

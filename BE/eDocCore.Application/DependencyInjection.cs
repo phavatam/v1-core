@@ -3,6 +3,7 @@ using eDocCore.Application.Features.Auth.DTOs.Request;
 using eDocCore.Application.Features.Auth.Services;
 using eDocCore.Application.Features.Auth.Validators;
 using eDocCore.Application.Features.Menus.Services;
+using eDocCore.Application.Features.ResignationApplications.Services;
 using eDocCore.Application.Features.Roles.Services;
 using eDocCore.Application.Features.Users.Services;
 using eDocCore.Application.Features.UserTypes.Services;
@@ -54,6 +55,11 @@ namespace eDocCore.Application
             #region User Type
             services.AddScoped<IUserTypeService, UserTypeService>();
             services.AddScoped<IUserTypeValidator, UserTypeValidator>();
+            #endregion
+
+            #region Resignation Application
+            services.AddScoped<IResignationApplicationService, ResignationApplicationService>();
+            services.AddScoped<IResignationApplicationValidator, ResignationApplicationValidator>();
             #endregion
 
             return services;

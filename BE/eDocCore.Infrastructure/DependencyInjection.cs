@@ -27,6 +27,7 @@ namespace eDocCore.Infrastructure
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IMenuRepository, MenuRepository>();
             services.AddScoped<IUserTypeRepository, UserTypeRepository>();
+            services.AddScoped<IResignationApplicationRepository, ResignationApplicationRepository>();
 
             // Unit of Work (giữ tạm; cân nhắc bỏ SaveChanges trong repo nếu dùng UoW thực sự)
             services.AddScoped<IUnitOfWork, UnitOfWork>();

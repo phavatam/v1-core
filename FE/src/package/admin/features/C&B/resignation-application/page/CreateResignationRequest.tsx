@@ -10,7 +10,10 @@ function _CreateResignationRequest() {
       <Row>
         <Col span={24}>
           <Card title="Tạo phiếu nghỉ việc" bordered={false}>
-            <NewAndUpdateResignationRequest AfterSave={() => navigation("/admin/MENU_YEU_CAU_THUC_TAP")} />
+            <NewAndUpdateResignationRequest
+              id={"b07a8cb2-816a-48af-878e-6a8a9a40e70e"}
+              AfterSave={() => navigation("/admin/MENU_YEU_CAU_THUC_TAP")}
+            />
           </Card>
         </Col>
       </Row>

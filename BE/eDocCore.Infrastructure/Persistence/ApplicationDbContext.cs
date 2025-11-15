@@ -20,6 +20,8 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<Menu> Menus { get; set; }
 
+    public virtual DbSet<ResignationApplication> ResignationApplications { get; set; }
+
     public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
@@ -56,6 +58,16 @@ public partial class ApplicationDbContext : DbContext
             entity.HasOne(d => d.Parent).WithMany(p => p.InverseParent)
                 .HasForeignKey(d => d.ParentId)
                 .HasConstraintName("FK_Menu_Menu");
+        });
+
+        modelBuilder.Entity<ResignationApplication>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.ReasonForActionCode)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.ReferenceNumber).HasMaxLength(100);
+            entity.Property(e => e.ShuibookCode).HasColumnName("SHUIBookCode");
         });
 
         modelBuilder.Entity<Role>(entity =>

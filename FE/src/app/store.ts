@@ -66,6 +66,7 @@ import { ElectronicSignatureApisService } from "@API/services/ElectronicSignatur
 import { CategoryGradingApisService } from "@API/services/CategoryGrading.service";
 import { ExplaintEvaluationApisService } from "@API/services/ExplaintEvaluation.service";
 import { CategoryReviewApisService } from "@API/services/CategoryReviewApis.service";
+import { ResignationApplicationService } from "@API/services/C&B/ResignationApplication.service";
 
 const sagaMiddleware = createSagaMiddleware();
 //const logger = createLogger();
@@ -133,6 +134,7 @@ const arrMiddleware: any[] = [
   ElectronicSignatureApisService.middleware,
   CategoryGradingApisService.middleware,
   CategoryReviewApisService.middleware,
+  ResignationApplicationService.middleware,
 
   rtkQueryErrorLogger
 ];
@@ -203,7 +205,8 @@ export const store = configureStore({
     [CategoryCriteriaApisService.reducerPath]: CategoryCriteriaApisService.reducer,
     [EvaluationsApisService.reducerPath]: EvaluationsApisService.reducer,
     [EvaluationsCriteriaApisService.reducerPath]: EvaluationsCriteriaApisService.reducer,
-    [ElectronicSignatureApisService.reducerPath]: ElectronicSignatureApisService.reducer
+    [ElectronicSignatureApisService.reducerPath]: ElectronicSignatureApisService.reducer,
+    [ResignationApplicationService.reducerPath]: ResignationApplicationService.reducer
   },
   devTools: false,
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(...arrMiddleware)

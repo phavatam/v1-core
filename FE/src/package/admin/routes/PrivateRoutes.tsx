@@ -9,11 +9,12 @@ export function PrivateRoutes(): any {
   const navigate = useNavigate();
   const location = useLocation();
   const { data: user, isLoading } = useGetUserQuery({ fetch: false });
+  console.log(user);
   if (isLoading) return null;
 
   if (!getCookie("jwt")) return (window.location.href = globalVariable.pathNameLogin);
 
-  if (user?.success === false) {
+  if (user?.isSuccess === false) {
     deleteCookie("jwt");
     notification.warning({
       message: "Ngăn chặn truy cập",

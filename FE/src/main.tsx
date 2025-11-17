@@ -14,6 +14,7 @@ import "./index.css";
 import dayjs from "dayjs";
 import { reportWebVitals } from "~/reportWebVitals";
 import AppRoot from "~/AppRoot";
+import "./i18n";
 
 dayjs.locale("vi");
 (() => {

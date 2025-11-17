@@ -2,6 +2,7 @@ import { LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, SettingOutlined, 
 import { Button, Col, Drawer, Dropdown, Menu, Row, Space, Typography } from "antd";
 import { memo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { deleteCookie } from "~/units";
 import { SideNavMobile } from "@admin/components";
 import "./Header.css";
@@ -11,6 +12,7 @@ import { SwitchDarkMode } from "@admin/components/header/SwitchDarkMode";
 import { TransferOptions } from "@admin/components/header/TransferOptions";
 import { useBreakPoint } from "@hooks/useBreakpoint";
 import { useGetUserQuery } from "@API/services/UserApis.service";
+import { HeaderLanguageSelect } from "./HeaderLanguageSelect";
 
 interface PropsHeader {
   isOpenSideBar: boolean;
@@ -23,6 +25,8 @@ function _Header({ isOpenSideBar, setIsOpenSideBar }: PropsHeader) {
   const [visibleDrawSetting, setVisibleDrawSetting] = useState(false);
   const [visibleDraw, setVisibleDraw] = useState(false);
   const breakpoint = useBreakPoint();
+  const { t } = useTranslation();
+
   const menuUserActions = (
     <Menu
       style={{ padding: 10, borderRadius: "5px" }}
@@ -31,7 +35,7 @@ function _Header({ isOpenSideBar, setIsOpenSideBar }: PropsHeader) {
           label: (
             <Space direction="horizontal" size={"middle"} onClick={() => navigate("/admin/user/setting")}>
               <SettingOutlined />
-              <Typography.Text>Cài đặt</Typography.Text>
+              <Typography.Text>{t("settings")}</Typography.Text>
             </Space>
           ),
           key: "1"
@@ -50,7 +54,7 @@ function _Header({ isOpenSideBar, setIsOpenSideBar }: PropsHeader) {
               }}
             >
               <LogoutOutlined></LogoutOutlined>
-              <Typography.Text>Đăng xuất</Typography.Text>
+              <Typography.Text>{t("logout")}</Typography.Text>
             </Space>
           ),
           key: "2"
@@ -104,7 +108,7 @@ function _Header({ isOpenSideBar, setIsOpenSideBar }: PropsHeader) {
         <Col span={24} md={12} className="header-control">
           <Space size={1} wrap>
             {/*<HeaderAutoComplete />*/}
-            {/*<HeaderLanguageSelect />*/}
+            <HeaderLanguageSelect />
             <Dropdown overlay={menuUserActions} trigger={["click"]}>
               <Button
                 type={"link"}
@@ -122,7 +126,7 @@ function _Header({ isOpenSideBar, setIsOpenSideBar }: PropsHeader) {
               </Button>
             </Dropdown>
             <Drawer
-              title="Danh mục"
+              title={t("menu")}
               placement={"left"}
               onClose={() => {
                 setVisibleDraw(false);

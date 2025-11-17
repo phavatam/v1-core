@@ -10,6 +10,7 @@ import { InformationCompany } from "~/globalVariable";
 import { newLogoDPD } from "@admin/asset/logo";
 import { icons } from "antd/es/image/PreviewGroup";
 import path from "path";
+import { useTranslation } from "react-i18next";
 
 interface IProps {
   isOpenSideBar: boolean;
@@ -21,6 +22,8 @@ export const SideNav: React.FC<IProps> = ({ isOpenSideBar }) => {
   const color = JSON.parse(setting)?.PrimaryColor;
   const generalSettingsItem = DataNavigate();
   const page = pathname?.replace("/", "/");
+  const { t } = useTranslation();
+
   const menuSideNav: MenuProps["items"] = [
     {
       label: (
@@ -37,7 +40,7 @@ export const SideNav: React.FC<IProps> = ({ isOpenSideBar }) => {
               <HomeOutlined style={{ color: color }} />
             </span>
             <span className="label" style={{ display: isOpenSideBar ? "none" : "inline-block" }}>
-              Trang chủ
+              {t("home")}
             </span>
           </NavLink>
         </div>

@@ -18,6 +18,7 @@ import { fontFamilyOptions } from "@admin/components/header/ListFontFamily";
 import Title from "antd/es/typography/Title";
 import { ReloadOutlined, SaveOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
+import "./TransferOptions.css";
 
 interface IProps {
   visibleDrawSetting: boolean;
@@ -76,6 +77,7 @@ export const TransferOptions: React.FC<IProps> = ({ visibleDrawSetting, setVisib
   const [form] = Form.useForm();
   const [bgImage, setBgImage] = useState(settings.BgImage || "");
   const [bgImageApplyAll, setBgImageApplyAll] = useState(settings.BgImageApplyAll || false);
+  const [bgColor, setBgColor] = useState(settings.BgColor || "#ffffff");
 
   useEffect(() => {
     if (!settings?.RandomPrimaryColorEachDay) return;
@@ -92,7 +94,7 @@ export const TransferOptions: React.FC<IProps> = ({ visibleDrawSetting, setVisib
   }, [listDarkModeColor, listLightModeColor, settings]);
 
   const handleSaveSettingTheme = (values: any) => {
-    const newSetting = { ...values, BgImage: bgImage, BgImageApplyAll: bgImageApplyAll };
+    const newSetting = { ...values, BgImage: bgImage, BgImageApplyAll: bgImageApplyAll, BgColor: bgColor };
     localStorage.setItem("setting", JSON.stringify(newSetting));
     window.location.reload();
   };
@@ -111,35 +113,52 @@ export const TransferOptions: React.FC<IProps> = ({ visibleDrawSetting, setVisib
       open={visibleDrawSetting}
     >
       <div>
-        <div className="header-top">
-          <Typography.Title level={4}>
+        <div className="personalize-popup-header">
+          <Typography.Title level={4} style={{ marginBottom: 0, textAlign: "center" }}>
+            <span role="img" aria-label="setting" style={{ marginRight: 8, color: "#1890ff" }}>
+              ⚙️
+            </span>
             Cá nhân hóa
-            <Typography.Text className="subtitle">Xem các tùy chọn bảng điều khiển của chúng tôi.</Typography.Text>
           </Typography.Title>
+          <Typography.Text className="personalize-popup-subtitle">
+            Xem các tùy chọn bảng điều khiển của chúng tôi.
+          </Typography.Text>
         </div>
 
         <div className="sidebar-color">
           <Form layout={"vertical"} onFinish={handleSaveSettingTheme} initialValues={settings} form={form}>
             <Form.Item name={"darkMode"} hidden />
 
-            <Form.Item name={"PrimaryColor"} label={<Title level={5}>Màu chủ đạo</Title>}>
-              <ColorPicker
-                format={"hex"}
-                showText
-                size={"large"}
-                onChange={(color, hex) => form.setFieldValue("PrimaryColor", hex)}
-                presets={[
-                  {
-                    label: "Gợi ý cho light mode",
-                    colors: listLightModeColor
-                  },
-                  {
-                    label: "Gợi ý cho dark mode",
-                    colors: listDarkModeColor
-                  }
-                ]}
-              />
-            </Form.Item>
+            <Space direction="horizontal" size="large" style={{ width: "100%" }}>
+              <Form.Item name={"PrimaryColor"} label={<Title level={5}>Màu chủ đạo</Title>}>
+                <ColorPicker
+                  format={"hex"}
+                  showText
+                  size={"large"}
+                  onChange={(color, hex) => form.setFieldValue("PrimaryColor", hex)}
+                  presets={[
+                    {
+                      label: "Gợi ý cho light mode",
+                      colors: listLightModeColor
+                    },
+                    {
+                      label: "Gợi ý cho dark mode",
+                      colors: listDarkModeColor
+                    }
+                  ]}
+                />
+              </Form.Item>
+              <Form.Item label={<Title level={5}>Màu nền vùng nội dung</Title>}>
+                <ColorPicker
+                  format="hex"
+                  showText
+                  size="large"
+                  value={bgColor}
+                  onChange={(_, hex) => setBgColor(hex)}
+                  style={{ width: 120 }}
+                />
+              </Form.Item>
+            </Space>
             <Form.Item
               name={"RandomPrimaryColorEachDay"}
               valuePropName={"checked"}
@@ -205,6 +224,76 @@ export const TransferOptions: React.FC<IProps> = ({ visibleDrawSetting, setVisib
                 <Radio value={false}>Tắt</Radio>
               </Radio.Group>
             </Form.Item>
+
+            <Divider />
+            {/* Ảnh nền ứng dụng và Áp dụng ảnh nền cho cả nav và header (dọc) */}
+            <div style={{ marginTop: 24 }}>
+              <Typography.Title level={5}>Ảnh nền ứng dụng</Typography.Title>
+              <label
+                htmlFor="bg-image-upload"
+                style={{
+                  display: "inline-block",
+                  padding: "8px 16px",
+                  background: "#1890ff",
+                  color: "#fff",
+                  borderRadius: 6,
+                  cursor: "pointer",
+                  fontWeight: 500,
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+                  transition: "background 0.2s"
+                }}
+              >
+                {bgImage ? "Đổi ảnh nền" : "Chọn ảnh nền"}
+              </label>
+              <input
+                id="bg-image-upload"
+                type="file"
+                accept="image/*"
+                style={{ display: "none" }}
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  const reader = new FileReader();
+                  reader.onload = function (evt) {
+                    const base64 = evt.target?.result;
+                    if (!base64) return;
+                    setBgImage(base64 as string);
+                  };
+                  reader.readAsDataURL(file);
+                }}
+              />
+              {bgImage && (
+                <div style={{ marginTop: 12, display: "flex", alignItems: "center", gap: 12 }}>
+                  <img
+                    src={bgImage}
+                    alt="bg"
+                    style={{
+                      width: 120,
+                      height: 70,
+                      objectFit: "cover",
+                      borderRadius: 8,
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                      border: "2px solid #1890ff"
+                    }}
+                  />
+                  <Button size="small" danger onClick={() => setBgImage("")}>
+                    Xóa ảnh nền
+                  </Button>
+                </div>
+              )}
+              <Form.Item
+                label={<Typography.Text strong>Áp dụng ảnh nền cho cả nav và header</Typography.Text>}
+                style={{ marginBottom: 0, marginTop: 16 }}
+                colon={false}
+              >
+                <Switch
+                  checked={bgImageApplyAll}
+                  onChange={setBgImageApplyAll}
+                  checkedChildren="Có"
+                  unCheckedChildren="Không"
+                />
+              </Form.Item>
+            </div>
             <Form.Item>
               <Space
                 direction={"horizontal"}
@@ -238,76 +327,6 @@ export const TransferOptions: React.FC<IProps> = ({ visibleDrawSetting, setVisib
               </Space>
             </Form.Item>
           </Form>
-          <Divider />
-          {/* Ảnh nền cá nhân hóa */}
-          <div style={{ marginTop: 24 }}>
-            <Typography.Title level={5}>Ảnh nền ứng dụng</Typography.Title>
-            <label
-              htmlFor="bg-image-upload"
-              style={{
-                display: "inline-block",
-                padding: "8px 16px",
-                background: "#1890ff",
-                color: "#fff",
-                borderRadius: 6,
-                cursor: "pointer",
-                fontWeight: 500,
-                boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-                transition: "background 0.2s"
-              }}
-            >
-              {bgImage ? "Đổi ảnh nền" : "Chọn ảnh nền"}
-            </label>
-            <input
-              id="bg-image-upload"
-              type="file"
-              accept="image/*"
-              style={{ display: "none" }}
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = function (evt) {
-                  const base64 = evt.target?.result;
-                  if (!base64) return;
-                  setBgImage(base64 as string);
-                };
-                reader.readAsDataURL(file);
-              }}
-            />
-            {bgImage && (
-              <div style={{ marginTop: 12, display: "flex", alignItems: "center", gap: 12 }}>
-                <img
-                  src={bgImage}
-                  alt="bg"
-                  style={{
-                    width: 120,
-                    height: 70,
-                    objectFit: "cover",
-                    borderRadius: 8,
-                    boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-                    border: "2px solid #1890ff"
-                  }}
-                />
-                <Button size="small" danger onClick={() => setBgImage("")}>
-                  Xóa ảnh nền
-                </Button>
-              </div>
-            )}
-            <div style={{ marginTop: 16 }}>
-              <Form.Item
-                label={<Typography.Text strong>Áp dụng ảnh nền cho cả nav và header</Typography.Text>}
-                style={{ marginBottom: 0 }}
-              >
-                <Switch
-                  checked={bgImageApplyAll}
-                  onChange={setBgImageApplyAll}
-                  checkedChildren="Có"
-                  unCheckedChildren="Không"
-                />
-              </Form.Item>
-            </div>
-          </div>
           <div className="ant-docment">
             {/* <ButtonContainer>
            <Button type="black" size="large">
@@ -322,13 +341,13 @@ export const TransferOptions: React.FC<IProps> = ({ visibleDrawSetting, setVisib
           </div>
 
           <div className="ant-thank">
-            <Title level={5} className="mb-2">
-              Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!
-            </Title>
-            {/* <div className="social">
+            {/*<Title level={5} className="mb-2">
+              Owner: TamPV
+            </Title>*/}
+            {/*<div className="social">
               <Button type="black">{<MailOutlined />}Email</Button>
               <Button type="black">{<FacebookFilled />}FaceBook</Button>
-            </div> */}
+            </div>*/}
           </div>
         </div>
       </div>

@@ -21,14 +21,7 @@ export const Main: React.FC<IProps> = ({ children }) => {
       className={`layout-dashboard`}
       style={{
         minHeight: "100vh",
-        ...(BgImageApplyAll && BgImage
-          ? {
-              backgroundImage: `url('${BgImage}')`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat"
-            }
-          : {})
+        background: "transparent"
       }}
     >
       <Sider
@@ -38,7 +31,7 @@ export const Main: React.FC<IProps> = ({ children }) => {
         collapsedWidth="0"
         className={`sider-primary ant-layout-sider-primary  ${styleSideNav === "#8a6b6b" ? "active-route" : ""}`}
         style={{
-          background: styleSideNav,
+          background: setting.BgColor || styleSideNav,
           margin: "20px 0 0 10px",
           borderRadius: "12px"
         }}
@@ -47,22 +40,23 @@ export const Main: React.FC<IProps> = ({ children }) => {
       </Sider>
       <Layout style={{ marginLeft: breakPoint.isDesktop ? (isOpenSideBar ? 120 : 235) : 0 }}>
         {
-          <AntHeader>
+          <AntHeader style={{ background: setting.BgColor || undefined }}>
             <Header isOpenSideBar={isOpenSideBar} setIsOpenSideBar={setIsOpenSideBar} />
           </AntHeader>
         }
         <Content
           className="content-ant"
-          style={
-            !BgImageApplyAll && BgImage
+          style={{
+            ...(!BgImageApplyAll && BgImage
               ? {
                   backgroundImage: `url('${BgImage}')`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   backgroundRepeat: "no-repeat"
                 }
-              : undefined
-          }
+              : {}),
+            backgroundColor: setting.BgColor || "#ffffff"
+          }}
         >
           <Suspense
             fallback={

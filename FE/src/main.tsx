@@ -14,6 +14,22 @@ import "./index.css";
 import dayjs from "dayjs";
 import { reportWebVitals } from "~/reportWebVitals";
 import AppRoot from "~/AppRoot";
+
+// Set background color and image for body (full screen)
+const setting = JSON.parse(localStorage.getItem("setting") || "{}");
+if (setting.BgColor) {
+  document.body.style.background = setting.BgColor;
+} else {
+  document.body.style.background = "#fff";
+}
+if (setting.BgImage) {
+  document.body.style.backgroundImage = `url('${setting.BgImage}')`;
+  document.body.style.backgroundSize = "cover";
+  document.body.style.backgroundPosition = "center";
+  document.body.style.backgroundRepeat = "no-repeat";
+} else {
+  document.body.style.backgroundImage = "";
+}
 import "./i18n";
 
 dayjs.locale("vi");

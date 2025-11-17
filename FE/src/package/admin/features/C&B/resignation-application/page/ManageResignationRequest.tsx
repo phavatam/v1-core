@@ -122,7 +122,7 @@ function _ManageResignationRequest() {
       render: (text, data) => {
         return (
           <a
-            href={`/resignation-application/${data.id}`}
+            href={`/admin/resignation-application/${data.id}`}
             // onClick={() => {
             //   setIsOpenModal(true);
             //   setId(data.id);

@@ -187,7 +187,7 @@ function _NewAndUpdateResignationRequest(props: Props) {
                   ]}
                     label="Ngày vào làm" name={"startDate"}>
                     <DatePicker
-                    format="DD/MM/YYYY HH:mm" placeholder="Ngày vào làm" />
+                    format="DD/MM/YYYY" placeholder="Ngày vào làm" />
                   </Form.Item>
                 </Col>
               </Row>

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Button,
   ColorPicker,
@@ -74,6 +74,9 @@ export const TransferOptions: React.FC<IProps> = ({ visibleDrawSetting, setVisib
   );
   const settings = JSON.parse(localStorage.getItem("setting")!);
   const [form] = Form.useForm();
+  const [bgImage, setBgImage] = useState(settings.BgImage || "");
+  const [bgImageApplyAll, setBgImageApplyAll] = useState(settings.BgImageApplyAll || false);
+
   useEffect(() => {
     if (!settings?.RandomPrimaryColorEachDay) return;
     const currentDate = dayjs().format("YYYY-MM-DD");
@@ -87,12 +90,16 @@ export const TransferOptions: React.FC<IProps> = ({ visibleDrawSetting, setVisib
     }
     localStorage.setItem("setting", JSON.stringify({ ...settings, PrimaryColor: color }));
   }, [listDarkModeColor, listLightModeColor, settings]);
+
   const handleSaveSettingTheme = (values: any) => {
-    localStorage.setItem("setting", JSON.stringify(values));
+    const newSetting = { ...values, BgImage: bgImage, BgImageApplyAll: bgImageApplyAll };
+    localStorage.setItem("setting", JSON.stringify(newSetting));
     window.location.reload();
   };
+
   const handleReset = () => {
     localStorage.removeItem("setting");
+    setBgImage("");
     window.location.reload();
   };
   return (
@@ -232,6 +239,75 @@ export const TransferOptions: React.FC<IProps> = ({ visibleDrawSetting, setVisib
             </Form.Item>
           </Form>
           <Divider />
+          {/* Ảnh nền cá nhân hóa */}
+          <div style={{ marginTop: 24 }}>
+            <Typography.Title level={5}>Ảnh nền ứng dụng</Typography.Title>
+            <label
+              htmlFor="bg-image-upload"
+              style={{
+                display: "inline-block",
+                padding: "8px 16px",
+                background: "#1890ff",
+                color: "#fff",
+                borderRadius: 6,
+                cursor: "pointer",
+                fontWeight: 500,
+                boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+                transition: "background 0.2s"
+              }}
+            >
+              {bgImage ? "Đổi ảnh nền" : "Chọn ảnh nền"}
+            </label>
+            <input
+              id="bg-image-upload"
+              type="file"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = function (evt) {
+                  const base64 = evt.target?.result;
+                  if (!base64) return;
+                  setBgImage(base64 as string);
+                };
+                reader.readAsDataURL(file);
+              }}
+            />
+            {bgImage && (
+              <div style={{ marginTop: 12, display: "flex", alignItems: "center", gap: 12 }}>
+                <img
+                  src={bgImage}
+                  alt="bg"
+                  style={{
+                    width: 120,
+                    height: 70,
+                    objectFit: "cover",
+                    borderRadius: 8,
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                    border: "2px solid #1890ff"
+                  }}
+                />
+                <Button size="small" danger onClick={() => setBgImage("")}>
+                  Xóa ảnh nền
+                </Button>
+              </div>
+            )}
+            <div style={{ marginTop: 16 }}>
+              <Form.Item
+                label={<Typography.Text strong>Áp dụng ảnh nền cho cả nav và header</Typography.Text>}
+                style={{ marginBottom: 0 }}
+              >
+                <Switch
+                  checked={bgImageApplyAll}
+                  onChange={setBgImageApplyAll}
+                  checkedChildren="Có"
+                  unCheckedChildren="Không"
+                />
+              </Form.Item>
+            </div>
+          </div>
           <div className="ant-docment">
             {/* <ButtonContainer>
            <Button type="black" size="large">

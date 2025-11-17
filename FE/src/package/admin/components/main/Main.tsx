@@ -15,12 +15,20 @@ export const Main: React.FC<IProps> = ({ children }) => {
   const breakPoint = useBreakPoint();
   const [isOpenSideBar, setIsOpenSideBar] = useState(false);
   const setting = JSON.parse(localStorage.getItem("setting")!);
-  const { styleSideNav } = setting;
+  const { styleSideNav, BgImage, BgImageApplyAll } = setting;
   return (
     <Layout
       className={`layout-dashboard`}
       style={{
-        minHeight: "100vh"
+        minHeight: "100vh",
+        ...(BgImageApplyAll && BgImage
+          ? {
+              backgroundImage: `url('${BgImage}')`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat"
+            }
+          : {})
       }}
     >
       <Sider
@@ -43,7 +51,19 @@ export const Main: React.FC<IProps> = ({ children }) => {
             <Header isOpenSideBar={isOpenSideBar} setIsOpenSideBar={setIsOpenSideBar} />
           </AntHeader>
         }
-        <Content className="content-ant">
+        <Content
+          className="content-ant"
+          style={
+            !BgImageApplyAll && BgImage
+              ? {
+                  backgroundImage: `url('${BgImage}')`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat"
+                }
+              : undefined
+          }
+        >
           <Suspense
             fallback={
               <div

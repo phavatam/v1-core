@@ -46,10 +46,10 @@ export const UserApisService = createApi({
       }),
       providesTags(result) {
         if (result && result.data) {
-          const { data } = result.data;
+          const { items } = result.data;
           console.log(result.data);
           return [
-            ...data.map(({ id }) => ({ type: "UserApisService" as const, id })),
+            ...items.map(({ id }) => ({ type: "UserApisService" as const, id })),
             {
               type: "UserApisService" as const,
               id: "LIST"

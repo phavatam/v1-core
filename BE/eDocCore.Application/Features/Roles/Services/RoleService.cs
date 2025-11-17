@@ -97,7 +97,7 @@ namespace eDocCore.Application.Features.Roles.Services
             try
             {
                 _logger.LogInformation("Updating role {RoleId} by {UserId}", request.Id, _currentUser.UserId);
-                var existing = await _roleRepository.GetByIdAsync(request.Id);
+                var existing = await _roleRepository.GetByIdAsync(request.Id, asNoTracking: true);
                 if (existing == null)
                 {
                     _logger.LogWarning("Role {RoleId} not found for update by {UserId}", request.Id, _currentUser.UserId);

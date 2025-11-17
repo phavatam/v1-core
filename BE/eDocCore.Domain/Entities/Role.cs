@@ -11,6 +11,8 @@ public partial class Role
 
     public bool IsActive { get; set; }
 
+    public byte[] RowVersion { get; set; } = null!;
+
     public DateTimeOffset Created { get; set; }
 
     public DateTimeOffset Modified { get; set; }

@@ -14,6 +14,7 @@ namespace eDocCore.Application.Features.ResignationApplications.Services
         Task<ResultDTO<ResignationApplicationDto>> Create(CreateResignationApplicationRequest request);
         Task<ResultDTO<ResignationApplicationDto>> Update(UpdateResignationApplicationRequest request);
         Task<ResultDTO<bool>> Delete(Guid id);
+        Task<ResultDTO<ArrayResultDTO>> GetListByFilter(GetResignationApplicationRequest args);
         // Thêm API phân trang + filter
     }
 }

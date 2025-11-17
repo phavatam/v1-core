@@ -4,6 +4,8 @@ namespace eDocCore.Application.Features.ResignationApplications.DTOs
     {
         public Guid Id { get; set; }
 
+        public Guid UserId { get; set; }
+
         public string? ReferenceNumber { get; set; }
 
         public bool IsExpiredLaborContractDate { get; set; }

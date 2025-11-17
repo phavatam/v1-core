@@ -60,7 +60,7 @@ function _DashBoardCoreLayout() {
     ,
     {
       title: "Tạo đơn nghỉ việc",
-      url: "/admin/resignation-application",
+      url: "/admin/resignation-application/new",
       icon: <SoundFilled />
     },
     {

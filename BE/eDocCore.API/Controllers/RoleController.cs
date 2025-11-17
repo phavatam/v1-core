@@ -15,9 +15,9 @@ namespace eDocCore.API.Controllers
     public class RoleController : ControllerBase
     {
         private readonly IRoleService _roleService;
-        private readonly ILogger _logger;
+        private readonly ILogger<RoleController> _logger;
 
-        public RoleController(IRoleService roleService, ILogger logger)
+        public RoleController(IRoleService roleService, ILogger<RoleController> logger)
         {
             _roleService = roleService;
             _logger = logger;

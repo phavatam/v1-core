@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 
-namespace eDocCore.API.FeatureTemplate.eDocCore.API.Controllers
+namespace eDocCore.API.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
@@ -98,6 +98,24 @@ namespace eDocCore.API.FeatureTemplate.eDocCore.API.Controllers
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ResultDTO.Failure((int) HttpStatusCode.InternalServerError, ex.Message, HttpContext.TraceIdentifier));
+            }
+        }
+
+        [HttpPost("Search")]
+        public async Task<ActionResult> Search([FromBody] GetResignationApplicationRequest args)
+        {
+            try
+            {
+                var result = await _ResignationApplicationService.GetListByFilter(args);
+                if (!result.IsSuccess)
+                {
+                    return Ok(ResultDTO.Failure(400, "Lấy danh sách thất bại!", HttpContext.TraceIdentifier));
+                }
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ResultDTO.Failure((int)HttpStatusCode.InternalServerError, ex.Message, HttpContext.TraceIdentifier));
             }
         }
     }

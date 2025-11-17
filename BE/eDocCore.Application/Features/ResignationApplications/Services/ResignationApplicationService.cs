@@ -115,5 +115,22 @@ namespace eDocCore.Application.Features.ResignationApplications.Services
                 throw;
             }
         }
+
+        public async Task<ResultDTO<ArrayResultDTO>> GetListByFilter(GetResignationApplicationRequest args)
+        {
+            ResultDTO<ArrayResultDTO> resultDTO = new ResultDTO<ArrayResultDTO>() { };
+            var list = await _ResignationApplicationRepository.GetPagedProjectedAsync<ResignationApplicationDto>(args.Page, args.PageSize);
+
+            var arrays = new ArrayResultDTO()
+            {
+                PageNumber = args.Page,
+                PageSize = args.PageSize,
+                TotalRecord = list.TotalItems,
+                Items = list.Items
+            };
+
+            return ResultDTO<ArrayResultDTO>.Success(arrays);
+        }
+        
     }
 }

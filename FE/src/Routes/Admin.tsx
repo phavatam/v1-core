@@ -76,6 +76,7 @@ import {
   ManageResignation,
   CreateResignation
 } from "./ListComponentLazy";
+import {} from "./DefineRoute";
 import { CategoryAssessmentType } from "@admin/features/categoryAssessmentType";
 import { CategoryReview } from "@admin/features/categoryReview";
 import { CategoryTimeType } from "@admin/features/categoryTimeType";
@@ -96,6 +97,7 @@ import {
   AnalystConsolidationAndTransfer
 } from "~/package/admin/features/consolidationAndTransfer";
 import { it } from "node:test";
+import DFRoute from "./DefineRoute";
 //import { ViewDetailResign } from "@admin/features/resign";
 
 type MenuComponentMap = {
@@ -202,10 +204,9 @@ export function Admin() {
     // Calculate working days
     MENU_QUAN_LY_CHAM_CONG: <ManageCalculateWorkingDays></ManageCalculateWorkingDays>,
     DANH_MUC_TIEU_CHI_DANH_GIA: <CategoryCriteria />,
-    "resignation-application": <CreateResignation />
+    "resignation-application": <ManageResignation />
   };
   const menuMap = data?.data?.map((item: any) => item.navigationsChild)?.flat() as Navigation[];
-
   if (isLoading || !menuMap) {
     return (
       <div
@@ -307,12 +308,13 @@ export function Admin() {
                 </WithAuthorization>
               }
             />
+
             {menuMap?.map((item) => {
               const Component = menuComponentMap[item.menuCode];
               return <Route path={item.path} element={Component as React.ReactNode} key={item.id} />;
             })}
           </Route>
-
+          {DFRoute}
           {/* 404 not found */}
           <Route
             path="*"

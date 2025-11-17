@@ -305,22 +305,24 @@ namespace eDocCore.API.FeatureTemplate.eDocCore.API.Controllers
                     },
                     NavigationsChild = new List<NavigationChildOfChildren>()
                     {
-                        new NavigationChildOfChildren ()
-                       {
-                            Id = Guid.Parse("E44A6EC3-EAA5-4758-898D-423D34D97BF7"),
-                            MenuName = "Danh mục tiêu chí đánh giá",
-                            IdParent = Guid.Parse("2B2F9BAA-D56E-493A-9CD6-674335C73D29"),
-                            MenuCode = "MENU_TAO_PHIEU_THUC_TAP",
-                            Path = "/admin/DANH_MUC_TIEU_CHI_DANH_GIA",
-                            IconLink = "ICON_MENU_TAO_PHIEU_THUC_TAP"
-                       },
+                       // new NavigationChildOfChildren ()
+                       //{
+                       //     Id = Guid.Parse("E44A6EC3-EAA5-4758-898D-423D34D97BF7"),
+                       //     MenuName = "Danh mục tiêu chí đánh giá",
+                       //     IdParent = Guid.Parse("2B2F9BAA-D56E-493A-9CD6-674335C73D29"),
+                       //     MenuCode = "MENU_TAO_PHIEU_THUC_TAP",
+                       //     Path = "/admin/DANH_MUC_TIEU_CHI_DANH_GIA",
+                       //     IconLink = "ICON_MENU_TAO_PHIEU_THUC_TAP"
+                       //},
                        new NavigationChildOfChildren ()
                        {
                             Id = Guid.NewGuid(),
                             MenuCode = "resignation-application",
-                            MenuName = "Phiếu đăng ký nghỉ việc",
+                            MenuName = "Quản lý phiếu nghỉ việc",
+                            //Path = "/admin/resignation-application",
                             Path = "/admin/resignation-application",
-                            IconLink = "ICON_RESIGNATION_APPLICATION",
+                            //IconLink = "ICON_RESIGNATION_APPLICATION",
+                            IconLink = "ICON_MENU_TAO_PHIEU_THUC_TAP",
                             IdParent = Guid.Parse("B4AD1891-9E56-405F-88D0-92EDDBD356DF")
                        },
                        new NavigationChildOfChildren ()
@@ -329,7 +331,8 @@ namespace eDocCore.API.FeatureTemplate.eDocCore.API.Controllers
                             MenuCode = "leave-application",
                             MenuName = "Quản lý phép",
                             Path = "/admin/leave-application",
-                            IconLink = "ICON_LEAVE_APPLICATION",
+                            //IconLink = "ICON_LEAVE_APPLICATION",
+                            IconLink = "ICON_MENU_TAO_PHIEU_THUC_TAP",
                             IdParent = Guid.Parse("B4AD1891-9E56-405F-88D0-92EDDBD356DF")
                        },
                        new NavigationChildOfChildren ()
@@ -338,7 +341,8 @@ namespace eDocCore.API.FeatureTemplate.eDocCore.API.Controllers
                             MenuCode = "missing-timeclock-application",
                             MenuName = "Bổ sung dữ liệu quẹt thẻ",
                             Path = "admin/missing-timeclock-application",
-                            IconLink = "ICON_MISSING_TIMECLOCK_APPLICATION",
+                            //IconLink = "ICON_MISSING_TIMECLOCK_APPLICATION",
+                            IconLink = "ICON_MENU_TAO_PHIEU_THUC_TAP",
                             IdParent = Guid.Parse("B4AD1891-9E56-405F-88D0-92EDDBD356DF")
                        },
                        new NavigationChildOfChildren ()
@@ -347,7 +351,8 @@ namespace eDocCore.API.FeatureTemplate.eDocCore.API.Controllers
                             MenuCode = "overtime-application",
                             MenuName = "Đăng ký tăng ca",
                             Path = "admin/overtime-application",
-                            IconLink = "ICON_OVERTIME_APPLICATION",
+                            //IconLink = "ICON_OVERTIME_APPLICATION",
+                            IconLink = "ICON_MENU_TAO_PHIEU_THUC_TAP",
                             IdParent = Guid.Parse("B4AD1891-9E56-405F-88D0-92EDDBD356DF")
                        },
                        new NavigationChildOfChildren ()
@@ -356,7 +361,8 @@ namespace eDocCore.API.FeatureTemplate.eDocCore.API.Controllers
                             MenuCode = "shift-exchange-application",
                             MenuName = "Đăng ký chuyển ca",
                             Path = "admin/shift-exchange-application",
-                            IconLink = "ICON_SHIFTEXCHANGE_APPLICATION",
+                            //IconLink = "ICON_SHIFTEXCHANGE_APPLICATION",
+                            IconLink = "ICON_MENU_TAO_PHIEU_THUC_TAP",
                             IdParent = Guid.Parse("B4AD1891-9E56-405F-88D0-92EDDBD356DF")
                        }
                     }

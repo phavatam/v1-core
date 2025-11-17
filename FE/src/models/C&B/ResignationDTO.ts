@@ -1,5 +1,6 @@
 export interface ResignationDTO {
   id: number;
+  userId: string;
   referenceNumber: string;
   isExpiredLaborContractDate: boolean;
   officialResignationDate: number;

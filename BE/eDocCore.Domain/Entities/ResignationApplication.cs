@@ -7,6 +7,8 @@ public partial class ResignationApplication
 {
     public Guid Id { get; set; }
 
+    public Guid? UserId { get; set; }
+
     public string? ReferenceNumber { get; set; }
 
     public bool IsExpiredLaborContractDate { get; set; }
@@ -24,6 +26,8 @@ public partial class ResignationApplication
     public DateTimeOffset? SuggestionForLastWorkingDay { get; set; }
 
     public bool? IsAgree { get; set; }
+
+    public byte[] RowVersion { get; set; } = null!;
 
     public DateTimeOffset Created { get; set; }
 

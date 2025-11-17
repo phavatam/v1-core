@@ -3,7 +3,7 @@ namespace eDocCore.Application.Features.ResignationApplications.DTOs.Request
     public class CreateResignationApplicationRequest
     {
         // Add properties here
-
+        public Guid UserId { get; set; }
         public bool? IsExpiredLaborContractDate { get; set; }
 
         public DateTimeOffset? OfficialResignationDate { get; set; }

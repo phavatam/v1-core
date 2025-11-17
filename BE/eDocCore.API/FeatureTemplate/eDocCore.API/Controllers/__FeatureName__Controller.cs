@@ -6,7 +6,7 @@ using eDocCore.Application.Features.__FeatureName__s.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace eDocCore.API.FeatureTemplate.eDocCore.API.Controllers
+namespace eDocCore.API.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]

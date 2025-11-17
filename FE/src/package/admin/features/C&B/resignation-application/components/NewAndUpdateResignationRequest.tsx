@@ -50,11 +50,11 @@ function _NewAndUpdateResignationRequest(props: Props) {
   const { data: resultData, isLoading: LoadingResultData, refetch } = useGetQuery({ id: id! }, { skip: !id });
 
   const reasonList = [
-    { value: "Lương thấp", code: "1" },
-    { value: "Không thích công việc", code: "2" },
-    { value: "Không thích môi trường làm việc", code: "3" },
-    { value: "Không thích vị trí công việc", code: "4" },
-    { value: "Không thích công ty", code: "5" }
+    { name: "Lương thấp", code: "1" },
+    { name: "Không thích công việc", code: "2" },
+    { name: "Không thích môi trường làm việc", code: "3" },
+    { name: "Không thích vị trí công việc", code: "4" },
+    { name: "Không thích công ty", code: "5" }
   ];
 
   // const { data: ListUnit, isLoading: LoadingListUnit } = useGetListUnitQuery({ pageNumber: 0, pageSize: 0 });
@@ -81,6 +81,15 @@ function _NewAndUpdateResignationRequest(props: Props) {
         startDate: resultData.data.officialResignationDate ? moment(resultData.data.officialResignationDate) : null,
         shuibookCode: typeof resultData.data.shuibookCode === "number" ? resultData.data.shuibookCode : undefined
       };
+
+      formRef.setFieldsValue({
+        sapCode: "123",
+        fullName: currentUser?.data?.fullName,
+        positionName: "Tech",
+        departmentName: "IT",
+        divisionName: "AEON",
+        workLocationName: "TP Hồ Chí Minh"
+      });
       console.log(data);
       formRef.setFieldsValue(data);
       // if (resultData?.payload?.attachments) {
@@ -117,7 +126,6 @@ function _NewAndUpdateResignationRequest(props: Props) {
       Object.entries(values).forEach(([key, value]) => {
         if (key === "Files") return;
         let processedValue = value === undefined || value === null ? "" : value;
-
         // Nếu là ngày, format lại
         if (key === "officialResignationDate" && processedValue) {
           processedValue = dayjs(processedValue).isValid() ? dayjs(processedValue).format("YYYY-MM-DD HH:mm:ss") : "";
@@ -146,11 +154,12 @@ function _NewAndUpdateResignationRequest(props: Props) {
             payload: newDataResignationRequest as any
           }).unwrap();
       if (result.isSuccess) {
-        // AfterSave && AfterSave();
+        AfterSave && AfterSave();
         await refetch();
         formRef.resetFields();
       }
     } catch (e: any) {
+      console.log(e);
       await HandleError(e);
     }
   };
@@ -257,10 +266,11 @@ function _NewAndUpdateResignationRequest(props: Props) {
                 </Col>
               </Row>
               <Row gutter={16}>
-                <Col xs={24} lg={12}>
-                </Col>
+                <Col xs={24} lg={12}></Col>
                 <Col xs={24} lg={12}>
                   <Form.Item name={"isAgree"}
+                    label=" "
+                    wrapperCol={{ offset: 0 }} // Đẩy trường nhập liệu về bên trái
                     valuePropName="checked">
                     <Checkbox>
                       Tôi đồng ý bồi thường tiền lương của những ngày không báo trước

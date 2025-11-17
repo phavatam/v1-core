@@ -52,7 +52,7 @@ export const ResignationApplicationService = createApi({
         data: payload
       }),
       invalidatesTags: (result, error, arg) =>
-        result ? [{ type: "ResignationApplicationService", id: arg.internRequest.id }] : []
+        result ? [{ type: "ResignationApplicationService", id: arg.payload.id }] : []
     }),
     Delete: builder.mutation<corePayloadResult, { ids: number }>({
       query: ({ ids }) => ({
@@ -162,18 +162,16 @@ export const ResignationApplicationService = createApi({
         return [{ type: "InternRequestApisService", id: "LIST" }];
       }
     }),
-    filterListInternRequest: builder.query<
-      ListResponse<InternRequestDTO>,
+    filterListResignationRequest: builder.query<
+      CoreResponse<ResignationDTO>,
       {
-        idEmployee: string;
-        idUnit: string;
-        idPosition: string;
+        userId: string;
         pageNumber: number;
         pageSize: number;
       }
     >({
       query: (filter): any => ({
-        url: `/internRequest/filterListInternRequest`,
+        url: `/resignation-application/search`,
         data: filter,
         method: "POST"
       })
@@ -198,5 +196,5 @@ export const {
   useDeleteInternRequestMutation,
   useGetListInternRequestByRoleQuery,
   useGetListInternRequestByHistoryQuery,
-  useLazyFilterListInternRequestQuery
+  useLazyFilterListResignationRequestQuery
 } = ResignationApplicationService;

@@ -28,7 +28,8 @@ import {
   DatePicker,
   Checkbox,
   InputNumber,
-  Radio
+  Radio,
+  Divider
 } from "antd";
 import { CheckCircleOutlined, RetweetOutlined } from "@ant-design/icons";
 import { CustomUploadFileDrag, HandleError, normFile } from "@admin/components";
@@ -37,6 +38,8 @@ import { useGetListEmployeeQuery } from "@API/services/Employee.service";
 import { useGetUserQuery } from "@API/services/UserApis.service";
 import moment from "moment";
 import dayjs from "dayjs";
+import Paragraph from "antd/lib/typography/Paragraph";
+import TextArea from "antd/lib/input/TextArea";
 
 interface Props {
   id?: string;
@@ -109,14 +112,7 @@ function _NewAndUpdateResignationRequest(props: Props) {
       // }
     } else {
       formRef.resetFields();
-      formRef.setFieldsValue({
-        sapCode: "123",
-        fullName: currentUser?.data?.fullName,
-        positionName: "Tech",
-        departmentName: "IT",
-        divisionName: "AEON",
-        workLocationName: "TP Hồ Chí Minh"
-      });
+      formRef.setFieldsValue(currentUser?.data);
     }
   }, [resultData?.data, formRef, id]);
 
@@ -164,237 +160,308 @@ function _NewAndUpdateResignationRequest(props: Props) {
     }
   };
   return (
-    <div className="NewAndUpdateInternRequest">
-      <Spin spinning={LoadingResultData}>
-        <Row>
-          {/* prettier-ignore */}
-          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-            <Form layout={"vertical"} form={formRef} onFinish={onfinish}>
-              <Form.Item name={"id"} hidden />
-              <Row gutter={16}>
-                <Col xs={24} lg={12}>
-                  <Form.Item label="Mã SAP" name={"sapCode"}>
-                    <Input disabled/>
-                  </Form.Item>
-                </Col>
-                <Col xs={24} lg={12}>
-                  <Form.Item required
-                    rules={[
+    <>
+      <div className="NewAndUpdateInternRequest">
+        <Spin spinning={LoadingResultData}>
+          <Row>
+            {/* prettier-ignore */}
+            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+              <Form layout={"vertical"} form={formRef} onFinish={onfinish}>
+                <Form.Item name={"id"} hidden />
+                <Row gutter={16}>
+                  <Col xs={24} lg={12}>
+                    <Form.Item label="SAP Code" name={"sapCode"}>
+                      <Input disabled/>
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} lg={12}>
+                    <Form.Item required
+                      rules={[
+                      {
+                        required: true,
+                        message: "Ngày vào làm không được bỏ trống"
+                      }
+                    ]}
+                      label="Ngày vào làm" name={"startDate"}>
+                      <DatePicker
+                      format="DD/MM/YYYY" placeholder="Ngày vào làm" />
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Row gutter={16}>
+                  <Col xs={24} lg={12}>
+                    <Form.Item label="Họ và tên" name={"fullName"}>
+                      <Input disabled />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} lg={12}>
+                    <Form.Item label="Trường hợp đặc biệt (hết hạn HĐ, nghỉ việc trước thời hạn,...)"
+                      name={"isExpiredLaborContractDate"}
+                      valuePropName="checked"
+                    >
+                      <Checkbox checked={isExpiredLaborContractDate} onChange={() => {setIsExpiredLaborContractDate(!isExpiredLaborContractDate)}}/>
+                      </Form.Item>
+                  </Col>
+                </Row>
+                <Row gutter={16}>
+                  <Col xs={24} lg={12}>
+                    <Form.Item label="Vị trí" name={"positionName"}>
+                      <Input disabled/>
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} lg={12}>
+                    <Form.Item label="Ngày chính thức nghỉ việc" name={"officialResignationDate"}>
+                      <DatePicker  placeholder="Ngày chính thức nghỉ việc" disabled={!isExpiredLaborContractDate } />
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Row gutter={16}>
+                  <Col xs={24} lg={12}>
+                    <Form.Item label="Phòng ban/ Ngành hàng" name={"departmentName"}>
+                      <Input disabled/>
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} lg={12}>
+                    <Form.Item label="Số ngày phép dư tính đến ngày nghỉ việc: *" name={"unusedLeaveDate"}>
+                      <InputNumber min={0} max={10}/>
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Row gutter={16}>
+                  <Col xs={24} lg={12}>
+                    <Form.Item label="Bộ phận/ Nhóm" name={"divisionName"}>
+                      <Input disabled />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} lg={12}>
+                    <Form.Item
+                      label="Số bảo hiểm" name={"shuibookCode"}>
+                      <Radio.Group>
+                        <Radio value={0}>Nhân viên giữ</Radio>
+                        <Radio value={1}>Công ty giữ</Radio>
+                        <Radio value={2}>Chưa tham gia bảo hiểm</Radio>
+                      </Radio.Group>
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Row gutter={16}>
+                  <Col xs={24} lg={12}>
+                    <Form.Item label="Nơi làm việc" name={"workLocationName"}>
+                      <Input disabled />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} lg={12}>
+                    <Form.Item label="Lý do nghỉ việc" name={"reasonForActionCode"}>
+                      <Select allowClear>
+                        {reasonList.map((item) => {
+                          return (
+                            <Select.Option value={item.code}>{item.name}</Select.Option>
+                          );
+                        })}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Row gutter={16}>
+                  <Col xs={24} lg={12}>
+                    <Typography.Text strong>
+                      Nhân viên không được nghỉ không lương trong giai đoạn kể từ ngày viết đơn đến thời điểm chính thức nghỉ việc
+                    </Typography.Text>
+                    <br />
+                    Employee don't take unpaid leave from applying resgnation letter date until to offcial resignation date
+                  </Col>
+                  <Col xs={24} lg={12}>
+                    <Form.Item name={"isAgree"}
+                      wrapperCol={{ offset: 0}} // Đẩy trường nhập liệu về bên trái
+                      valuePropName="checked">
+                      <Checkbox>
+                        Tôi đồng ý bồi thường tiền lương của những ngày không báo trước
+                        <br />
+                        I agree to compensate for un - notice days as required by law
+                      </Checkbox >
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Row gutter={16}>
+                  <Col xs={24} lg={12}>
+                    <Form.Item required
+                      label="Hợp đồng" name={"contractTypeCode"}>
+                      <Radio.Group>
+                        <Row gutter={[16, 16]}>
+                          <Col span={12}>
+                            <Radio value={1}>Hợp đồng học việc, thử việc báo trước 01 ngày
+                            01 day prior notice must be given for definite</Radio>
+                          </Col>
+                          <Col span={12}>
+                            <Radio value={2}>Hợp đồng thời vụ báo trước 03 ngày
+                            03 days prior notice must be given for definite</Radio>
+                          </Col>
+                        </Row>
+                        <Row gutter={[16, 16]}>
+                          <Col span={12}>
+                            <Radio value={3}>Hợp đồng lao động có thời hạn, báo trước 30 ngày
+                            30 days prior notice must be given for definite term contract</Radio>
+                          </Col>
+                          <Col span={12}>
+                            <Radio value={4}>Hợp đồng lao động không thời hạn, báo trước 45 ngày
+                            45 days prior notice must be given for indefinite term contract</Radio>
+                          </Col>
+                        </Row>
+                      </Radio.Group>
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Divider orientation="left">
+                  Phần dành cho quản lý
+                </Divider>
+                <Row gutter={16}>
+                  <Col xs={24} lg={12}>
+                    <Form.Item label="Đề nghị ngày làm việc cuối cùng
+                    Suggestion for last working day" name={"suggestionForLastWorkingDay"}>
+                      <Input disabled />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} lg={12}>
+                    <Form.Item required name={"reasonForActionCode"}>
+                      <Checkbox>
+                        <p>
+                          Được thông báo số ngày phép còn lại của nhân viên
+                        <br/>
+                        Have been Notified Remain Leave of Employee
+                        </p>
+                      </Checkbox>
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Row gutter={16}>
+                  <Col xs={24} lg={12}>
+                    <Form.Item label={
+                      <>
+                        Lý do ngày đề nghị làm việc cuối cùng
+                        <br/>
+                        Reason of Suggestion for last working day
+                      </>
+                    } name={"suggestionForLastWorkingDay"}>
+                      <TextArea disabled />
+                    </Form.Item>
+                  </Col>
+                </Row>
+                {/*<Form.Item label="Mã SapCode" name={"description"}>
+                  <Input />
+                </Form.Item>
+                <Form.Item label="Mô tả" name={"description"}>
+                  <Input.TextArea />
+                </Form.Item>
+                <Form.Item label="Tên phòng ban" name={"unitName"} hidden>
+                  <Input />
+                </Form.Item>
+                <Form.Item
+                  label="Phòng ban"
+                  name={"idUnit"}
+                  rules={[
                     {
                       required: true,
-                      message: "Ngày vào làm không được bỏ trống"
+                      message: "Vui lòng chọn phòng ban"
                     }
                   ]}
-                    label="Ngày vào làm" name={"startDate"}>
-                    <DatePicker
-                    format="DD/MM/YYYY" placeholder="Ngày vào làm" />
-                  </Form.Item>
-                </Col>
-              </Row>
-              <Row gutter={16}>
-                <Col xs={24} lg={12}>
-                  <Form.Item label="Họ và tên" name={"fullName"}>
-                    <Input disabled />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} lg={12}>
-                  <Form.Item label="Trường hợp đặc biệt (hết hạn HĐ, nghỉ việc trước thời hạn,...)"
-                    name={"isExpiredLaborContractDate"}
-                    valuePropName="checked"
-                  >
-                    <Checkbox checked={isExpiredLaborContractDate} onChange={() => {setIsExpiredLaborContractDate(!isExpiredLaborContractDate)}}/>
-                    </Form.Item>
-                </Col>
-              </Row>
-              <Row gutter={16}>
-                <Col xs={24} lg={12}>
-                  <Form.Item label="Vị trí" name={"positionName"}>
-                    <Input disabled/>
-                  </Form.Item>
-                </Col>
-                <Col xs={24} lg={12}>
-                  <Form.Item label="Ngày chính thức nghỉ việc" name={"officialResignationDate"}>
-                    <DatePicker  placeholder="Ngày chính thức nghỉ việc" disabled={!isExpiredLaborContractDate } />
-                  </Form.Item>
-                </Col>
-              </Row>
-              <Row gutter={16}>
-                <Col xs={24} lg={12}>
-                  <Form.Item label="Phòng ban/ Ngành hàng" name={"departmentName"}>
-                    <Input disabled/>
-                  </Form.Item>
-                </Col>
-                <Col xs={24} lg={12}>
-                  <Form.Item label="Số ngày phép dư tính đến ngày nghỉ việc: *" name={"unusedLeaveDate"}>
-                    <InputNumber min={0} max={10}/>
-                  </Form.Item>
-                </Col>
-              </Row>
-              <Row gutter={16}>
-                <Col xs={24} lg={12}>
-                  <Form.Item label="Bộ phận/ Nhóm" name={"divisionName"}>
-                    <Input disabled />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} lg={12}>
-                  <Form.Item
-                    label="Số bảo hiểm" name={"shuibookCode"}>
-                    <Radio.Group>
-                      <Radio value={0}>Nhân viên giữ</Radio>
-                      <Radio value={1}>Công ty giữ</Radio>
-                      <Radio value={2}>Chưa tham gia bảo hiểm</Radio>
-                    </Radio.Group>
-                  </Form.Item>
-                </Col>
-              </Row>
-              <Row gutter={16}>
-                <Col xs={24} lg={12}>
-                  <Form.Item label="Nơi làm việc" name={"workLocationName"}>
-                    <Input disabled />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} lg={12}>
-                  <Form.Item label="Lý do nghỉ việc" name={"reasonForActionCode"}>
-                    <Select allowClear>
-                      {reasonList.map((item) => {
-                        return (
-                          <Select.Option value={item.code}>{item.name}</Select.Option>
-                        );
-                      })}
-                    </Select>
-                  </Form.Item>
-                </Col>
-              </Row>
-              <Row gutter={16}>
-                <Col xs={24} lg={12}></Col>
-                <Col xs={24} lg={12}>
-                  <Form.Item name={"isAgree"}
-                    label=" "
-                    wrapperCol={{ offset: 0 }} // Đẩy trường nhập liệu về bên trái
-                    valuePropName="checked">
-                    <Checkbox>
-                      Tôi đồng ý bồi thường tiền lương của những ngày không báo trước
-                      <br />
-                      I agree to compensate for un - notice days as required by law
-                    </Checkbox >
-                  </Form.Item>
-                </Col>
-              </Row>
-              {/*<Form.Item label="Mã SapCode" name={"description"}>
-                <Input />
-              </Form.Item>
-              <Form.Item label="Mô tả" name={"description"}>
-                <Input.TextArea />
-              </Form.Item>
-              <Form.Item label="Tên phòng ban" name={"unitName"} hidden>
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label="Phòng ban"
-                name={"idUnit"}
-                rules={[
-                  {
-                    required: true,
-                    message: "Vui lòng chọn phòng ban"
-                  }
-                ]}
-              >
-                <Select
-                  onChange={(_, option: any) => {
-                    formRef.setFieldsValue({
-                      unitName: option?.label
-                    });
-                  }}
-                  loading={LoadingListUnit}
-                  showSearch
-                  options={ListUnit?.listPayload?.map((item) => ({
-                    label: item.unitName,
-                    value: item.id
-                  }))}
-                  optionFilterProp={"label"}
-                />
-              </Form.Item>
-              <Form.Item label="Tên vị trí" name={"positionName"} hidden>
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label="Vị trí"
-                name={"idPosition"}
-                rules={[
-                  {
-                    required: true,
-                    message: "Vui lòng chọn vị trí"
-                  }
-                ]}
-              >
-                <Select
-                  onChange={(_, option: any) => {
-                    formRef.setFieldsValue({
-                      positionName: option?.label
-                    });
-                  }}
-                  loading={LoadingListCategoryPosition}
-                  showSearch
-                  options={ListCategoryPosition?.listPayload?.map((item) => ({
-                    label: item.positionName,
-                    value: item.id
-                  }))}
-                  optionFilterProp={"label"}
-                />
-              </Form.Item>
-              <Form.Item
-                label="Nhân viên"
-                name={"idEmployee"}
-                rules={[
-                  {
-                    required: true,
-                    message: "Vui lòng chọn nhân viên"
-                  }
-                ]}
-              >
-                <Select
-                  loading={LoadingListEmployee}
-                  showSearch
-                  options={ListEmployee?.listPayload?.map((item) => ({
-                    label: item.name + " - " + item.code,
-                    value: item.id
-                  }))}
-                  optionFilterProp={"label"}
-                />
-              </Form.Item>
-              <Form.Item label="File đính kèm" name={"Files"} getValueFromEvent={normFile} valuePropName="fileList">
-                <CustomUploadFileDrag multiple={false} maxCount={1} />
-              </Form.Item>*/}
-              <Form.Item>
-                <Space
-                  style={{
-                    width: "100%",
-                    justifyContent: "flex-end"
-                  }}
                 >
-                  {/*<Button
-                    type="default"
-                    htmlType="reset"
-                    loading={LoadingInsertInternRequest || LoadingUpdateInternRequest}
-                    icon={<RetweetOutlined />}
+                  <Select
+                    onChange={(_, option: any) => {
+                      formRef.setFieldsValue({
+                        unitName: option?.label
+                      });
+                    }}
+                    loading={LoadingListUnit}
+                    showSearch
+                    options={ListUnit?.listPayload?.map((item) => ({
+                      label: item.unitName,
+                      value: item.id
+                    }))}
+                    optionFilterProp={"label"}
+                  />
+                </Form.Item>
+                <Form.Item label="Tên vị trí" name={"positionName"} hidden>
+                  <Input />
+                </Form.Item>
+                <Form.Item
+                  label="Vị trí"
+                  name={"idPosition"}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Vui lòng chọn vị trí"
+                    }
+                  ]}
+                >
+                  <Select
+                    onChange={(_, option: any) => {
+                      formRef.setFieldsValue({
+                        positionName: option?.label
+                      });
+                    }}
+                    loading={LoadingListCategoryPosition}
+                    showSearch
+                    options={ListCategoryPosition?.listPayload?.map((item) => ({
+                      label: item.positionName,
+                      value: item.id
+                    }))}
+                    optionFilterProp={"label"}
+                  />
+                </Form.Item>
+                <Form.Item
+                  label="Nhân viên"
+                  name={"idEmployee"}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Vui lòng chọn nhân viên"
+                    }
+                  ]}
+                >
+                  <Select
+                    loading={LoadingListEmployee}
+                    showSearch
+                    options={ListEmployee?.listPayload?.map((item) => ({
+                      label: item.name + " - " + item.code,
+                      value: item.id
+                    }))}
+                    optionFilterProp={"label"}
+                  />
+                </Form.Item>
+                <Form.Item label="File đính kèm" name={"Files"} getValueFromEvent={normFile} valuePropName="fileList">
+                  <CustomUploadFileDrag multiple={false} maxCount={1} />
+                </Form.Item>*/}
+                <Form.Item>
+                  <Space
+                    style={{
+                      width: "100%",
+                      justifyContent: "flex-end"
+                    }}
                   >
-                    Xóa
-                  </Button>*/}
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    loading={LoadingCreateResignation || LoadingUpdateResignation}
-                    icon={<CheckCircleOutlined />}
-                  >
-                    Lưu
-                  </Button>
-                </Space>
-              </Form.Item>
-            </Form>
-          </Col>
-        </Row>
-      </Spin>
-    </div>
+                    {/*<Button
+                      type="default"
+                      htmlType="reset"
+                      loading={LoadingInsertInternRequest || LoadingUpdateInternRequest}
+                      icon={<RetweetOutlined />}
+                    >
+                      Xóa
+                    </Button>*/}
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      loading={LoadingCreateResignation || LoadingUpdateResignation}
+                      icon={<CheckCircleOutlined />}
+                    >
+                      Lưu
+                    </Button>
+                  </Space>
+                </Form.Item>
+              </Form>
+            </Col>
+          </Row>
+        </Spin>
+      </div>
+    </>
   );
 }
 

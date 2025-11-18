@@ -13,7 +13,18 @@ interface IProps {
 
 export const Main: React.FC<IProps> = ({ children }) => {
   const breakPoint = useBreakPoint();
-  const [isOpenSideBar, setIsOpenSideBar] = useState(false);
+
+  // Khởi tạo trạng thái từ localStorage, mặc định là false nếu chưa có
+  const [isOpenSideBar, setIsOpenSideBar] = useState(() => {
+    const saved = localStorage.getItem("sidebar-collapsed");
+    return saved === null ? false : saved === "true";
+  });
+
+  // Khi trạng thái thay đổi, lưu vào localStorage
+  React.useEffect(() => {
+    localStorage.setItem("sidebar-collapsed", isOpenSideBar.toString());
+  }, [isOpenSideBar]);
+
   const setting = JSON.parse(localStorage.getItem("setting")!);
   const { styleSideNav, BgImage, BgImageApplyAll } = setting;
   return (

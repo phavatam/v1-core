@@ -1,9 +1,16 @@
 import WithErrorBoundaryCustom from "@units/errorBounDary/WithErrorBoundaryCustom";
-import { Card, Col, Row, Divider, Button, Flex } from "antd";
+import { Card, Col, Row, Divider, Button, Flex, Badge, Space } from "antd";
 import { NewAndUpdateResignationRequest } from "@admin/features/C&B/resignation-application";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetUserQuery } from "@API/services/UserApis.service";
-import { UserOutlined, SmileOutlined, DoubleRightOutlined, MoreOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  SmileOutlined,
+  DoubleRightOutlined,
+  MoreOutlined,
+  CalendarOutlined,
+  FileTextOutlined
+} from "@ant-design/icons";
 import { useState } from "react";
 
 function _CreateResignationRequest() {
@@ -13,6 +20,8 @@ function _CreateResignationRequest() {
   const { id } = useParams();
   console.log("1Id-_CreateResignationRequest: " + id);
   const title = `Tạo phiếu nghỉ việc |` + `${user?.data.fullName}`;
+  const currentTime = new Date().toLocaleString();
+  const referenceNumber = "RES-000002470-2025";
   return (
     <div className="CreateInternRequest">
       {/*<Flex style={{ position: "sticky" }} align="flex-end" justify="flex-end">
@@ -27,12 +36,18 @@ function _CreateResignationRequest() {
               {/* Cột 1: Thông tin người dùng (Lớn) */}
               <Col flex="auto">
                 <Flex align="center">
-                  {/* Avatar */}
                   <span style={{ marginRight: 12 }}>
+                    <FileTextOutlined style={{ fontSize: "24px" }} />
+                  </span>
+                  <p style={{ margin: 0 }}>{referenceNumber}</p>
+                  <span style={{ marginRight: 12, marginLeft: 70 }}>
                     <UserOutlined style={{ fontSize: "24px" }} />
                   </span>
-                  {/* Tiêu đề/Tên người dùng */}
-                  <h4 style={{ margin: 0 }}>{user?.data.fullName}</h4>
+                  <p style={{ margin: 0 }}>{user?.data.fullName}</p>
+                  <span style={{ marginRight: 12, marginLeft: 70 }}>
+                    <CalendarOutlined style={{ fontSize: "24px" }} />
+                  </span>
+                  <p style={{ margin: 0 }}>{currentTime}</p>
                 </Flex>
               </Col>
 
@@ -71,6 +86,7 @@ function _CreateResignationRequest() {
             </Row>
             <Divider />
             <NewAndUpdateResignationRequest id={id} AfterSave={() => navigation("/admin/resignation-application")} />
+            <Divider />
           </Card>
         </Col>
       </Row>

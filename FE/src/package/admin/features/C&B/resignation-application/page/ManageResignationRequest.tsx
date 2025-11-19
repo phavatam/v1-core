@@ -2,7 +2,21 @@
 //@ts-nocheck
 import WithErrorBoundaryCustom from "@units/errorBounDary/WithErrorBoundaryCustom";
 import { ColumnsType, FilterValue } from "antd/lib/table/interface";
-import { Button, Card, Col, Divider, Form, Row, Select, Space, TableProps, Tooltip, Typography } from "antd";
+import {
+  Button,
+  Card,
+  Col,
+  Divider,
+  Form,
+  Row,
+  Select,
+  Space,
+  TableProps,
+  Tooltip,
+  Typography,
+  Input,
+  DatePicker
+} from "antd";
 import { InternRequestDTO } from "@models/internRequestDTO";
 import dayjs from "dayjs";
 import { HandleError } from "@admin/components";
@@ -11,7 +25,7 @@ import { GetFIleEmployee, useGetListEmployeeQuery } from "@API/services/Employee
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useGetListUserQuery } from "@API/services/UserApis.service";
 import { avatar } from "@admin/asset/icon";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ModalContent } from "@admin/components";
 import { useLazyFilterListInternRequestQuery } from "@API/services/InternRequestApis.service";
 import { useLazyFilterListResignationRequestQuery } from "@API/services/C&B/ResignationApplication.service";
@@ -26,11 +40,17 @@ function _ManageResignationRequest() {
   // const [FilterInternRequest, { data: ListOvertime, isLoading: LoadingListOvertime }] =
   //   useLazyFilterListInternRequestQuery();
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [page, setPage] = useState(1);
   const [id, setId] = useState<number | null>(null);
 
-  const [FilterInternRequest, { data: ListResignation, isLoading: LoadingListResignation }] =
+  const [triggerListResignation, { data: ListResignation, isLoading: LoadingListResignation }] =
     useLazyFilterListResignationRequestQuery();
-  console.log("Danh sách: " + ListResignation);
+
+  useEffect(() => {
+    console.log("Chạy vào Effect");
+    triggerListResignation({ pageNumber: 1, pageSize: 10 });
+    console.log("Danh sách: " + ListResignation);
+  }, [page]);
   const { data: ListEmployee, isLoading: LoadingListEmployee } = useGetListUserQuery({
     pageNumber: 1,
     pageSize: 100
@@ -58,6 +78,17 @@ function _ManageResignationRequest() {
     }
   };
 
+  const handlePage = (page) => {
+    //setPage(page);
+    if (page == 1) {
+      setPage(page);
+      console.log("GetPage =", page);
+    } else {
+      setPage(page);
+      console.log("GetPage =", page);
+    }
+  };
+
   const handleClick = function (id) {
     console.log(id);
     setIsOpenModal(false);
@@ -70,7 +101,72 @@ function _ManageResignationRequest() {
   };
   const columns: ColumnsType<ResignationDTO> = [
     {
-      title: "Nhân viên",
+      title: "Trạng thái",
+      dataIndex: "userId",
+      fixed: "left",
+      key: "userId",
+      render: (text) => {
+        const employee = ListEmployee?.data?.items?.find((item) => item.id === text);
+        return (
+          <Space size={3}>
+            {/*<LazyLoadImage
+              alt={`avatar-${employee?.fullName}`}
+              effect="blur"
+              width={24}
+              height={24}
+              style={{ objectFit: "cover", borderRadius: "50%" }}
+              placeholderSrc={GetFIleEmployee(employee?.id + ".jpg")}
+              src={employee?.avatar ? GetFIleEmployee(employee?.id + ".jpg") : avatar}
+            />{" "}*/}
+            {employee?.loginName}
+          </Space>
+        );
+      }
+    },
+    {
+      title: "Số phiếu",
+      dataIndex: "id",
+      key: "id",
+      fixed: "left",
+      render: (text, data) => {
+        return (
+          <a
+            href={`/admin/resignation-application/${data.id}`}
+            // onClick={() => {
+            //   setIsOpenModal(true);
+            //   setId(data.id);
+            // }}
+          >
+            {/*<NewAndUpdateResignationRequest id={{ text }} />*/}
+            {data.referenceNumber}
+          </a>
+        );
+      }
+    },
+    {
+      title: "Mã SAP",
+      dataIndex: "userId",
+      key: "userId",
+      render: (text) => {
+        const employee = ListEmployee?.data?.items?.find((item) => item.id === text);
+        return (
+          <Space size={3}>
+            {/*<LazyLoadImage
+              alt={`avatar-${employee?.fullName}`}
+              effect="blur"
+              width={24}
+              height={24}
+              style={{ objectFit: "cover", borderRadius: "50%" }}
+              placeholderSrc={GetFIleEmployee(employee?.id + ".jpg")}
+              src={employee?.avatar ? GetFIleEmployee(employee?.id + ".jpg") : avatar}
+            />{" "}*/}
+            {employee?.loginName}
+          </Space>
+        );
+      }
+    },
+    {
+      title: "Họ & Tên",
       dataIndex: "userId",
       key: "userId",
       render: (text) => {
@@ -94,29 +190,7 @@ function _ManageResignationRequest() {
       }
     },
     {
-      title: "Login Name",
-      dataIndex: "userId",
-      key: "userId",
-      render: (text) => {
-        const employee = ListEmployee?.data?.items?.find((item) => item.id === text);
-        return (
-          <Space size={3}>
-            {/*<LazyLoadImage
-              alt={`avatar-${employee?.fullName}`}
-              effect="blur"
-              width={24}
-              height={24}
-              style={{ objectFit: "cover", borderRadius: "50%" }}
-              placeholderSrc={GetFIleEmployee(employee?.id + ".jpg")}
-              src={employee?.avatar ? GetFIleEmployee(employee?.id + ".jpg") : avatar}
-            />{" "}*/}
-            {employee?.loginName}
-          </Space>
-        );
-      }
-    },
-    {
-      title: "Reference Number",
+      title: "Phòng ban/ ngành hàng",
       dataIndex: "id",
       key: "id",
       render: (text, data) => {
@@ -135,7 +209,26 @@ function _ManageResignationRequest() {
       }
     },
     {
-      title: "Ngày chính thức nghỉ việc",
+      title: "Bộ phận/ nhóm",
+      dataIndex: "id",
+      key: "id",
+      render: (text, data) => {
+        return (
+          <a
+            href={`/admin/resignation-application/${data.id}`}
+            // onClick={() => {
+            //   setIsOpenModal(true);
+            //   setId(data.id);
+            // }}
+          >
+            {/*<NewAndUpdateResignationRequest id={{ text }} />*/}
+            {data.referenceNumber}
+          </a>
+        );
+      }
+    },
+    {
+      title: "Nơi làm việc",
       dataIndex: "officialResignationDate",
       key: "officialResignationDate",
       // filters: ListResignation?.data.items?.map((item) => ({
@@ -147,21 +240,6 @@ function _ManageResignationRequest() {
       // onFilter: (value: any, record) => record.officialResignationDate.toString().startsWith(value),
       render: (text) => dayjs(text).format("DD-MM-YYYY")
     },
-    {
-      title: "Lý do nghỉ việc",
-      dataIndex: "reasonForActionCode",
-      key: "reasonForActionCode"
-    },
-    {
-      title: "Loại hợp đồng",
-      dataIndex: "reasonForActionCode",
-      key: "reasonForActionCode"
-    },
-    // {
-    //   title: "Ghi chú",
-    //   dataIndex: "description",
-    //   key: "description"
-    // }
     {
       title: "Ngày tạo",
       dataIndex: "createdDate",
@@ -199,6 +277,18 @@ function _ManageResignationRequest() {
     },
     size: "small"
   };
+
+  const numberOfRequest = 17087;
+  const dataSourceSearch = [
+    {
+      code: "1",
+      value: "My Request"
+    },
+    {
+      code: "2",
+      value: "All Request"
+    }
+  ];
   //#endregion
   return (
     <>
@@ -213,61 +303,81 @@ function _ManageResignationRequest() {
         </ModalContent>
         <Row gutter={[24, 0]}>
           <Col xs={24} sm={24} md={24} lg={24} xl={24} className="mb-24">
-            <Typography.Title level={2}> Danh sách nghỉ việc </Typography.Title>
-            <Divider />
+            <Typography.Title style={{ marginBottom: 0 }} level={4}>
+              All Resignation Request
+            </Typography.Title>
+            <p style={{ opacity: "40%" }}>Number of request: {numberOfRequest}</p>
+            <br />
             <Card bordered={false} className="criclebox">
+              <Form layout="horizontal" onFinish={handleFilter}>
+                {/*<Row gutter={16}>
+                  <Col xs={24} lg={12}>
+                    <Form.Item label="SAP Code" name={"sapCode"}>
+                      <Input disabled />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} lg={12}>
+                    <Form.Item label="SAP Code" name={"sapCode"}>
+                      <Input disabled />
+                    </Form.Item>
+                  </Col>
+                </Row>*/}
+                <Row gutter={[16, 16]}>
+                  <Col xs={12} sm={6} md={4} lg={3}>
+                    <Form.Item>
+                      <Select
+                        onChange={(selectedValue) => handlePage(selectedValue)}
+                        placeholder="Chọn loại tìm kiếm"
+                        defaultValue={"1"}
+                        options={dataSourceSearch.map((item) => ({
+                          label: item.value,
+                          value: item.code
+                        }))}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} sm={12} md={8} lg={6}>
+                    <Form.Item></Form.Item>
+                  </Col>
+                </Row>
+                <Space>
+                  {/*<Form.Item name="idUnit" label="Phòng ban">
+                    <Select
+                      allowClear
+                      showSearch
+                      options={ListUnit?.listPayload?.map((user) => {
+                        return { label: user.unitName + " - " + user.unitCode, value: user.id };
+                      })}
+                      loading={LoadingListUnit}
+                      optionFilterProp={"label"}
+                      placeholder={"Chọn phòng ban"}
+                    />
+                  </Form.Item>*/}
+                  {/*<Form.Item name="idPosition" label="Vị trí">
+                    <Select
+                      allowClear
+                      showSearch
+                      options={ListCategoryPosition?.listPayload?.map((user) => {
+                        return { label: user.positionName, value: user.id };
+                      })}
+                      loading={LoadingListCategoryPosition}
+                      optionFilterProp={"label"}
+                      placeholder={"Chọn vị trí"}
+                    />
+                  </Form.Item>*/}
+                  {/*<Form.Item label={"Tìm kiếm"}>
+                    <Button type="primary" htmlType="submit" icon={<SearchOutlined />}>
+                      Tìm kiếm
+                    </Button>
+                  </Form.Item>*/}
+                </Space>
+              </Form>
               <Space
                 style={{
                   marginBottom: 16
                 }}
                 wrap
-              >
-                <Form layout="vertical" onFinish={handleFilter}>
-                  <Space>
-                    {/*<Form.Item name="idEmployee" label="Nhân viên">
-                      <Select
-                        allowClear
-                        showSearch
-                        options={ListEmployee?.listPayload?.map((user) => {
-                          return { label: user.name + " - " + user.email, value: user.id };
-                        })}
-                        loading={LoadingListEmployee}
-                        optionFilterProp={"label"}
-                        placeholder={"Chọn nhân viên"}
-                      />
-                    </Form.Item>
-                    <Form.Item name="idUnit" label="Phòng ban">
-                      <Select
-                        allowClear
-                        showSearch
-                        options={ListUnit?.listPayload?.map((user) => {
-                          return { label: user.unitName + " - " + user.unitCode, value: user.id };
-                        })}
-                        loading={LoadingListUnit}
-                        optionFilterProp={"label"}
-                        placeholder={"Chọn phòng ban"}
-                      />
-                    </Form.Item>
-                    <Form.Item name="idPosition" label="Vị trí">
-                      <Select
-                        allowClear
-                        showSearch
-                        options={ListCategoryPosition?.listPayload?.map((user) => {
-                          return { label: user.positionName, value: user.id };
-                        })}
-                        loading={LoadingListCategoryPosition}
-                        optionFilterProp={"label"}
-                        placeholder={"Chọn vị trí"}
-                      />
-                    </Form.Item>*/}
-                    <Form.Item label={"Tìm kiếm"}>
-                      <Button type="primary" htmlType="submit" icon={<SearchOutlined />}>
-                        Tìm kiếm
-                      </Button>
-                    </Form.Item>
-                  </Space>
-                </Form>
-              </Space>
+              ></Space>
               <DragAndDropTable {...propsTable} />
             </Card>
           </Col>

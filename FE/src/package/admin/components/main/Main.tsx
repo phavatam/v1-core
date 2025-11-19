@@ -14,10 +14,16 @@ interface IProps {
 export const Main: React.FC<IProps> = ({ children }) => {
   const breakPoint = useBreakPoint();
 
-  // Khởi tạo trạng thái từ localStorage, mặc định là false nếu chưa có
+  // Nav cũ
+  // const [isOpenSideBar, setIsOpenSideBar] = useState(() => {
+  //   const saved = localStorage.getItem("sidebar-collapsed");
+  //   return saved === null ? false : saved === "true";
+  // });
+
+  // Khởi tạo trạng thái từ localStorage, mặc định là true (hiện) nếu chưa có
   const [isOpenSideBar, setIsOpenSideBar] = useState(() => {
     const saved = localStorage.getItem("sidebar-collapsed");
-    return saved === null ? false : saved === "true";
+    return saved === null ? true : saved === "true";
   });
 
   // Khi trạng thái thay đổi, lưu vào localStorage
@@ -35,7 +41,8 @@ export const Main: React.FC<IProps> = ({ children }) => {
         background: "transparent"
       }}
     >
-      <Sider
+      {/* Nav cũ */}
+      {/*<Sider
         width={isOpenSideBar ? 116 : 240}
         theme="light"
         breakpoint="lg"
@@ -48,8 +55,25 @@ export const Main: React.FC<IProps> = ({ children }) => {
         }}
       >
         <SideNav isOpenSideBar={isOpenSideBar} />
-      </Sider>
-      <Layout style={{ marginLeft: breakPoint.isDesktop ? (isOpenSideBar ? 120 : 235) : 0 }}>
+      </Sider>*/}
+      {isOpenSideBar && (
+        <Sider
+          width={240}
+          theme="light"
+          breakpoint="lg"
+          collapsedWidth="0"
+          className={`sider-primary ant-layout-sider-primary  ${styleSideNav === "#8a6b6b" ? "active-route" : ""}`}
+          style={{
+            background: setting.BgColor || styleSideNav,
+            margin: "20px 0 0 10px",
+            borderRadius: "12px"
+          }}
+        >
+          <SideNav isOpenSideBar={!isOpenSideBar} />
+        </Sider>
+      )}
+      {/*<Layout style={{ marginLeft: breakPoint.isDesktop ? (isOpenSideBar ? 120 : 235) : 0 }}>*/}
+      <Layout style={{ marginLeft: breakPoint.isDesktop && isOpenSideBar ? 240 : 0 }}>
         {
           <AntHeader style={{ background: setting.BgColor || undefined }}>
             <Header isOpenSideBar={isOpenSideBar} setIsOpenSideBar={setIsOpenSideBar} />

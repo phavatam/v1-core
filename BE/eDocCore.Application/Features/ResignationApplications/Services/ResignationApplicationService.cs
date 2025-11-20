@@ -34,7 +34,7 @@ namespace eDocCore.Application.Features.ResignationApplications.Services
         {
             ResultDTO<ArrayResultDTO> resultDTO = new ResultDTO<ArrayResultDTO>() { };
             var list = await _ResignationApplicationRepository.GetPagedProjectedAsync<ResignationApplicationDto>(pageNumber, pageSize);
-
+            
             var arrays = new ArrayResultDTO()
             {
                 PageNumber = pageNumber,
@@ -58,8 +58,25 @@ namespace eDocCore.Application.Features.ResignationApplications.Services
             try
             {
                 var ResignationApplication = _mapper.Map<ResignationApplication>(request);
-                ResignationApplication = await _ResignationApplicationRepository.AddAsync(ResignationApplication);
 
+                ResignationApplication.UserId = _currentUser.UserId != null ? Guid.Parse(_currentUser.UserId) : Guid.Empty;
+
+                var refixRef = "RES-00000";
+                var endRef = DateTimeOffset.UtcNow.ToString("yyyy");
+                Random rd = new Random();
+                int randNum = rd.Next(1000, 9999);
+                ResignationApplication.ReferenceNumber = $"{refixRef}{randNum}-{endRef}";
+
+                List<string> statusList = ["Waiting For General Manager (G6) Approval", "Cancelled", "Waiting For Manager (G7) Approval", "Draft", "Waiting For HR Review"];
+                int randomStatus = rd.Next(0, statusList.Count);
+                ResignationApplication.Status = statusList[randomStatus];
+
+                ResignationApplication.PositionName = "TECH";
+                ResignationApplication.DepartmentName = "TECH-APPLICATION,INTEGRATION & MARKETPLACE";
+                ResignationApplication.DivisionName = "TECH INTEGRATION";
+                ResignationApplication.WorkLocationName = "TP Hồ Chí Minh";
+
+                ResignationApplication = await _ResignationApplicationRepository.AddAsync(ResignationApplication);
                 await _unitOfWork.CommitAsync();
                 return ResultDTO< ResignationApplicationDto >.Success();
             }

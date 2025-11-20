@@ -36,10 +36,10 @@ import { CustomUploadFileDrag, HandleError, normFile } from "@admin/components";
 import { useEffect, useState } from "react";
 import { useGetListEmployeeQuery } from "@API/services/Employee.service";
 import { useGetUserQuery } from "@API/services/UserApis.service";
-import moment from "moment";
 import dayjs from "dayjs";
-import Paragraph from "antd/lib/typography/Paragraph";
+import localeData from "dayjs/plugin/localeData";
 import TextArea from "antd/lib/input/TextArea";
+import moment from "moment";
 
 interface Props {
   id?: string;
@@ -50,7 +50,7 @@ function _NewAndUpdateResignationRequest(props: Props) {
   const { data: currentUser } = useGetUserQuery({ fetch: false });
   const [isExpiredLaborContractDate, setIsExpiredLaborContractDate] = useState(false);
   const { id, AfterSave } = props;
-  const { data: resultData, isLoading: LoadingResultData, refetch } = useGetQuery({ id: id! }, { skip: !id });
+  const { data: resultData, isLoading: LoadingResultData } = useGetQuery({ id: id! }, { skip: !id });
 
   const reasonList = [
     { name: "Lương thấp", code: "1" },
@@ -79,21 +79,12 @@ function _NewAndUpdateResignationRequest(props: Props) {
       const data = {
         ...resultData.data,
         officialResignationDate: resultData.data.officialResignationDate
-          ? moment(resultData.data.officialResignationDate)
+          ? dayjs(resultData.data.officialResignationDate)
           : null,
-        startDate: resultData.data.officialResignationDate ? moment(resultData.data.officialResignationDate) : null,
+        startDate: resultData.data.officialResignationDate ? dayjs(resultData.data.officialResignationDate) : null,
         shuibookCode: typeof resultData.data.shuibookCode === "number" ? resultData.data.shuibookCode : undefined
       };
 
-      formRef.setFieldsValue({
-        sapCode: "123",
-        fullName: currentUser?.data?.fullName,
-        positionName: "Tech",
-        departmentName: "IT",
-        divisionName: "AEON",
-        workLocationName: "TP Hồ Chí Minh"
-      });
-      console.log(data);
       formRef.setFieldsValue(data);
       // if (resultData?.payload?.attachments) {
       //   formRef.setFieldsValue({
@@ -123,8 +114,8 @@ function _NewAndUpdateResignationRequest(props: Props) {
         if (key === "Files") return;
         let processedValue = value === undefined || value === null ? "" : value;
         // Nếu là ngày, format lại
-        if (key === "officialResignationDate" && processedValue) {
-          processedValue = dayjs(processedValue).isValid() ? dayjs(processedValue).format("YYYY-MM-DD HH:mm:ss") : "";
+        if ((key === "officialResignationDate" || key === "startDate") && processedValue) {
+          processedValue = moment(processedValue).isValid() ? moment(processedValue).format("DD/MM/YYYY") : "";
         }
 
         newDataResignationRequest.append(key, processedValue);
@@ -151,7 +142,7 @@ function _NewAndUpdateResignationRequest(props: Props) {
           }).unwrap();
       if (result.isSuccess) {
         AfterSave && AfterSave();
-        await refetch();
+        //await refetch();
         formRef.resetFields();
       }
     } catch (e: any) {
@@ -184,7 +175,8 @@ function _NewAndUpdateResignationRequest(props: Props) {
                     ]}
                       label="Ngày vào làm" name={"startDate"}>
                       <DatePicker
-                      format="DD/MM/YYYY" placeholder="Ngày vào làm" />
+                        placeholder="Ngày vào làm"
+                      />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -211,7 +203,11 @@ function _NewAndUpdateResignationRequest(props: Props) {
                   </Col>
                   <Col xs={24} lg={12}>
                     <Form.Item label="Ngày chính thức nghỉ việc" name={"officialResignationDate"}>
-                      <DatePicker  placeholder="Ngày chính thức nghỉ việc" disabled={!isExpiredLaborContractDate } />
+                      <DatePicker
+                        format="DD/MM/YYYY"
+                        placeholder="Ngày chính thức nghỉ việc"
+                        disabled={!isExpiredLaborContractDate}
+                      />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -322,7 +318,7 @@ function _NewAndUpdateResignationRequest(props: Props) {
                     </Form.Item>
                   </Col>
                   <Col xs={24} lg={12}>
-                    <Form.Item required name={"reasonForActionCode"}>
+                    <Form.Item valuePropName="checked" required name={"isNotifiedLastWorkingDate"}>
                       <Checkbox>
                         <p>
                           Được thông báo số ngày phép còn lại của nhân viên
@@ -341,7 +337,7 @@ function _NewAndUpdateResignationRequest(props: Props) {
                         <br/>
                         Reason of Suggestion for last working day
                       </>
-                    } name={"suggestionForLastWorkingDay"}>
+                    } name={"reasonForLastWorkingDay"}>
                       <TextArea disabled />
                     </Form.Item>
                   </Col>

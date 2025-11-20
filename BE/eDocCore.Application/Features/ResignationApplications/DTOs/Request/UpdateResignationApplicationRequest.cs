@@ -4,12 +4,8 @@ namespace eDocCore.Application.Features.ResignationApplications.DTOs.Request
 {
     public class UpdateResignationApplicationRequest
     {
-        public Guid Id { get; set; }
-
         [Required(ErrorMessage = "Field Id Is Required!")]
-        public Guid UserId { get; set; }
-
-        public string? ReferenceNumber { get; set; }
+        public Guid Id { get; set; }
 
         public bool IsExpiredLaborContractDate { get; set; }
 
@@ -26,5 +22,9 @@ namespace eDocCore.Application.Features.ResignationApplications.DTOs.Request
         public DateTimeOffset? SuggestionForLastWorkingDay { get; set; }
 
         public bool? IsAgree { get; set; }
+
+        public bool IsNotifiedLastWorkingDate { get; set; }
+
+        public string? ReasonForLastWorkingDay { get; set; }
     }
 }

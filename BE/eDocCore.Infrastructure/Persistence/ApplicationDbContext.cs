@@ -63,14 +63,22 @@ public partial class ApplicationDbContext : DbContext
         modelBuilder.Entity<ResignationApplication>(entity =>
         {
             entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.DepartmentName).HasMaxLength(100);
+            entity.Property(e => e.DivisionName).HasMaxLength(100);
+            entity.Property(e => e.PositionName).HasMaxLength(100);
             entity.Property(e => e.ReasonForActionCode)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.ReasonForLastWorkingDay).HasMaxLength(100);
             entity.Property(e => e.ReferenceNumber).HasMaxLength(100);
             entity.Property(e => e.RowVersion)
                 .IsRowVersion()
                 .IsConcurrencyToken();
             entity.Property(e => e.ShuibookCode).HasColumnName("SHUIBookCode");
+            entity.Property(e => e.Status)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.WorkLocationName).HasMaxLength(100);
         });
 
         modelBuilder.Entity<Role>(entity =>

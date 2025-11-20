@@ -3,7 +3,7 @@ namespace eDocCore.Application.Features.ResignationApplications.DTOs.Request
     public class CreateResignationApplicationRequest
     {
         // Add properties here
-        public Guid UserId { get; set; }
+
         public bool? IsExpiredLaborContractDate { get; set; }
 
         public DateTimeOffset? OfficialResignationDate { get; set; }
@@ -19,6 +19,18 @@ namespace eDocCore.Application.Features.ResignationApplications.DTOs.Request
         public DateTimeOffset? SuggestionForLastWorkingDay { get; set; }
 
         public bool? IsAgree { get; set; }
+
+        public string? PositionName { get; set; }
+
+        public string? DepartmentName { get; set; }
+
+        public string? DivisionName { get; set; }
+
+        public string? WorkLocationName { get; set; }
+
+        public bool IsNotifiedLastWorkingDate { get; set; }
+
+        public string? ReasonForLastWorkingDay { get; set; }
 
         public DateTimeOffset Created { get; set; }
 

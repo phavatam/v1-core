@@ -31,17 +31,20 @@ import { useLazyFilterListInternRequestQuery } from "@API/services/InternRequest
 import { useLazyFilterListResignationRequestQuery } from "@API/services/C&B/ResignationApplication.service";
 import { useGetListUnitAvailableQuery } from "@API/services/UnitApis.service";
 import { useGetListCategoryPositionAvailableQuery } from "@API/services/CategoryPositionApis.service";
-import { SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined, ExportOutlined } from "@ant-design/icons";
 import { ResignationDTO } from "~/models/C&B/ResignationDTO";
 import { NewAndUpdateResignationRequest } from "../components/NewAndUpdateResignationRequest";
 import { setEnvironmentData } from "node:worker_threads";
+import { useNavigate } from "react-router-dom";
 
 function _ManageResignationRequest() {
   // const [FilterInternRequest, { data: ListOvertime, isLoading: LoadingListOvertime }] =
   //   useLazyFilterListInternRequestQuery();
+  const navigate = useNavigate();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [page, setPage] = useState(1);
   const [id, setId] = useState<number | null>(null);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const [triggerListResignation, { data: ListResignation, isLoading: LoadingListResignation }] =
     useLazyFilterListResignationRequestQuery();
@@ -94,6 +97,12 @@ function _ManageResignationRequest() {
     setIsOpenModal(false);
   };
 
+  const handleSelectItem = function (item) {
+    //setSelectedItem(item);
+    //setIsOpenModal(true);
+    return navigate(`/admin/resignation-application/${item.id}`);
+  };
+
   //#region Table config
   const [filteredInfo, setFilteredInfo] = useState<Record<string, FilterValue | null>>({});
   const handleChange: TableProps<ResignationDTO>["onChange"] = (pagination, filters) => {
@@ -131,11 +140,8 @@ function _ManageResignationRequest() {
       render: (text, data) => {
         return (
           <a
-            href={`/admin/resignation-application/${data.id}`}
-            // onClick={() => {
-            //   setIsOpenModal(true);
-            //   setId(data.id);
-            // }}
+            //href={`/admin/resignation-application/${data.id}`}
+            onClick={() => handleSelectItem(data)}
           >
             {/*<NewAndUpdateResignationRequest id={{ text }} />*/}
             {data.referenceNumber}
@@ -299,7 +305,7 @@ function _ManageResignationRequest() {
           title={"Thêm mới yêu cầu thử việc"}
           width={"100%"}
         >
-          <NewAndUpdateResignationRequest id={id} AfterSave={() => handleClick()} />
+          <NewAndUpdateResignationRequest item={selectedItem} id={id} AfterSave={() => handleClick()} />
         </ModalContent>
         <Row gutter={[24, 0]}>
           <Col xs={24} sm={24} md={24} lg={24} xl={24} className="mb-24">
@@ -310,19 +316,8 @@ function _ManageResignationRequest() {
             <br />
             <Card bordered={false} className="criclebox">
               <Form layout="horizontal" onFinish={handleFilter}>
-                {/*<Row gutter={16}>
-                  <Col xs={24} lg={12}>
-                    <Form.Item label="SAP Code" name={"sapCode"}>
-                      <Input disabled />
-                    </Form.Item>
-                  </Col>
-                  <Col xs={24} lg={12}>
-                    <Form.Item label="SAP Code" name={"sapCode"}>
-                      <Input disabled />
-                    </Form.Item>
-                  </Col>
-                </Row>*/}
                 <Row gutter={[16, 16]}>
+                  {/* Select */}
                   <Col xs={12} sm={6} md={4} lg={3}>
                     <Form.Item>
                       <Select
@@ -336,8 +331,13 @@ function _ManageResignationRequest() {
                       />
                     </Form.Item>
                   </Col>
-                  <Col xs={24} sm={12} md={8} lg={6}>
-                    <Form.Item></Form.Item>
+                  {/* Button */}
+                  <Col xs={12} sm={6} md={4} lg={3}>
+                    <Form.Item>
+                      <Button style={{ height: 30 }} type="primary" iconPosition="start" icon={<ExportOutlined />}>
+                        Export
+                      </Button>
+                    </Form.Item>
                   </Col>
                 </Row>
                 <Space>

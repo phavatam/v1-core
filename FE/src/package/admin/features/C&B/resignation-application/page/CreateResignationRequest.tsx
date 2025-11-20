@@ -17,11 +17,11 @@ function _CreateResignationRequest() {
   const [loadings, setLoadings] = useState<boolean[]>([]);
   const { data: user } = useGetUserQuery({ fetch: false });
   const navigation = useNavigate();
-  const { id } = useParams();
+  const { id, item } = useParams();
   console.log("1Id-_CreateResignationRequest: " + id);
-  const title = `Tạo phiếu nghỉ việc |` + `${user?.data.fullName}`;
   const currentTime = new Date().toLocaleString();
   const referenceNumber = "RES-000002470-2025";
+  console.log("checkdata", item);
   return (
     <div className="CreateInternRequest">
       {/*<Flex style={{ position: "sticky" }} align="flex-end" justify="flex-end">

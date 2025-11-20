@@ -24,6 +24,18 @@ namespace eDocCore.Application.Features.ResignationApplications.DTOs
 
         public bool? IsAgree { get; set; }
 
+        public string? PositionName { get; set; }
+
+        public string? DepartmentName { get; set; }
+
+        public string? DivisionName { get; set; }
+
+        public string? WorkLocationName { get; set; }
+
+        public bool IsNotifiedLastWorkingDate { get; set; }
+
+        public string? ReasonForLastWorkingDay { get; set; }
+
         public DateTimeOffset Created { get; set; }
 
         public DateTimeOffset Modified { get; set; }

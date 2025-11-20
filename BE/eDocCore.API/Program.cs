@@ -67,6 +67,8 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+//builder.Services.AddAuthorization(); // ensure authorization services registered
+
 builder.Services.AddControllers();
 // FluentValidation auto-validation
 builder.Services.AddFluentValidationAutoValidation();

@@ -3,6 +3,15 @@ import Loading from "@units/loading/loading";
 import { App } from "antd";
 import { Admin } from "~/Routes";
 
+{
+  /* Thêm vào để chọn đc DatePicker ở toàn form*/
+}
+import localeData from "dayjs/plugin/localeData";
+import dayjs from "dayjs";
+import weekday from "dayjs/plugin/weekday";
+dayjs.extend(weekday);
+dayjs.extend(localeData);
+
 export default function AppRoot(): React.JSX.Element {
   const [isAppMounted, setAppMounted] = useState(false);
   useEffect(() => {

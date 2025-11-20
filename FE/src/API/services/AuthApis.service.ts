@@ -9,7 +9,7 @@ export const AuthApisService = createApi({
   endpoints: (builder) => ({
     Login: builder.mutation<CoreResponse<UserLoginResponse>, { user: Partial<UserLoginRequest> }>({
       query: ({ user }) => ({
-        url: `/auth/Login`,
+        url: `/auth/login`,
         method: "POST",
         data: user
       })

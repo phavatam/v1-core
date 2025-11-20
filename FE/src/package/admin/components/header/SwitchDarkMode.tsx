@@ -1,7 +1,10 @@
 import WithErrorBoundaryCustom from "@units/errorBounDary/WithErrorBoundaryCustom";
 import "./SwitchDarkMode.css";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function _SwitchDarkMode() {
+  const navigate = useNavigate();
+  const currentLocation = useLocation();
   return (
     <div className="SwitchDarkMode">
       <label className="plane-switch">
@@ -13,7 +16,9 @@ function _SwitchDarkMode() {
             const setting = JSON.parse(localStorage.getItem("setting") || "");
             setting.darkMode = checked;
             localStorage.setItem("setting", JSON.stringify(setting));
+            console.log("ê witch nè", currentLocation);
             window.location.reload();
+            //navigate(currentLocation.pathname);
           }}
         />
         <div>

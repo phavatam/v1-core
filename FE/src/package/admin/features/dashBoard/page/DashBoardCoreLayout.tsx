@@ -13,6 +13,7 @@ import {
   SketchCircleFilled,
   UnlockFilled
 } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 import { ColumnChart } from "@admin/features/dashBoard/components/ColumnChart";
 import {
   useGetAnalystHomeQuery,
@@ -24,6 +25,7 @@ import Icon from "@ant-design/icons/lib/components/AntdIcon";
 
 function _DashBoardCoreLayout() {
   const { Title } = Typography;
+  const navigate = useNavigate();
 
   const { data: dataAnalystHome, isLoading: LoadingAnalystHome } = useGetAnalystHomeQuery({
     idEvaluations: "LIST"
@@ -90,6 +92,10 @@ function _DashBoardCoreLayout() {
     }
   ];
 
+  const handleNavigate = (url: string) => {
+    navigate(url);
+  };
+
   return (
     <>
       <div className="layout-content">
@@ -105,7 +111,7 @@ function _DashBoardCoreLayout() {
                           <div className="icon-box">{item.icon}</div>
                         </Col>
                         <Col xs={18}>
-                          <a style={{ color: "black" }} href={item.url}>
+                          <a style={{ color: "black" }} onClick={() => handleNavigate(item.url)}>
                             <span>{item.title}</span>
                           </a>
                         </Col>

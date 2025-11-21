@@ -34,7 +34,7 @@ namespace eDocCore.Application.Common
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
-        public int TotalRecord { get; set; }
+        public int TotalItems { get; set; }
         public object Items { get; set; } = new object { };
     }
 }

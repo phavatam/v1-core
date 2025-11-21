@@ -39,7 +39,7 @@ namespace eDocCore.Application.Features.ResignationApplications.Services
             {
                 PageNumber = pageNumber,
                 PageSize = pageSize,
-                TotalRecord = list.TotalItems,
+                TotalItems = list.TotalItems,
                 Items = list.Items
             };
 
@@ -142,7 +142,7 @@ namespace eDocCore.Application.Features.ResignationApplications.Services
             {
                 PageNumber = args.Page,
                 PageSize = args.PageSize,
-                TotalRecord = list.TotalItems,
+                TotalItems = list.TotalItems,
                 Items = list.Items
             };
 

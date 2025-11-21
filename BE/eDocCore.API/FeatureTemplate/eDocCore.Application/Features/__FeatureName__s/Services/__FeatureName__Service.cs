@@ -39,7 +39,7 @@ namespace eDocCore.Application.Features.__FeatureName__s.Services
             {
                 PageNumber = pageNumber,
                 PageSize = pageSize,
-                TotalRecord = list.TotalItems,
+                TotalItems = list.TotalItems,
                 Items = list.Items
             };
 

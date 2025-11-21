@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Loading from "@units/loading/loading";
 import { App } from "antd";
-import { Admin } from "~/Routes";
+import { Home } from "~/Routes";
 
 {
   /* Thêm vào để chọn đc DatePicker ở toàn form*/
@@ -23,8 +23,6 @@ export default function AppRoot(): React.JSX.Element {
     }, Math.max(1000 - loadingTime, 0));
   }, []);
 
-  console.log("isAppMounted:", isAppMounted);
-
   if (!isAppMounted) {
     return (
       <div
@@ -44,7 +42,7 @@ export default function AppRoot(): React.JSX.Element {
 
   return (
     <App>
-      <Admin />
+      <Home />
     </App>
   );
 }

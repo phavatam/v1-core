@@ -3,3 +3,4 @@
 /SemanticSymbols.db
 /SemanticSymbols.db-shm
 /SemanticSymbols.db-wal
+*.db

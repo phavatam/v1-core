@@ -9,7 +9,6 @@ export function PrivateRoutes(): any {
   const navigate = useNavigate();
   const location = useLocation();
   const { data: user, isLoading } = useGetUserQuery({ fetch: false });
-  console.log(user);
   if (isLoading) return null;
 
   if (!getCookie("jwt")) return (window.location.href = globalVariable.pathNameLogin);

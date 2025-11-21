@@ -13,7 +13,7 @@ import "./styles/custom.css";
 import "./index.css";
 import dayjs from "dayjs";
 import { reportWebVitals } from "~/reportWebVitals";
-import AppRoot from "~/AppRoot";
+import AppRoot from "./app-root";
 
 // Set background color and image for body (full screen)
 const setting = JSON.parse(localStorage.getItem("setting") || "{}");

@@ -10,6 +10,10 @@ import { InformationCompany } from "~/globalVariable";
 import WithErrorBoundaryCustom from "@units/errorBounDary/WithErrorBoundaryCustom";
 import { logoTachNen } from "@admin/asset/logo";
 
+// #region
+const data = "";
+// #endregion
+
 const { Header, Footer, Content } = Layout;
 
 function _LoginAdminLayout() {

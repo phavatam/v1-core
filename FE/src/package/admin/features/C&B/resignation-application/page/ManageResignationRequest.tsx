@@ -284,7 +284,7 @@ function _ManageResignationRequest() {
     size: "small"
   };
 
-  const numberOfRequest = 17087;
+  const numberOfRequest = ListResignation?.data?.totalRecord;
   const dataSourceSearch = [
     {
       code: "1",

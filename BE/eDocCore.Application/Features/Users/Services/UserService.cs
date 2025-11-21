@@ -50,7 +50,7 @@ namespace eDocCore.Application.Features.Users.Services
             {
                 PageNumber = pageNumber,
                 PageSize = pageSize,
-                TotalRecord = users.TotalItems,
+                TotalItems = users.TotalItems,
                 Items = users.Items
             };
 

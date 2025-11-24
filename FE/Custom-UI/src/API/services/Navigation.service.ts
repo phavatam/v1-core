@@ -16,7 +16,7 @@ export const NavigationApisService = createApi({
         if (result && result.listPayload) {
           const { listPayload } = result;
           return [
-            ...listPayload.map(({ id }) => ({ type: "NavigationApisService" as const, id })),
+            ...listPayload.map(({ id: any }) => ({ type: "NavigationApisService" as const, id })),
             {
               type: "NavigationApisService" as const,
               id: "LIST"

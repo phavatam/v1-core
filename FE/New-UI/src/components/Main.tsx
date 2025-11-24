@@ -1,0 +1,119 @@
+import { Layout } from "antd";
+import React, { Suspense, useState } from "react";
+import { Routes } from "react-router-dom";
+import { useBreakPoint } from "../hooks/useBreakpoint";
+import { Footer, Header, SideNav } from "./";
+import { LoadingProgress } from "../utils/loading/LoadingProgress";
+
+const { Header: AntHeader, Content, Sider } = Layout;
+
+interface IProps {
+  children: React.ReactNode;
+}
+
+export const Main: React.FC<IProps> = ({ children }) => {
+  const breakPoint = useBreakPoint();
+
+  // Nav cũ
+  // const [isOpenSideBar, setIsOpenSideBar] = useState(() => {
+  //   const saved = localStorage.getItem("sidebar-collapsed");
+  //   return saved === null ? false : saved === "true";
+  // });
+
+  // Khởi tạo trạng thái từ localStorage, mặc định là true (hiện) nếu chưa có
+  const [isOpenSideBar, setIsOpenSideBar] = useState(() => {
+    const saved = localStorage.getItem("sidebar-collapsed");
+    return saved === null ? true : saved === "true";
+  });
+
+  // Khi trạng thái thay đổi, lưu vào localStorage
+  React.useEffect(() => {
+    localStorage.setItem("sidebar-collapsed", isOpenSideBar.toString());
+  }, [isOpenSideBar]);
+
+  const setting = JSON.parse(localStorage.getItem("setting")!);
+  const { styleSideNav, BgImage, BgImageApplyAll } = setting;
+  return (
+    <Layout
+      className={`layout-dashboard`}
+      style={{
+        minHeight: "100vh",
+        background: "transparent"
+      }}
+    >
+      {/* Nav cũ */}
+      {/*<Sider
+        width={isOpenSideBar ? 116 : 240}
+        theme="light"
+        breakpoint="lg"
+        collapsedWidth="0"
+        className={`sider-primary ant-layout-sider-primary  ${styleSideNav === "#8a6b6b" ? "active-route" : ""}`}
+        style={{
+          background: setting.BgColor || styleSideNav,
+          margin: "20px 0 0 10px",
+          borderRadius: "12px"
+        }}
+      >
+        <SideNav isOpenSideBar={isOpenSideBar} />
+      </Sider>*/}
+      {isOpenSideBar && (
+        <Sider
+          width={240}
+          theme="light"
+          breakpoint="lg"
+          collapsedWidth="0"
+          className={`sider-primary ant-layout-sider-primary  ${styleSideNav === "#8a6b6b" ? "active-route" : ""}`}
+          style={{
+            background: setting.BgColor || styleSideNav,
+            margin: "20px 0 0 10px",
+            borderRadius: "12px"
+          }}
+        >
+          <SideNav isOpenSideBar={!isOpenSideBar} />
+        </Sider>
+      )}
+      {/*<Layout style={{ marginLeft: breakPoint.isDesktop ? (isOpenSideBar ? 120 : 235) : 0 }}>*/}
+      <Layout style={{ marginLeft: breakPoint.isDesktop && isOpenSideBar ? 240 : 0 }}>
+        {
+          <AntHeader style={{ background: setting.BgColor || undefined }}>
+            <Header isOpenSideBar={isOpenSideBar} setIsOpenSideBar={setIsOpenSideBar} />
+          </AntHeader>
+        }
+        <Content
+          className="content-ant"
+          style={{
+            ...(!BgImageApplyAll && BgImage
+              ? {
+                  backgroundImage: `url('${BgImage}')`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat"
+                }
+              : {}),
+            backgroundColor: setting.BgColor || "#ffffff"
+          }}
+        >
+          <Suspense
+            fallback={
+              <div
+                style={{
+                  display: "grid",
+                  placeItems: "center",
+                  zIndex: "100",
+                  width: "100%",
+                  height: "100%",
+                  backgroundColor: JSON.parse(localStorage.getItem("setting")!).darkMode ? "#000000" : "#ffffff"
+                }}
+              >
+                <LoadingProgress isDarkMode={JSON.parse(localStorage.getItem("setting")!).darkMode} />
+              </div>
+            }
+          >
+            <Routes>{children}</Routes>
+          </Suspense>
+        </Content>
+        <Footer />
+      </Layout>
+    </Layout>
+  );
+};

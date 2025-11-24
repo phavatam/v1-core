@@ -1,6 +1,6 @@
 import type { AxiosRequestConfig, AxiosError } from "axios";
 import axios from "axios";
-import { globalVariable } from "../../../globalVariable";
+import { globalVariable } from "../../globalVariable";
 import { getCookie } from "../../utils";
 
 export async function axiosRequest({
@@ -8,13 +8,15 @@ export async function axiosRequest({
   method,
   data,
   params,
-  baseUrl = `${globalVariable.urlServerApi}/api/v1`
-}: {
+  baseUrl = `${globalVariable.urlServerApi}/api/v1`,
+  headers
+  }: {
   url: string;
   method: AxiosRequestConfig["method"];
   data?: AxiosRequestConfig["data"];
   params?: AxiosRequestConfig["params"];
   baseUrl?: string;
+  headers?: AxiosRequestConfig["headers"];
 }) {
   try {
     const result = await axios({
@@ -23,7 +25,8 @@ export async function axiosRequest({
       data,
       params,
       headers: {
-        Authorization: `Bearer ${getCookie("jwt")}`
+        Authorization: `Bearer ${getCookie("jwt")}`,
+        ...headers
       }
     });
     return { data: result.data };

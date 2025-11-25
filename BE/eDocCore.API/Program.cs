@@ -80,9 +80,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
-        b => b.AllowAnyHeader()
-              .AllowAnyOrigin()
-              .AllowAnyMethod());
+        b =>
+        b.WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            );
 });
 
 builder.Services.AddRouting(options =>

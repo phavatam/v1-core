@@ -18,7 +18,6 @@ function _CreateResignationRequest() {
   const { data: user } = useGetUserQuery({ fetch: false });
   const navigation = useNavigate();
   const { id, item } = useParams();
-  console.log("1Id-_CreateResignationRequest: " + id);
   const currentTime = new Date().toLocaleString();
   const referenceNumber = "RES-000002470-2025";
   console.log("checkdata", item);
@@ -51,7 +50,6 @@ function _CreateResignationRequest() {
                 </Flex>
               </Col>
 
-              {/* Cột 2: Icon ở cuối hàng (Nhỏ) */}
               <Col flex="50px">
                 <Flex
                   vertical // <-- Sắp xếp các phần tử theo chiều dọc (trên-dưới)
@@ -65,12 +63,10 @@ function _CreateResignationRequest() {
               </Col>
             </Row>
             <Row align="middle" gutter={16}>
-              {/* Cột 1: Thông tin người dùng (Lớn) */}
               <Col flex="auto">
                 <Flex align="center"></Flex>
               </Col>
 
-              {/* Cột 2: Icon ở cuối hàng (Nhỏ) */}
               <Col flex="50px">
                 <Flex
                   vertical // <-- Sắp xếp các phần tử theo chiều dọc (trên-dưới)

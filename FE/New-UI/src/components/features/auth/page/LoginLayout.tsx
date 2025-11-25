@@ -34,20 +34,6 @@ function _LoginLayout() {
   return (
     <Layout className="layout-default layout-signin" style={{ height: "100vh" }}>
       <Header>
-        {/*<div className="header-col header-brand" style={{ textAlign: "center" }}>
-          <Image
-            src={logoTachNen}
-            alt="background"
-            preview={false}
-            width={150}
-            style={{
-              objectFit: "cover",
-              margin: "auto",
-              backgroundColor: JSON.parse(localStorage.getItem("setting")!).darkMode ? "white" : "transparent",
-              padding: JSON.parse(localStorage.getItem("setting")!).darkMode ? "10px" : "0"
-            }}
-          />
-        </div>*/}
       </Header>
       <Content className="signin">
         <Row gutter={[24, 0]} justify="space-around">

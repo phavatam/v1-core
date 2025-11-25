@@ -96,7 +96,6 @@ namespace eDocCore.API.Controllers
             }
         }
 
-
         /*/// <summary>
         /// Lấy danh sách User
         /// </summary>

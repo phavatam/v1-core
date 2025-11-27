@@ -4,9 +4,9 @@ export const routes: Routes = [
 		path: 'login',
 		loadComponent: () => import('./features/auth/login.component').then(m => m.LoginComponent)
 	},
+	{ path: '', redirectTo: 'login', pathMatch: 'full' },
 	{
 		path: 'dashboard',
-		loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent)
+		loadChildren: () => import('./features/dashboard/dashboard.module').then(m => m.DashboardModule)
 	},
-	{ path: '', redirectTo: 'login', pathMatch: 'full' }
 ];

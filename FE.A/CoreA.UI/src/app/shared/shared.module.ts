@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
-  imports: [CommonModule, NzSpinModule],
+  imports: [CommonModule, MatProgressSpinnerModule],
 })
 export class SharedModule {}

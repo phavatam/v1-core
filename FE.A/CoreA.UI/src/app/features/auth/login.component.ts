@@ -1,24 +1,29 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 import { NotifyService } from '../../core/services/notify.service';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { LoadingComponent } from '../../shared/loading.component';
 
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-
-import { NzAlertModule } from 'ng-zorro-antd/alert';
-import { LoadingComponent } from '../../shared/loading.component';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-// Removed NzNotificationModule import, only use NzNotificationService via NotifyService
-import { UserOutline, LockOutline, EyeOutline, EyeInvisibleOutline } from '@ant-design/icons-angular/icons';
-import { NzIconService } from 'ng-zorro-antd/icon';
 
 @Component({
     selector: 'app-login',
     standalone: true,
-    imports: [CommonModule, FormsModule, NzFormModule, NzInputModule, NzButtonModule, NzAlertModule, LoadingComponent, NzIconModule],
+        imports: [
+            CommonModule,
+            FormsModule,
+            MatCardModule,
+            MatFormFieldModule,
+            MatInputModule,
+            MatButtonModule,
+            MatIconModule,
+            LoadingComponent
+        ],
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.css']
 })
@@ -30,11 +35,8 @@ export class LoginComponent {
     showPassword = false;
     constructor(
         private authService: AuthService,
-        private notify: NotifyService,
-        private iconService: NzIconService
-    ) {
-        this.iconService.addIcon(UserOutline, LockOutline, EyeOutline, EyeInvisibleOutline);
-    }
+        private notify: NotifyService
+    ) {}
 
     toggleShowPassword() {
         this.showPassword = !this.showPassword;

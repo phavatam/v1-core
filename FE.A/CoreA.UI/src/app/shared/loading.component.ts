@@ -1,15 +1,15 @@
 
 import { Component } from '@angular/core';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-loading',
   standalone: true,
-  imports: [NzSpinModule, CommonModule],
+  imports: [MatProgressSpinnerModule, CommonModule],
   template: `
     <div class="global-loading">
-      <nz-spin nzTip="Loading..." [nzSpinning]="true"></nz-spin>
+      <mat-progress-spinner mode="indeterminate" color="primary"></mat-progress-spinner>
     </div>
   `,
   styles: [`

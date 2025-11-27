@@ -69,7 +69,7 @@
   color: #a777e3;
   font-size: 1.2rem;
 }
-.input-icon-group antd-input,
+/* Đã loại bỏ antd-input, chỉ dùng Material */
 .input-icon-group input[nz-input] {
   padding-left: 2.2rem;
 }
@@ -177,7 +177,7 @@
   flex-direction: column;
   gap: 0.2rem;
 }
-input[nz-input], .input-icon-group.modern antd-input {
+input, .input-icon-group.modern input {
   width: 100%;
   padding: 0.85rem 1.1rem;
   border-radius: 14px;
@@ -189,7 +189,7 @@ input[nz-input], .input-icon-group.modern antd-input {
   margin-bottom: 0.1rem;
   box-sizing: border-box;
 }
-input[nz-input]:focus, .input-icon-group.modern antd-input:focus {
+input:focus, .input-icon-group.modern input:focus {
   border-color: #6e8efb;
   outline: none;
   box-shadow: 0 0 0 2px #a777e333;

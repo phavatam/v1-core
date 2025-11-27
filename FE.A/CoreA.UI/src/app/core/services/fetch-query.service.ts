@@ -30,6 +30,5 @@ export class FetchQueryService {
     if (!response.ok) throw new Error(await response.text());
     return response.json();
   }
-
   // Có thể bổ sung các phương thức put, delete nếu cần
 }

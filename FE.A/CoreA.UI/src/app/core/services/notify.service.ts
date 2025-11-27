@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({ providedIn: 'root' })
 export class NotifyService {
-  constructor(private notification: NzNotificationService) {}
+  constructor(private snackBar: MatSnackBar) {}
 
   success(msg: string): void {
-    this.notification.success('Success', msg, { nzPlacement: 'topRight' });
+    this.snackBar.open(msg, 'Success', { duration: 3000, panelClass: ['snackbar-success'] });
   }
 
   error(msg: string): void {
-    this.notification.error('Error', msg, { nzPlacement: 'topRight' });
+    this.snackBar.open(msg, 'Error', { duration: 3000, panelClass: ['snackbar-error'] });
   }
 
   info(msg: string): void {
-    this.notification.info('Info', msg, { nzPlacement: 'topRight' });
+    this.snackBar.open(msg, 'Info', { duration: 3000, panelClass: ['snackbar-info'] });
   }
 
   warning(msg: string): void {
-    this.notification.warning('Warning', msg, { nzPlacement: 'topRight' });
+    this.snackBar.open(msg, 'Warning', { duration: 3000, panelClass: ['snackbar-warning'] });
   }
 }

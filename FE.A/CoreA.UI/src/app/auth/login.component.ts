@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../core/services/auth.service';
-import { NotifyService } from '../../core/services/notify.service';
+import { AuthService } from '../core/services/auth.service';
+import { NotifyService } from '../core/services/notify.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -36,7 +36,7 @@ export class LoginComponent {
             if (res?.isSuccess && res?.data?.accessToken) {
                 document.cookie = `accessToken=${res.data.accessToken}; path=/;`;
                 this.error = '';
-                window.location.href = '/dashboard';
+                window.location.href = '/home';
             } else {
                 this.error = res?.message || 'Invalid credentials';
                 this.notify.error(this.error);

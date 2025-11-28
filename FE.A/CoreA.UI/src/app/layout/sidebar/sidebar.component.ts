@@ -1,10 +1,12 @@
-import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, NO_ERRORS_SCHEMA, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'side-bar',
+  selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
-  
+
   schemas: [NO_ERRORS_SCHEMA],
 })
-export class SidebarComponent {}
+export class SidebarComponent{
+
+}

@@ -1,0 +1,526 @@
+<div id="bst-header-wrapper" style="height: 70px">
+    <header id="bst-header" class="position-fixed w-100 top-0 end-0 py-2 px-3 bg-white">
+        <!-- header bar -->
+        <div class="d-flex align-items-center justify-content-between mx-3 inter-regular">
+            <!-- left: breadcrumb -->
+            <nav aria-label="breadcrumb" class="d-flex gap-3 align-items-center">
+                <button class="btn-none" data-bs-toggle="collapse" data-bs-target=".toggle-sidebar"
+                    onclick="handleToggleCollapse()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-square-half" viewBox="0 0 16 16">
+                        <path
+                            d="M8 15V1h6a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1zm6 1a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2z" />
+                    </svg>
+                </button>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Dashboards</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Home</li>
+                </ol>
+            </nav>
+            <!-- right: options -->
+            <ul class="d-flex column-gap-1 m-0 p-0">
+                <!-- search -->
+                <li>
+                    <div id="bst-search">
+                        <!-- Modal: Trigger -->
+                        <button type="button" class="btn-none btn-icon" data-bs-toggle="modal" aria-expanded="false"
+                            data-bs-target="#searchModal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-search" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                            </svg>
+                        </button>
+                    </div>
+                </li>
+                <!-- switch system -->
+                <li>
+                    <div id="bst-search">
+                        <!-- Modal: Trigger -->
+                        <button type="button" class="btn-none btn-icon" data-bs-toggle="modal" aria-expanded="false"
+                            title="Back to old eDoc" data-bs-target="#searchModal">
+                            <svg fill="#BCCCDC" width="28px" height="28px" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g transform="scale(-1,-1)" transform-origin="12 12">
+                                    <path
+                                        d="m24 11.617c0 3.763-3.05 6.814-6.813 6.817h-10.371c-3.765 0-6.817-3.052-6.817-6.817s3.052-6.817 6.817-6.817h10.366c3.763 0 6.814 3.05 6.817 6.813zm-6.817-4.545c-2.507.001-4.54 2.034-4.54 4.542s2.033 4.542 4.542 4.542 4.542-2.033 4.542-4.542c0-1.252-.507-2.386-1.327-3.208-.822-.824-1.959-1.334-3.215-1.334-.001 0-.001 0-.002 0z" />
+                                </g>
+                                <text x="18" y="14" text-anchor="middle" font-family="Poppins" font-weight="bold"
+                                    font-size="4" fill="#000">
+                                    New
+                                </text>
+                            </svg>
+                        </button>
+
+                        <button type="button" class="btn-none btn-icon" data-bs-toggle="modal" aria-expanded="false"
+                            title="Try new eDoc" data-bs-target="#searchModal">
+                            <svg fill="#66a8ff" width="28px" height="28px" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="m24 11.617c0 3.763-3.05 6.814-6.813 6.817h-10.371c-3.765 0-6.817-3.052-6.817-6.817s3.052-6.817 6.817-6.817h10.366c3.763 0 6.814 3.05 6.817 6.813zm-6.817-4.545c-2.507.001-4.54 2.034-4.54 4.542s2.033 4.542 4.542 4.542 4.542-2.033 4.542-4.542c0-1.252-.507-2.386-1.327-3.208-.822-.824-1.959-1.334-3.215-1.334-.001 0-.001 0-.002 0z" />
+                                <text x="6" y="13" text-anchor="middle" font-family="Poppins" font-weight="bold"
+                                    font-size="4" fill="#fff">
+                                    Old
+                                </text>
+                            </svg>
+                        </button>
+                    </div>
+                </li>
+                <!-- customizer -->
+                <li>
+                    <div class="id" id="bst-customizer">
+                        <!-- Dropdown: Trigger -->
+                        <button class="btn-none btn-icon dropdown-toggle align-text-top" type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-grid-3x3-gap-fill"></i>
+                        </button>
+                        <!-- Dropdown -->
+                        <div class="dropdown-menu dropdown-menu-end dropdown-customizer shadow">
+                            <ul class="grid grid-cols-3">
+                                <li>
+                                    <a class="dropdown-item tooltip-custom tooltip-style3 tooltip-below-center"
+                                        href="#">
+                                        <img src="./assets//images/customizer/profit.png" alt="profit.png" />
+                                        <h3 class="title">profit</h3>
+                                        <span class="tooltip-text">Retail management</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <img src="./assets//images/customizer/sap-cx.png" alt="sap-cx.png" />
+                                        <h3 class="title">sap-cx</h3>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <img src="./assets//images/customizer/sap-sf.png" alt="sap-sf.png" />
+                                        <h3 class="title">sap-sf</h3>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <img src="./assets//images/customizer/s4hana.png" alt="s4hana.png" />
+                                        <h3 class="title">s4hana</h3>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <img src="./assets//images/customizer/helpdesk.png" alt="helpdesk.png" />
+                                        <h3 class="title">helpdesk</h3>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <img src="./assets//images/customizer/hr-portal.png" alt="hr-portal.png" />
+                                        <h3 class="title">hr-portal</h3>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <img src="./assets//images/customizer/meal.png" alt="meal.png" />
+                                        <h3 class="title">meal</h3>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <img src="./assets//images/customizer/doc-inout.png" alt="doc-inout.png" />
+                                        <h3 class="title">doc-inout</h3>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <!-- help -->
+                <li>
+                    <div id="bst-help">
+                        <!-- Dropdown: Trigger -->
+                        <button type="button" class="btn-none btn-icon dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false" data-bs-auto-close="outside">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-question-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                <path
+                                    d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94" />
+                            </svg>
+                        </button>
+                        <!-- Dropdown -->
+                        <ul
+                            class="dropdown-menu dropdown-menu-style1 dropdown-menu-hover-style1 dropdown-menu-sm dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="~/TrainingEdoc/TrainingEdoc">
+                                    <i class="fa-light fa-folder-open"></i>&nbsp;&nbsp;&nbsp;System Document
+                                </a>
+                            </li>
+                            <li>
+                                <div class="dropend">
+                                    <a class="dropdown-item" data-bs-toggle="dropdown" href="#" role="button"
+                                        aria-expanded="false" aria-controls="collapseNewReleased">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-file-text" viewBox="0 0 16 16">
+                                            <path
+                                                d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1z" />
+                                            <path
+                                                d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1" />
+                                        </svg>&nbsp;&nbsp;&nbsp;Change log
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-style1 dropdown-menu-hover-style1 dropdown-menu-sm dropdown-menu-end"
+                                        style="width: 30px">
+                                        <li>
+                                            <a class="dropdown-item" href="#">
+                                                Edoc 1&nbsp;&nbsp;&nbsp;
+                                                <i class="fa-regular fa-sparkles fa-lg" style="color: #FFD43B;"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">
+                                                SKU&nbsp;&nbsp;&nbsp;
+                                                <i class="fa-regular fa-sparkles fa-lg" style="color: #FFD43B;"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">
+                                                Trade&nbsp;&nbsp;&nbsp;
+                                                <i class="fa-regular fa-sparkles fa-lg" style="color: #FFD43B;"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <!-- notifications -->
+                <li>
+                    <div id="bst-notifications">
+                        <!-- Dropdown: Trigger -->
+                        <button type="button" class="btn-none btn-icon dropdown-toggle position-relative"
+                            data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-bell" viewBox="0 0 16 16">
+                                <path
+                                    d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6" />
+                            </svg>
+                            <span class="position-absolute translate-middle badge rounded-pill bg-danger"
+                                style="padding: 2px 4px">
+                                9
+                            </span>
+                        </button>
+                        <!-- Dropdown -->
+                        <div class="dropdown-menu dropdown-menu-style1 dropdown-menu-sm dropdown-menu-end">
+                            <!-- header -->
+                            <div class="header">
+                                <p class="poppins-semibold display-9 leading-16">
+                                    Notifications
+                                </p>
+
+                                <div class="dropdown">
+                                    <button class="btn-none dropdown-toggle show" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="true">
+                                        <i class="bi bi-three-dots"></i>
+                                    </button>
+                                    <ul
+                                        class="dropdown-menu dropdown-menu-sm dropdown-menu-end dropdown-submenu-style1">
+                                        <li>
+                                            <a class="dropdown-item" href="#">Silent mode</a>
+                                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider" />
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">Mark all as read</a>
+                                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider" />
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item text-danger" href="#">Delete all read</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- body -->
+                            <ul class="list-group-none list-group-style2">
+                                <li>
+                                    <a class="dropdown-item unread" href="#"
+                                        style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block;">
+                                        <span class="dot-container">
+                                            <span class="dot bg-primary"></span>
+                                        </span>
+                                        <span class="highlight">Mr X</span> wants to edit
+                                        <span class="highlight">Form Budget
+                                            Transferrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr</span>
+                                        <span class="checktime d-block mt-1">5 min ago</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item unread" href="#"
+                                        style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block;">
+                                        <span class="dot-container">
+                                            <span class="dot bg-primary"></span>
+                                        </span>
+                                        <span class="highlight">Tuan Viet</span> wants to
+                                        edit
+                                        <span class="highlight">Form Budget ...</span>
+                                        <span class="checktime d-block mt-1">1 hour ago</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#"
+                                        style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block;">
+                                        <span class="dot-container">
+                                            <span class="dot bg-secondary"></span>
+                                        </span>
+                                        <span class="highlight">Huy Nguyen</span> completed
+                                        <span class="highlight">Create New Form</span>
+                                        <span class="checktime d-block mt-1">1:12pm</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#"
+                                        style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block;">
+                                        <span class="dot-container">
+                                            <span class="dot bg-secondary"></span>
+                                        </span>
+                                        <span class="highlight">Pham Tran</span> added you in
+                                        <span class="highlight">Event Open Gra...</span>
+                                        <span class="checktime d-block mt-1">10:45pm</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#"
+                                        style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block;">
+                                        <span class="dot-container">
+                                            <span class="dot bg-secondary"></span>
+                                        </span>
+                                        <span class="highlight">Pham Tran</span> added you in
+                                        <span class="highlight">Event Open Gra...</span>
+                                        <span class="checktime d-block mt-1">10:45pm</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <!-- footer -->
+                            <div class="text-center">
+                                <a href="notification.html">View all</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <!-- change language -->
+                <li>
+                    <div id="bst-darkmode">
+                        <button type="button" class="btn-none btn-icon">
+                            VN
+                        </button>
+                    </div>
+                </li>
+                <!-- user profile -->
+                <li>
+                    <div id="bst-profile">
+                        <!-- Dropdown: Trigger -->
+                        <button type="button" class="btn-none btn-icon dropdown-toggle" type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                class="bi bi-person" viewBox="0 0 16 16">
+                                <path
+                                    d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
+                            </svg>
+                        </button>
+                        <!-- Dropdown -->
+                        <ul
+                            class="dropdown-menu dropdown-menu-style1 dropdown-menu-hover-style1 dropdown-menu-sm dropdown-menu-end">
+                            <li>
+                                <div class="dropend">
+                                    <a class="dropdown-item" data-bs-toggle="dropdown" href="#collapseYourProfile"
+                                        role="button" aria-expanded="false" aria-controls="collapseYourProfile"
+                                        style="padding-left: 0;">
+                                        <img src="https://static.vecteezy.com/system/resources/previews/009/292/244/original/default-avatar-icon-of-social-media-user-vector.jpg"
+                                            alt="avatar user" width="30" height="30" style="border-radius: 50%">
+                                        &nbsp;Nguyen Van A
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-style1 dropdown-menu-hover-style1 dropdown-menu-sm dropdown-menu-end"
+                                        style="width: 30px">
+                                        <li><a class="dropdown-item" href="#">View Profile</a></li>
+                                        <li><a class="dropdown-item" href="#">View organization</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="">
+                                    <i class="bi bi-share-fill"></i>&nbsp;&nbsp;&nbsp;Share Layout
+                                </a>
+                            </li>
+                            <li>
+                                <div class="dropend">
+                                    <a class="dropdown-item" data-bs-toggle="dropdown" href="#collapseNewReleased"
+                                        role="button" aria-expanded="false" aria-controls="collapseNewReleased">
+                                        <i class="bi bi-person"></i>&nbsp;&nbsp;&nbsp;Custom Layout
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-style1 dropdown-menu-hover-style1 dropdown-menu-sm dropdown-menu-end"
+                                        style="width: 30px">
+                                        <li><a class="dropdown-item" href="~/Home/CustomDashboard?type=home">Home</a>
+                                        </li>
+                                        <li><a class="dropdown-item"
+                                                href="~/Home/CustomDashboard?type=finance">Finance</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <i class="bi bi-lock"></i>&nbsp;&nbsp;&nbsp;Change
+                                    Password
+                                </a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider" />
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <i class="bi bi-box-arrow-right"></i>&nbsp;&nbsp;&nbsp;Log Out
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <!-- dark mode -->
+                <li>
+                    <div id="bst-darkmode">
+                        <button type="button" class="btn-none btn-icon" id="darkModeToggle">
+                            <i class="bi bi-moon-stars"></i>
+                        </button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <div class="h-6r"></div>
+    <!-- Modal -->
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-2xl">
+            <div class="modal-content p-3 rounded-3">
+                <div class="input-group input-group-style1">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                    <input type="text" class="form-control display-7" placeholder="Search or jump to..."
+                        aria-label="Username" aria-describedby="basic-addon1" data-bs-toggle="collapse"
+                        data-bs-target="#collapseSearchInput" />
+                    <span class="input-group-text"><i class="bi bi-x-circle"></i></span>
+                </div>
+                <div class="collapse mt-3" id="collapseSearchInput">
+                    <ul class="list-group list-group-style1">
+                        <li class="list-group-item title">Recent searches</li>
+                        <li class="list-group-item content">
+                            <div>
+                                <a href="search-result.html" class="text-black"><i class="bi bi-clock"></i>&nbsp;Payment
+                                    request</a>
+                            </div>
+                            <span class="daytime">yesterday</span>
+                        </li>
+                        <li class="list-group-item content">
+                            <div><i class="bi bi-clock"></i>&nbsp;Setting chart</div>
+                            <span class="daytime">yesterday</span>
+                        </li>
+                        <li class="list-group-item content">
+                            <div>
+                                <i class="bi bi-clock"></i>&nbsp;Purchasing request
+                            </div>
+                            <span class="daytime">Apr 04, 2024</span>
+                        </li>
+                        <li class="list-group-item content">
+                            <div><i class="bi bi-clock"></i>&nbsp;Credit note</div>
+                            <span class="daytime">Apr 04, 2024</span>
+                        </li>
+
+                        <li class="list-group-item title">Quick actions</li>
+                        <li class="list-group-item content">
+                            <div>
+                                <i class="bi bi-box-seam"></i>&nbsp;Create Purchasing
+                                Request
+                            </div>
+                            <div class="btn-wrapper">
+                                <button type="button" class="btn-none btn-icon-style1">
+                                    C
+                                </button>
+                                <button type="button" class="btn-none btn-icon-style1">
+                                    1
+                                </button>
+                            </div>
+                        </li>
+                        <li class="list-group-item content">
+                            <div>
+                                <i class="bi bi-box-seam"></i>&nbsp;Create Payment Request
+                            </div>
+                            <div class="btn-wrapper">
+                                <button type="button" class="btn-none btn-icon-style1">
+                                    C
+                                </button>
+                                <button type="button" class="btn-none btn-icon-style1">
+                                    2
+                                </button>
+                            </div>
+                        </li>
+                        <li class="list-group-item content">
+                            <div>
+                                <i class="bi bi-box-seam"></i>&nbsp;Create Credit Note
+                            </div>
+                            <div class="btn-wrapper">
+                                <button type="button" class="btn-none btn-icon-style1">
+                                    C
+                                </button>
+                                <button type="button" class="btn-none btn-icon-style1">
+                                    3
+                                </button>
+                            </div>
+                        </li>
+                        <li class="list-group-item content">
+                            <div>
+                                <i class="bi bi-box-seam"></i>&nbsp;Create Advance Request
+                            </div>
+                            <div class="btn-wrapper">
+                                <button type="button" class="btn-none btn-icon-style1">
+                                    C
+                                </button>
+                                <button type="button" class="btn-none btn-icon-style1">
+                                    4
+                                </button>
+                            </div>
+                        </li>
+
+                        <li class="list-group-item title">Documents</li>
+                        <li class="list-group-item content justify-content-start">
+                            <i class="bi bi-file-earmark"></i>&nbsp;
+                            <a href="#">How to create a payment request</a>
+                        </li>
+                        <li class="list-group-item content justify-content-start">
+                            <i class="bi bi-file-earmark"></i>&nbsp;
+                            <a href="#">How to create a credit note</a>
+                        </li>
+                        <li class="list-group-item content justify-content-start">
+                            <i class="bi bi-file-earmark"></i>&nbsp;
+                            <a href="#">Tutorial about setting Chart type</a>
+                        </li>
+                        <li class="list-group-item content justify-content-start">
+                            <i class="bi bi-file-earmark"></i>&nbsp;
+                            <a href="#">How to use filter in the data table</a>
+                        </li>
+
+                        <li class="list-group-item text-grey-300">
+                            Not finding what you‘re looking for? Try one of these
+                            queries instead:
+                        </li>
+                        <li class="list-group-item d-flex column-gap-2">
+                            <button type="button" class="btn-none btn-tag-style1">
+                                <span class="highlight">Pay</span>ment Request
+                            </button>
+                            <button type="button" class="btn-none btn-tag-style1">
+                                create <span class="highlight">pay</span>ment
+                            </button>
+                            <button type="button" class="btn-none btn-tag-style1">
+                                get <span class="highlight">pay</span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

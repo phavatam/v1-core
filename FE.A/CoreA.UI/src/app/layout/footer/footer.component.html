@@ -1,0 +1,124 @@
+<!-- ========== FOOTER ========== -->
+<div id="bst-footer">
+    <div class="utilities">
+        <div class="chatbot btn-group dropup dropdown">
+            <!-- Dropdown: Trigger -->
+            <button type="button" class="btn-none dropdown-toggle dropdown-toggle-style-none" data-bs-toggle="dropdown"
+                aria-expanded="false" data-bs-auto-close="outside">
+                <img src="assets/images/chatbot.png" alt="chatbot.png" />
+            </button>
+            <!-- Dropdown -->
+            <div class="dropdown-menu shadow" id="chatbox">
+                <div class="card">
+                    <!-- header -->
+                    <div class="card-header">
+                        <div class="d-flex-center justify-content-between">
+                            <!-- right -->
+                            <div class="d-flex-center column-gap-2">
+                                <div class="position-relative">
+                                    <img src="assets/images/chatbot.png" alt="chatbot.png" />
+                                    <span class="dot-container position-absolute">
+                                        <span class="dot bg-success"></span>
+                                    </span>
+                                </div>
+                                <div class="group-text">
+                                    <p class="poppins-medium display-9">Chat Bot</p>
+                                    <p class="display-12 text-grey">Online</p>
+                                </div>
+                            </div>
+                            <!-- left -->
+                            <div class="d-inline-flex column-gap-2">
+                                <button type="button" class="btn-none" onclick="expandChatbox('chatbox')">
+                                    <i class="bi bi-arrows-angle-expand"></i>
+                                </button>
+                                <button type="button" class="btn-close btn-close-dropdown"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- body -->
+                    <div class="card-body">
+                        <h5 class="card-title d-flex align-items-center column-gap-2 mb-2">
+                            <img src="assets/images/chatbot.png" alt="chatbot.png" width="32" height="32" />
+                            <p class="display-11-5">Chat Bot</p>
+                        </h5>
+                        <p class="card-text message-card rounded-bottom-start-2 w-90 mb-2">
+                            Hello there! 👋 It's nice to meet you!
+                        </p>
+                        <p class="card-text message-card rounded-top-start-2 w-90 mb-2">
+                            What brings you here today? Please use the navigation below
+                            or ask me anything about eDoc.
+                        </p>
+                        <!-- breakline -->
+                        <div class="h-1d25r"></div>
+                        <div class="chatbot-tools d-flex-col-center row-gap-2">
+                            <button type="button" class="btn btn-outline-blue rounded-4 display-9">
+                                🔨 Create a new F2 form
+                            </button>
+                            <button type="button" class="btn btn-outline-blue rounded-4 display-9">
+                                I have questions 😊
+                            </button>
+                            <button type="button" class="btn btn-outline-blue rounded-4 display-9">
+                                Using eDoc 👉
+                            </button>
+                        </div>
+                    </div>
+                    <!-- footer -->
+                    <div class="card-footer">
+                        <div class="input-within-icon">
+                            <input type="text" class="form-control display-9 rounded-0 py-3 pe-5" id="inputChatbot"
+                                aria-describedby="false" placeholder="Type your message here" />
+                            <span class="icon">
+                                <button type="button" class="btn-none">
+                                    <img src="assets/images/send.png" alt="send.png" />
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="popup">
+        <!-- Modal -->
+        <div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title poppins-semibold display-7" id="welcomeModalLabel">
+                            Grand Open Store!
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="popup-header">
+                            <img src="./assets/images/bell.png" alt="bell.png" />
+                        </div>
+                        <div class="popup-body">
+                            <div class="h-0d5r"></div>
+                            <div class="popup-heading">
+                                <p>17h45 - 20/12/2025</p>
+                                <p>City Hall - 1st floor Hoang Van Thu W.15 D.3 HCM</p>
+                            </div>
+                            <div class="h-0d5r"></div>
+                            <div class="popup-content">
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    Morbi rutrum dolor id tellus consectetur, nec laoreet
+                                    nibh maximus. Cras placerat quam leo, eget suscipit
+                                    tortor gravida at.
+                                </p>
+                                <p>
+                                    Sed ac elit ultrices, lobortis sem quis, mattis turpis.
+                                    Donec semper bibendum ex. Ut faucibus blandit lacus, a
+                                    cursus arcu bibendum sit amet. Etiam auctor volutpat
+                                    velit eget imperdiet.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

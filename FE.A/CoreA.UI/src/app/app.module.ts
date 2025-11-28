@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app';
-import { LoginComponent } from './features/auth/login.component';
+import { LoginComponent } from './auth/login.component';
 import { GlobalErrorHandler } from './core/global-error-handler';
 import { HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';

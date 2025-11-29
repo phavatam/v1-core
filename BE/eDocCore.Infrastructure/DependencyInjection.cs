@@ -1,15 +1,17 @@
-﻿using eDocCore.Domain.Interfaces;
+﻿using eDocCore.API.Persistence.Repositories;
+using eDocCore.Application.Common.Interfaces;
+using eDocCore.Application.Features.Menus.Services;
+using eDocCore.Domain.Interfaces;
 using eDocCore.Domain.Interfaces.Extend;
+using eDocCore.Infrastructure.Identity;
+using eDocCore.Infrastructure.Interceptors;
 using eDocCore.Infrastructure.Persistence;
 using eDocCore.Infrastructure.Persistence.Repositories;
+using eDocCore.Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using eDocCore.Application.Common.Interfaces;
-using eDocCore.Infrastructure.Identity;
-using eDocCore.Infrastructure.Security;
-using eDocCore.Application.Features.Menus.Services;
-using eDocCore.API.Persistence.Repositories;
+using Microsoft.Extensions.Options;
 
 namespace eDocCore.Infrastructure
 {
@@ -18,8 +20,23 @@ namespace eDocCore.Infrastructure
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             // Cấu hình DbContext cho Database First (không dùng migrations)
+            #region Cấu hình database, interceptors, timeout
+            #region Cấu hình var auditInterceptor = new AuditSaveChangesInterceptor();
+            var auditInterceptor = new AuditSaveChangesInterceptor();
+            #endregion
+            const int CommandTimeoutSeconds = 30;
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            {
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
+                sqlServerOptions =>
+                {
+                    sqlServerOptions.CommandTimeout(CommandTimeoutSeconds); // Thiết lập CommandTimeout cho DbContext
+                });
+
+                options.AddInterceptors(auditInterceptor);
+            });
+
+            #endregion
 
             // Đăng ký Generic Repository cho tất cả entities
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));

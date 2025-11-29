@@ -24,9 +24,13 @@ namespace eDocCore.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ApiResult<RoleDto?>>> GetById(Guid id)
+        public async Task<ActionResult<ApiResult<RoleDto?>>> GetById(Guid id, CancellationToken cancellationToken)
         {
+            bool isCancel = cancellationToken.IsCancellationRequested;
+            throw new Exception();
             var role = await _roleService.GetByIdAsync(id);
+            bool isCheckCancel = cancellationToken.IsCancellationRequested;
+            cancellationToken.ThrowIfCancellationRequested();
             if (role == null) return NotFound(ApiResult<RoleDto?>.Fail("Not found", traceId: HttpContext.TraceIdentifier));
             return Ok(ApiResult<RoleDto?>.Ok(role, traceId: HttpContext.TraceIdentifier));
         }

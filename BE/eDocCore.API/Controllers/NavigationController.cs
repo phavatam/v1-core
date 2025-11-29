@@ -1,6 +1,7 @@
 using eDocCore.Application.Common;
 using eDocCore.Application.Features.Menus.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using System.Net;
 
 namespace eDocCore.API.FeatureTemplate.eDocCore.API.Controllers
@@ -16,6 +17,7 @@ namespace eDocCore.API.FeatureTemplate.eDocCore.API.Controllers
         }
 
         [HttpGet("get-navigation")]
+        [OutputCache(PolicyName = "CacheByParam")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> GetNavigationByToken()

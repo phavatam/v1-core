@@ -1,4 +1,5 @@
-﻿using Azure.Core;
+﻿using Asp.Versioning;
+using Azure.Core;
 using eDocCore.Application.Common;
 using eDocCore.Application.Common.Exceptions;
 using eDocCore.Application.Common.Models;
@@ -11,6 +12,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Localization;
 using System.Net;
 using System.Security.Claims;
 using System.Threading;
@@ -19,23 +21,28 @@ using System.Threading.Tasks;
 namespace eDocCore.API.Controllers
 {
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion(1.0)]
+    [ApiVersion(2.0)]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
         private readonly ILogger<AuthController> _logger;
         private readonly IValidator<RegisterUserRequest> _registerValidatorAuth;
         private readonly IValidator<LoginRequest> _loginValidatorAuth;
+        private readonly IStringLocalizer<AuthController> _localizer;
 
-        public AuthController(IAuthService authService, ILogger<AuthController> logger, IValidator<RegisterUserRequest> registerValidatorAuth, IValidator<LoginRequest> loginValidatorAuth)
+        public AuthController(IAuthService authService, ILogger<AuthController> logger, IValidator<RegisterUserRequest> registerValidatorAuth, IValidator<LoginRequest> loginValidatorAuth, IStringLocalizer<AuthController> localizer)
         {
             _authService = authService;
             _logger = logger;
             _registerValidatorAuth = registerValidatorAuth;
             _loginValidatorAuth = loginValidatorAuth;
+            _localizer = localizer;
         }
 
         [HttpPost("register")]
+        [MapToApiVersion(2.0)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Register([FromBody] RegisterUserRequest request, CancellationToken ct)
@@ -77,6 +84,7 @@ namespace eDocCore.API.Controllers
         }
 
         [HttpPost("login")]
+        [MapToApiVersion(2.0)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Login([FromBody] LoginRequest request, CancellationToken ct)

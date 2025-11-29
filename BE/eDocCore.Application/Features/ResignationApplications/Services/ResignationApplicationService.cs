@@ -10,6 +10,7 @@ using eDocCore.Domain.Interfaces;
 using eDocCore.Domain.Interfaces.Extend;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using System.Linq.Expressions;
 
 namespace eDocCore.Application.Features.ResignationApplications.Services
 {
@@ -33,7 +34,15 @@ namespace eDocCore.Application.Features.ResignationApplications.Services
         public async Task<ResultDTO<ArrayResultDTO>> Get(int pageNumber, int pageSize, CancellationToken ct = default)
         {
             ResultDTO<ArrayResultDTO> resultDTO = new ResultDTO<ArrayResultDTO>() { };
-            var list = await _ResignationApplicationRepository.GetPagedProjectedAsync<ResignationApplicationDto>(pageNumber, pageSize);
+            //Expression<Func<ResignationApplication, ResignationApplicationDto>> selector = res => new ResignationApplicationDto
+            //{
+            //    Id = res.Id
+            //};
+            //Expression<Func<ResignationApplication, bool>> filter = res => res.Status == "Pending";
+            var selector = ManualProjectionBuilder.CreateSelector<ResignationApplication, ResignationApplicationDto>();
+            
+            var list = await _ResignationApplicationRepository.GetPagedProjectedAsync(
+                pageNumber, pageSize, selector, x => x.Status == "Pending");
             
             var arrays = new ArrayResultDTO()
             {

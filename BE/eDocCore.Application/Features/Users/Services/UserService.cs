@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using eDocCore.Domain.Interfaces;
+using System.Linq.Expressions;
 
 namespace eDocCore.Application.Features.Users.Services
 {
@@ -39,12 +40,16 @@ namespace eDocCore.Application.Features.Users.Services
 
         public async Task<ResultDTO<ArrayResultDTO>> GetListUsers(int pageNumber, int pageSize, CancellationToken ct = default)
         {
+            Expression<Func<User, bool>> predicate = x => true;
+
+
             ResultDTO<ArrayResultDTO> resultDTO = new ResultDTO<ArrayResultDTO>() { };
             var users = await _genericRepository.GetPagedProjectedAsync<UserDTO>(
                 pageNumber,
                 pageSize,
-                null,
+                predicate,
                 null);
+
 
             var arrays = new ArrayResultDTO()
             {

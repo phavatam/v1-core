@@ -97,14 +97,7 @@ namespace eDocCore.Application.Features.Menus.Services
             try
             {
                 _logger.LogInformation("Deleting Menu {MenuId} by {UserId}", id, _currentUser.UserId);
-                var deleted = await _MenuRepository.DeleteAsync(id);
-                if (!deleted)
-                {
-                    _logger.LogWarning("Menu {MenuId} not found for delete by {UserId}", id, _currentUser.UserId);
-                    await _unitOfWork.RollbackAsync();
-                    return false;
-                }
-
+                await _MenuRepository.DeleteAsync(id);
                 await _unitOfWork.CommitAsync();
                 _logger.LogInformation("Deleted Menu {MenuId} by {UserId}", id, _currentUser.UserId);
                 return true;

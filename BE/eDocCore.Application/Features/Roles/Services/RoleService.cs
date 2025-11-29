@@ -138,14 +138,7 @@ namespace eDocCore.Application.Features.Roles.Services
             try
             {
                 _logger.LogInformation("Deleting role {RoleId} by {UserId}", id, _currentUser.UserId);
-                var deleted = await _roleRepository.DeleteAsync(id);
-                if (!deleted)
-                {
-                    _logger.LogWarning("Role {RoleId} not found for delete by {UserId}", id, _currentUser.UserId);
-                    await _unitOfWork.RollbackAsync();
-                    return false;
-                }
-
+                await _roleRepository.DeleteAsync(id);
                 await _unitOfWork.CommitAsync();
                 _logger.LogInformation("Deleted role {RoleId} by {UserId}", id, _currentUser.UserId);
                 return true;
@@ -195,9 +188,9 @@ namespace eDocCore.Application.Features.Roles.Services
             var (items, total) = await _roleRepository.GetPagedProjectedAsync(
                 request.Page,
                 request.PageSize,
+                selector,
                 filter,
                 orderBy,
-                selector,
                 asNoTracking: true,
                 ct: ct);
 

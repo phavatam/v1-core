@@ -31,7 +31,7 @@ namespace eDocCore.API.Middlewares
                 var routeModel = selector.AttributeRouteModel;
 
                 // Kiểm tra Template để thay thế token [controller]
-                if (routeModel.Template != null)
+                if (routeModel?.Template != null)
                 {
                     // Thay thế [controller] bằng tên kebab-case đã được tính toán.
                     // Điều này áp dụng cho các route như "api/[controller]"

@@ -80,10 +80,10 @@ namespace eDocCore.Domain.Interfaces
         /// <summary>
         /// Thực hiện phân trang, lọc, sắp xếp và ánh xạ (Projection) sang một DTO (TResult) để tối ưu IO/Memory.
         /// </summary>
-        Task<(IReadOnlyList<TResult> Items, int TotalItems> GetPagedProjectedAsync<TResult>(
+        Task<(IReadOnlyList<TResult> Items, int TotalItems)> GetPagedProjectedAsync<TResult>(
             int page,
             int pageSize,
-            Expression<Func<T, TResult>>? selector, // Biểu thức ánh xạ (Projection) bắt buộc
+            Expression<Func<T, TResult>> selector, // Biểu thức ánh xạ (Projection) bắt buộc
             Expression<Func<T, bool>>? filter = null,
             Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
             bool asNoTracking = true,

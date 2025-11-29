@@ -98,14 +98,7 @@ namespace eDocCore.Application.Features.UserRoles.Services
             try
             {
                 _logger.LogInformation("Deleting UserRole {UserRoleId} by {UserId}", id, _currentUser.UserId);
-                var deleted = await _UserRoleRepository.DeleteAsync(id);
-                if (!deleted)
-                {
-                    _logger.LogWarning("UserRole {UserRoleId} not found for delete by {UserId}", id, _currentUser.UserId);
-                    await _unitOfWork.RollbackAsync();
-                    return false;
-                }
-
+                await _UserRoleRepository.DeleteAsync(id);
                 await _unitOfWork.CommitAsync();
                 _logger.LogInformation("Deleted UserRole {UserRoleId} by {UserId}", id, _currentUser.UserId);
                 return true;

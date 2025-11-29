@@ -10,7 +10,7 @@ namespace eDocCore.Application.Features.ResignationApplications.Services
     public interface IResignationApplicationService
     {
         Task<ResultDTO<ArrayResultDTO>> Get(int pageNumber, int pageSize, CancellationToken ct = default);
-        Task<ResignationApplicationDto> Get(Guid id);
+        Task<ResignationApplicationDto?> Get(Guid id);
         Task<ResultDTO<ResignationApplicationDto>> Create(CreateResignationApplicationRequest request);
         Task<ResultDTO<ResignationApplicationDto>> Update(UpdateResignationApplicationRequest request);
         Task<ResultDTO<bool>> Delete(Guid id);

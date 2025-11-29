@@ -42,7 +42,7 @@ namespace eDocCore.Application.Features.ResignationApplications.Services
             var selector = ManualProjectionBuilder.CreateSelector<ResignationApplication, ResignationApplicationDto>();
             
             var list = await _ResignationApplicationRepository.GetPagedProjectedAsync(
-                pageNumber, pageSize, selector, x => x.Status == "Pending");
+                pageNumber, pageSize, selector);
             
             var arrays = new ArrayResultDTO()
             {
@@ -55,10 +55,10 @@ namespace eDocCore.Application.Features.ResignationApplications.Services
             return ResultDTO<ArrayResultDTO>.Success(arrays);
         }
 
-        public async Task<ResignationApplicationDto> Get(Guid id)
+        public async Task<ResignationApplicationDto?> Get(Guid id)
         {
             var ResignationApplication = await _ResignationApplicationRepository.GetByIdAsync(id);
-            return _mapper == null ? null : _mapper.Map<ResignationApplicationDto>(ResignationApplication);
+            return _mapper?.Map<ResignationApplicationDto>(ResignationApplication);
         }
 
         public async Task<ResultDTO<ResignationApplicationDto>> Create(CreateResignationApplicationRequest request)
@@ -128,8 +128,7 @@ namespace eDocCore.Application.Features.ResignationApplications.Services
             await _unitOfWork.BeginTransactionAsync();
             try
             {
-                var deleted = await _ResignationApplicationRepository.DeleteAsync(id);
-                if (!deleted) return ResultDTO<bool>.Failure(500, "Delete Fail!");
+                await _ResignationApplicationRepository.DeleteAsync(id);
 
                 await _unitOfWork.CommitAsync();
                 return ResultDTO<bool>.Success(true);
@@ -145,7 +144,9 @@ namespace eDocCore.Application.Features.ResignationApplications.Services
         public async Task<ResultDTO<ArrayResultDTO>> GetListByFilter(GetResignationApplicationRequest args)
         {
             ResultDTO<ArrayResultDTO> resultDTO = new ResultDTO<ArrayResultDTO>() { };
-            var list = await _ResignationApplicationRepository.GetPagedProjectedAsync<ResignationApplicationDto>(args.Page, args.PageSize);
+
+            var selector = ManualProjectionBuilder.CreateSelector<ResignationApplication, ResignationApplicationDto>();
+            var list = await _ResignationApplicationRepository.GetPagedProjectedAsync(args.Page, args.PageSize, selector);
 
             var arrays = new ArrayResultDTO()
             {

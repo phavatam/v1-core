@@ -10,7 +10,7 @@ namespace eDocCore.Application.Features.__FeatureName__s.Services
     public interface I__FeatureName__Service
     {
         Task<ResultDTO<ArrayResultDTO>> Get(int pageNumber, int pageSize, CancellationToken ct = default);
-        Task<__FeatureName__Dto> Get(Guid id);
+        Task<__FeatureName__Dto?> Get(Guid id);
         Task<ResultDTO<__FeatureName__Dto>> Create(Create__FeatureName__Request request);
         Task<ResultDTO<__FeatureName__Dto>> Update(Update__FeatureName__Request request);
         Task<ResultDTO<bool>> Delete(Guid id);

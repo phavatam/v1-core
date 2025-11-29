@@ -97,14 +97,7 @@ namespace eDocCore.Application.Features.UserDepartmentMappings.Services
             try
             {
                 _logger.LogInformation("Deleting UserDepartmentMapping {UserDepartmentMappingId} by {UserId}", id, _currentUser.UserId);
-                var deleted = await _UserDepartmentMappingRepository.DeleteAsync(id);
-                if (!deleted)
-                {
-                    _logger.LogWarning("UserDepartmentMapping {UserDepartmentMappingId} not found for delete by {UserId}", id, _currentUser.UserId);
-                    await _unitOfWork.RollbackAsync();
-                    return false;
-                }
-
+                await _UserDepartmentMappingRepository.DeleteAsync(id);
                 await _unitOfWork.CommitAsync();
                 _logger.LogInformation("Deleted UserDepartmentMapping {UserDepartmentMappingId} by {UserId}", id, _currentUser.UserId);
                 return true;

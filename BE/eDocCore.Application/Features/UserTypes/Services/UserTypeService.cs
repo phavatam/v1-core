@@ -33,7 +33,9 @@ namespace eDocCore.Application.Features.UserTypes.Services
         public async Task<ResultDTO<ArrayResultDTO>> Get(int pageNumber, int pageSize, CancellationToken ct = default)
         {
             ResultDTO<ArrayResultDTO> resultDTO = new ResultDTO<ArrayResultDTO>() { };
-            var list = await _UserTypeRepository.GetPagedProjectedAsync<UserTypeDto>(pageNumber, pageSize);
+            var selector = ManualProjectionBuilder.CreateSelector<UserType, UserTypeDto>();
+
+            var list = await _UserTypeRepository.GetPagedProjectedAsync(pageNumber, pageSize, selector);
 
             var arrays = new ArrayResultDTO()
             {
@@ -46,10 +48,10 @@ namespace eDocCore.Application.Features.UserTypes.Services
             return ResultDTO<ArrayResultDTO>.Success(arrays);
         }
 
-        public async Task<UserTypeDto> Get(Guid id)
+        public async Task<UserTypeDto?> Get(Guid id)
         {
             var UserType = await _UserTypeRepository.GetByIdAsync(id);
-            return _mapper == null ? null : _mapper.Map<UserTypeDto>(UserType);
+            return _mapper?.Map<UserTypeDto>(UserType);
         }
 
         public async Task<ResultDTO<UserTypeDto>> Create(CreateUserTypeRequest request)
@@ -101,9 +103,7 @@ namespace eDocCore.Application.Features.UserTypes.Services
             await _unitOfWork.BeginTransactionAsync();
             try
             {
-                var deleted = await _UserTypeRepository.DeleteAsync(id);
-                if (!deleted) return ResultDTO<bool>.Failure(500, "Delete Fail!");
-
+                await _UserTypeRepository.DeleteAsync(id);
                 await _unitOfWork.CommitAsync();
                 return ResultDTO<bool>.Success(true);
             }

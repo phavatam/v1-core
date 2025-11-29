@@ -10,7 +10,7 @@ namespace eDocCore.Application.Features.UserTypes.Services
     public interface IUserTypeService
     {
         Task<ResultDTO<ArrayResultDTO>> Get(int pageNumber, int pageSize, CancellationToken ct = default);
-        Task<UserTypeDto> Get(Guid id);
+        Task<UserTypeDto?> Get(Guid id);
         Task<ResultDTO<UserTypeDto>> Create(CreateUserTypeRequest request);
         Task<ResultDTO<UserTypeDto>> Update(UpdateUserTypeRequest request);
         Task<ResultDTO<bool>> Delete(Guid id);

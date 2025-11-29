@@ -187,14 +187,14 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IAudi
 
     // === 5. Phân trang, Projection (Ánh xạ DTO) & Sắp xếp ===
 
-    public virtual async Task<(IReadOnlyList<TResult> Items, int TotalCount)> GetPagedProjectedAsync<TResult>(
+    public virtual async Task<(IReadOnlyList<TResult> Items, int TotalItems)> GetPagedProjectedAsync<TResult>(
         int page,
         int pageSize,
         Expression<Func<T, TResult>> selector, // Biểu thức ánh xạ (Projection) bắt buộc
         Expression<Func<T, bool>>? filter = null,
         Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
         bool asNoTracking = true,
-        CancellationToken ct = default)
+        CancellationToken ct = default) 
     {
         if (page < 1) page = 1;
         if (pageSize < 1) pageSize = 10;
@@ -216,9 +216,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IAudi
 
         if (asNoTracking) query = query.AsNoTracking();
 
+
         var itemsQuery = query.Skip((page - 1) * pageSize)
                               .Take(pageSize)
-                              .Select(selector); // Sử dụng Projection Selector
+                              .Select(selector);
 
         var items = await itemsQuery.ToListAsync(ct);
         return (items, total);

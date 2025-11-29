@@ -15,7 +15,7 @@ namespace eDocCore.API.Persistence.Repositories
     public class __FeatureName__Repository : GenericRepository<__ModelName__>, I__FeatureName__Repository
     {
         private readonly IMapper _mapper;
-        public __FeatureName__Repository(ApplicationDbContext context, IMapper mapper) : base(context, mapper)
+        public __FeatureName__Repository(ApplicationDbContext context, IMapper mapper) : base(context)
         {
             _mapper = mapper;
         }

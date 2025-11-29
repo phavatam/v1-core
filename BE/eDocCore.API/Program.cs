@@ -74,17 +74,20 @@ builder.Services.AddApiVersioning(options =>
 builder.Services.AddSwaggerGen(options =>
 {
     // ⚠️ Lấy service IApiVersionDescriptionProvider được cung cấp bởi .AddMvcApiExplorer()
-    var apiVersionDescriptionProvider = builder.Services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
-
+    var apiVersionDescriptionProvider = builder?.Services?.BuildServiceProvider()?.GetRequiredService<IApiVersionDescriptionProvider>();
     // Vòng lặp này tạo một tài liệu Swagger riêng biệt (SwaggerDoc) cho mỗi phiên bản
-    foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions)
+    if (apiVersionDescriptionProvider != null)
     {
-        options.SwaggerDoc(description.GroupName, new OpenApiInfo
+        // Vòng lặp này tạo một tài liệu Swagger riêng biệt (SwaggerDoc) cho mỗi phiên bản
+        foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions) // Đã an toàn
         {
-            Title = $"My API {description.ApiVersion}",
-            Version = description.ApiVersion.ToString(),
-            Description = $"API Documentation for version {description.GroupName}."
-        });
+            options.SwaggerDoc(description.GroupName, new OpenApiInfo
+            {
+                Title = $"My API {description.ApiVersion}",
+                Version = description.ApiVersion.ToString(),
+                Description = $"API Documentation for version {description.GroupName}."
+            });
+        }
     }
 });
 #endregion

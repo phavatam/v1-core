@@ -15,7 +15,7 @@ namespace eDocCore.API.Persistence.Repositories
     public class ResignationApplicationRepository : GenericRepository<ResignationApplication>, IResignationApplicationRepository
     {
         private readonly IMapper _mapper;
-        public ResignationApplicationRepository(ApplicationDbContext context, IMapper mapper) : base(context, mapper)
+        public ResignationApplicationRepository(ApplicationDbContext context, IMapper mapper) : base(context)
         {
             _mapper = mapper;
         }

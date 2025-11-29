@@ -30,15 +30,15 @@ namespace eDocCore.API.Controllers
         private readonly ILogger<AuthController> _logger;
         private readonly IValidator<RegisterUserRequest> _registerValidatorAuth;
         private readonly IValidator<LoginRequest> _loginValidatorAuth;
-        private readonly IStringLocalizer<AuthController> _localizer;
+        //private readonly IStringLocalizer<AuthController> _localizer;
 
-        public AuthController(IAuthService authService, ILogger<AuthController> logger, IValidator<RegisterUserRequest> registerValidatorAuth, IValidator<LoginRequest> loginValidatorAuth, IStringLocalizer<AuthController> localizer)
+        public AuthController(IAuthService authService, ILogger<AuthController> logger, IValidator<RegisterUserRequest> registerValidatorAuth, IValidator<LoginRequest> loginValidatorAuth)
         {
             _authService = authService;
             _logger = logger;
             _registerValidatorAuth = registerValidatorAuth;
             _loginValidatorAuth = loginValidatorAuth;
-            _localizer = localizer;
+            //_localizer = localizer;
         }
 
         [HttpPost("register")]

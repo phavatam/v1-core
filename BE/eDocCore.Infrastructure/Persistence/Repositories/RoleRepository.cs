@@ -13,7 +13,7 @@ namespace eDocCore.Infrastructure.Persistence.Repositories
     public class RoleRepository : GenericRepository<Role>, IRoleRepository
     {
         private readonly IMapper _mapper;
-        public RoleRepository(ApplicationDbContext context, IMapper mapper) : base(context, mapper)
+        public RoleRepository(ApplicationDbContext context, IMapper mapper) : base(context)
         {
             _mapper = mapper;
         }

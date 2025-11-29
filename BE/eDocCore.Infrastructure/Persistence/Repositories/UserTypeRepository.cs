@@ -15,7 +15,7 @@ namespace eDocCore.API.Persistence.Repositories
     public class UserTypeRepository : GenericRepository<UserType>, IUserTypeRepository
     {
         private readonly IMapper _mapper;
-        public UserTypeRepository(ApplicationDbContext context, IMapper mapper) : base(context, mapper)
+        public UserTypeRepository(ApplicationDbContext context, IMapper mapper) : base(context)
         {
             _mapper = mapper;
         }

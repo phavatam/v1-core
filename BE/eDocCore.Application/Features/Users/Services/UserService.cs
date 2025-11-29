@@ -43,11 +43,12 @@ namespace eDocCore.Application.Features.Users.Services
             Expression<Func<User, bool>> predicate = x => true;
 
 
+            var selector = ManualProjectionBuilder.CreateSelector<User, UserDTO>();
             ResultDTO<ArrayResultDTO> resultDTO = new ResultDTO<ArrayResultDTO>() { };
-            var users = await _genericRepository.GetPagedProjectedAsync<UserDTO>(
+            var users = await _genericRepository.GetPagedProjectedAsync(
                 pageNumber,
                 pageSize,
-                predicate,
+                selector,
                 null);
 
 

@@ -13,7 +13,7 @@ namespace eDocCore.Infrastructure.Persistence.Repositories
     public class MenuRepository : GenericRepository<Menu>, IMenuRepository
     {
         private readonly IMapper _mapper;
-        public MenuRepository(ApplicationDbContext context, IMapper mapper) : base(context, mapper)
+        public MenuRepository(ApplicationDbContext context, IMapper mapper) : base(context)
         {
             _mapper = mapper;
         }

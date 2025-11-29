@@ -33,7 +33,9 @@ namespace eDocCore.Application.Features.__FeatureName__s.Services
         public async Task<ResultDTO<ArrayResultDTO>> Get(int pageNumber, int pageSize, CancellationToken ct = default)
         {
             ResultDTO<ArrayResultDTO> resultDTO = new ResultDTO<ArrayResultDTO>() { };
-            var list = await ___FeatureName__Repository.GetPagedProjectedAsync<__FeatureName__Dto>(pageNumber, pageSize);
+
+            var selector = ManualProjectionBuilder.CreateSelector<__ModelName__, __FeatureName__Dto>();
+            var list = await ___FeatureName__Repository.GetPagedProjectedAsync<__FeatureName__Dto>(pageNumber, pageSize, selector);
 
             var arrays = new ArrayResultDTO()
             {
@@ -46,10 +48,10 @@ namespace eDocCore.Application.Features.__FeatureName__s.Services
             return ResultDTO<ArrayResultDTO>.Success(arrays);
         }
 
-        public async Task<__FeatureName__Dto> Get(Guid id)
+        public async Task<__FeatureName__Dto?> Get(Guid id)
         {
             var __FeatureName__ = await ___FeatureName__Repository.GetByIdAsync(id);
-            return _mapper == null ? null : _mapper.Map<__FeatureName__Dto>(__FeatureName__);
+            return _mapper?.Map<__FeatureName__Dto>(__FeatureName__);
         }
 
         public async Task<ResultDTO<__FeatureName__Dto>> Create(Create__FeatureName__Request request)
@@ -102,9 +104,7 @@ namespace eDocCore.Application.Features.__FeatureName__s.Services
             await _unitOfWork.BeginTransactionAsync();
             try
             {
-                var deleted = await ___FeatureName__Repository.DeleteAsync(id);
-                if (!deleted) return ResultDTO<bool>.Failure(500, "Delete Fail!");
-
+                await ___FeatureName__Repository.DeleteAsync(id);
                 await _unitOfWork.CommitAsync();
                 return ResultDTO<bool>.Success(true);
             }

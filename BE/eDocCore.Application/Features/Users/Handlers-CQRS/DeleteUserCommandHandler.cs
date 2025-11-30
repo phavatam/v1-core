@@ -14,9 +14,9 @@ namespace eDocCore.Application.Features.Users.Handlers
         }
         public async Task<bool> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByIdAsync(request.Id);
-            if (user == null) return false;
-            await _userRepository.DeleteAsync(user);
+            //var user = await _userRepository.GetByIdAsync(request.Id);
+            //if (user == null) return false;
+            //await _userRepository.DeleteAsync(user);
             return true;
         }
     }

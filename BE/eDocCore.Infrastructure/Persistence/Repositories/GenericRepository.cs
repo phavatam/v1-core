@@ -37,9 +37,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IAudi
         var now = DateTimeOffset.UtcNow;
         if (entity.Id == Guid.Empty)
             entity.Id = Guid.NewGuid();
-        if (entity.Created == default)
-            entity.Created = now;
-        entity.Modified = now;
+        //if (entity.Created == default)
+        //    entity.Created = now;
+        //entity.Modified = now;
 
         await _context.Set<T>().AddAsync(entity, ct);
         // Defer SaveChanges
@@ -48,7 +48,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IAudi
 
     public virtual async Task<T> UpdateAsync(T entity)
     {
-        entity.Modified = DateTimeOffset.UtcNow;
+        //entity.Modified = DateTimeOffset.UtcNow;
 
         var entry = _context.Entry(entity);
         if (entry.State == EntityState.Detached)
@@ -116,7 +116,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IAudi
         return Task.CompletedTask;
     }
 
-    public virtual Task RemoveRangeAsync(IEnumerable<T> entities)
+    public virtual Task DeleteRangeAsync(IEnumerable<T> entities)
     {
         _context.Set<T>().RemoveRange(entities);
         return Task.CompletedTask;

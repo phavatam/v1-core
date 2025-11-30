@@ -31,7 +31,14 @@ namespace eDocCore.Infrastructure
                 sqlServerOptions =>
                 {
                     sqlServerOptions.CommandTimeout(CommandTimeoutSeconds); // Thiết lập CommandTimeout cho DbContext
-                });
+                })
+                #region (3.5+)
+                //.UseInternalServiceProvider(new ServiceCollection()
+                //   .AddEntityFrameworkSqlServer()
+                //   .AddSingleton<IQueryCompiler, LinqKitQueryCompiler>()
+                //   .BuildServiceProvider()
+                #endregion
+                ;
 
                 options.AddInterceptors(auditInterceptor);
             });

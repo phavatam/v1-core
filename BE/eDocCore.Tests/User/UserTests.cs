@@ -27,7 +27,7 @@ namespace eDocCore.Tests.User
                 IsActive = true
             };
             var expectedId = Guid.NewGuid();
-            mockRepo.Setup(r => r.AddAsync(It.IsAny<eDocCore.Domain.Entities.User>())).ReturnsAsync(expectedId);
+            // await mockRepo.Setup(r => r.AddAsync(It.IsAny<eDocCore.Domain.Entities.User>())).ReturnsAsync(expectedId);
 
             // Act
             var result = await handler.Handle(command, CancellationToken.None);

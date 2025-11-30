@@ -42,7 +42,7 @@ namespace eDocCore.Domain.Interfaces
         Task UpdateRangeAsync(IEnumerable<T> entities);
 
         /// <summary>Xóa nhiều Entity cùng lúc.</summary>
-        Task RemoveRangeAsync(IEnumerable<T> entities);
+        Task DeleteRangeAsync(IEnumerable<T> entities);
 
         // === 3. Truy vấn LINQ Linh hoạt (Predicate & Sắp xếp) ===
 

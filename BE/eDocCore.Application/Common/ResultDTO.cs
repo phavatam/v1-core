@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Net;
 
 namespace eDocCore.Application.Common
@@ -9,7 +10,7 @@ namespace eDocCore.Application.Common
         public int StatusCode { get; init; }
         public T? Data { get; set; }
         public string? Message { get; set; }
-        public string? TraceId { get; init; }
+        public string? TraceId { get; set; }
         public static ResultDTO<T> Success(T? data = default, string? message = null, string? traceId = null) =>
             new() { IsSuccess = true, StatusCode = (int) HttpStatusCode.OK, Message = message ?? "Success", Data = data, TraceId = traceId };
 
@@ -22,12 +23,12 @@ namespace eDocCore.Application.Common
         public bool IsSuccess { get; set; }
         public int StatusCode { get; init; }
         public string? Message { get; set; }
-        public string? TraceId { get; init; }
+        public string? TraceId { get; set; }
         public static ResultDTO Success(string? message = null, string? traceId = null) =>
             new() { IsSuccess = true, StatusCode = (int) HttpStatusCode.OK, Message = message ?? "Success", TraceId = traceId };
 
         public static ResultDTO Failure(int statusCode, string message, string? traceId = null) =>
-            new() { IsSuccess = false, StatusCode = statusCode, Message = message, TraceId = traceId };
+            new() { IsSuccess = false, StatusCode = statusCode, Message = message, TraceId = traceId};
     }
 
     public class ArrayResultDTO

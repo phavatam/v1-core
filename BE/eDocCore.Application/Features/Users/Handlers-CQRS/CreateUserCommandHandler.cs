@@ -22,7 +22,8 @@ namespace eDocCore.Application.Features.Users.Handlers
                 Email = request.Email,
                 IsActive = request.IsActive
             };
-            return await _userRepository.AddAsync(user);
+            var createUser = await _userRepository.AddAsync(user);
+            return createUser.Id;
         }
     }
 }

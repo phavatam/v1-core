@@ -14,7 +14,8 @@ namespace eDocCore.Application.Features.Users.Handlers
         }
         public async Task<List<User>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
         {
-            return await _userRepository.GetAllAsync();
+            var allList = await _userRepository.GetAllAsync();
+            return allList.ToList();
         }
     }
 }

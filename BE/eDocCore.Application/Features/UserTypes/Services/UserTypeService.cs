@@ -63,7 +63,7 @@ namespace eDocCore.Application.Features.UserTypes.Services
                 UserType = await _UserTypeRepository.AddAsync(UserType);
 
                 await _unitOfWork.CommitAsync();
-                return ResultDTO< UserTypeDto >.Success();
+                return ResultDTO<UserTypeDto>.Success();
             }
             catch (Exception ex)
             {

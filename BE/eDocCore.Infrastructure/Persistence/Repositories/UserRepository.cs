@@ -8,34 +8,16 @@ using eDocCore.Domain.Interfaces.Extend;
 
 namespace eDocCore.Infrastructure.Persistence.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : GenericRepository<User>, IUserRepository
     {
         private readonly ApplicationDbContext _context;
-        public UserRepository(ApplicationDbContext context)
-        {
+        public UserRepository(ApplicationDbContext context) : base(context) {
             _context = context;
         }
-
-        public IQueryable<User> GetAllAsQueryable()
-        {
-            return _context.Users.AsNoTracking().AsQueryable();
-        }
-
         public async Task<int> CountAsync()
         {
             return await _context.Users.CountAsync();
         }
-
-        public async Task<List<User>> GetAllAsync()
-        {
-            return await _context.Users.AsNoTracking().ToListAsync();
-        }
-
-        public async Task<User?> GetByIdAsync(Guid id)
-        {
-            return await _context.Users.FindAsync(id);
-        }
-
         public async Task<User?> GetByLoginNameAsync(string loginName)
         {
             return await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.LoginName == loginName);
@@ -52,29 +34,6 @@ namespace eDocCore.Infrastructure.Persistence.Repositories
                 .Select(ur => ur.Role.Name)
                 .Distinct()
                 .ToListAsync();
-        }
-
-        public async Task<Guid> AddAsync(User user)
-        {
-            user.Id = Guid.NewGuid();
-            user.Created = DateTimeOffset.UtcNow;
-            user.Modified = DateTimeOffset.UtcNow;
-            _context.Users.Add(user);
-            // Defer SaveChanges to UnitOfWork.CommitAsync
-            return user.Id;
-        }
-
-        public async Task UpdateAsync(User user)
-        {
-            user.Modified = DateTimeOffset.UtcNow;
-            _context.Users.Update(user);
-            // Defer SaveChanges to UnitOfWork.CommitAsync
-        }
-
-        public async Task DeleteAsync(User user)
-        {
-            _context.Users.Remove(user);
-            // Defer SaveChanges to UnitOfWork.CommitAsync
         }
     }
 }

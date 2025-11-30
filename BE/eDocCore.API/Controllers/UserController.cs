@@ -1,20 +1,25 @@
-﻿using eDocCore.Application.Common;
+﻿using Asp.Versioning;
+using eDocCore.Application.Common;
 using eDocCore.Application.Common.Exceptions;
 using eDocCore.Application.Features.Auth.DTOs.Request;
 using eDocCore.Application.Features.Users.Commands;
 using eDocCore.Application.Features.Users.DTOs;
+using eDocCore.Application.Features.Users.DTOs.Request;
 using eDocCore.Application.Features.Users.Queries;
 using eDocCore.Application.Features.Users.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 
 namespace eDocCore.API.Controllers
 {
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion(1.0)]
+    [ApiVersion(2.0)]
     public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -28,8 +33,7 @@ namespace eDocCore.API.Controllers
         }
 
         [HttpGet("get-user")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [MapToApiVersion(1.0)]
         public async Task<ActionResult> GetUser()
         {
             try
@@ -49,7 +53,7 @@ namespace eDocCore.API.Controllers
                 if (dateAfterConvert < DateTime.Now)
                     return Ok(ResultDTO.Failure(400, "Token đã hết hạn"));
 
-                var user = await _userService.GetUserById(Guid.Parse(sub));
+                var user = await _userService.Get(Guid.Parse(sub));
                 if (user == null)
                 {
                     return Ok(ResultDTO.Failure(400, "User không tồn tại!"));
@@ -64,7 +68,7 @@ namespace eDocCore.API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, ResultDTO.Failure((int) HttpStatusCode.InternalServerError, ex.Message, HttpContext.TraceIdentifier));
+                return StatusCode(StatusCodes.Status500InternalServerError, ResultDTO.Failure((int)HttpStatusCode.InternalServerError, ex.Message, HttpContext.TraceIdentifier));
             }
         }
 
@@ -76,14 +80,13 @@ namespace eDocCore.API.Controllers
         }
 
 
-        [HttpGet("get-list-users")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> GetListUsers(int pageNumber, int pageSize)
+        [HttpPost("GetList")]
+        [MapToApiVersion(1.0)]
+        public async Task<ActionResult> Get(GetUserRequest request)
         {
             try
             {
-                var result = await _userService.GetListUsers(pageNumber, pageSize);
+                var result = await _userService.Get(request);
                 if (!result.IsSuccess)
                 {
                     return Ok(ResultDTO.Failure(400, "Lấy danh sách thất bại!", HttpContext.TraceIdentifier));
@@ -93,6 +96,105 @@ namespace eDocCore.API.Controllers
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ResultDTO.Failure((int)HttpStatusCode.InternalServerError, ex.Message, HttpContext.TraceIdentifier));
+            }
+        }
+
+        [HttpGet("{id}")]
+        [MapToApiVersion(1.0)]
+        public async Task<ActionResult> Get(Guid id)
+        {
+            try
+            {
+                var result = await _userService.Get(id);
+                if (result is null)
+                {
+                    return BadRequest(ResultDTO.Failure(400, "Không tìm thấy User!"));
+                }
+                return Ok(ResultDTO<object>.Success(result, HttpContext.TraceIdentifier));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Lỗi Server không mong muốn. TraceId: {TraceId}", HttpContext.TraceIdentifier);
+                return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    error = "Đã xảy ra lỗi hệ thống không mong muốn. Vui lòng liên hệ hỗ trợ.",
+                    traceId = HttpContext.TraceIdentifier
+                });
+            }
+        }
+
+        [HttpPost]
+        [MapToApiVersion(1.0)]
+        public async Task<ActionResult> Create(CreateUserRequest request)
+        {
+            try
+            {
+                var result = await _userService.Create(request);
+                if (!result.IsSuccess)
+                {
+                    result.TraceId = HttpContext.TraceIdentifier;
+                    return BadRequest(result);
+                }
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Lỗi Server không mong muốn. TraceId: {TraceId}", HttpContext.TraceIdentifier);
+                return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    error = "Đã xảy ra lỗi hệ thống không mong muốn. Vui lòng liên hệ hỗ trợ.",
+                    traceId = HttpContext.TraceIdentifier
+                });
+            }
+        }
+
+        [HttpPut]
+        [MapToApiVersion(1.0)]
+        public async Task<ActionResult> Update(UpdateUserRequest request)
+        {
+            try
+            {
+                var result = await _userService.Update(request);
+                if (!result.IsSuccess)
+                {
+                    result.TraceId = HttpContext.TraceIdentifier;
+                    return BadRequest(result);
+                }
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Lỗi Server không mong muốn. TraceId: {TraceId}", HttpContext.TraceIdentifier);
+                return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    error = "Đã xảy ra lỗi hệ thống không mong muốn. Vui lòng liên hệ hỗ trợ.",
+                    traceId = HttpContext.TraceIdentifier
+                });
+            }
+        }
+
+        [HttpDelete("{id}")]
+        [MapToApiVersion(1.0)]
+        public async Task<ActionResult> Delete(Guid id)
+        {
+            try
+            {
+                var result = await _userService.Delete(id);
+                if (!result.IsSuccess)
+                {
+                    result.TraceId = HttpContext.TraceIdentifier;
+                    return BadRequest(result);
+                }
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Lỗi Server không mong muốn. TraceId: {TraceId}", HttpContext.TraceIdentifier);
+                return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    error = "Đã xảy ra lỗi hệ thống không mong muốn. Vui lòng liên hệ hỗ trợ.",
+                    traceId = HttpContext.TraceIdentifier
+                });
             }
         }
 

@@ -8,14 +8,18 @@
 
   <ItemGroup>
     <Compile Remove="Features\A-Example\**" />
+    <Compile Remove="Features\Roles\DTOs\Response\**" />
     <EmbeddedResource Remove="Features\A-Example\**" />
+    <EmbeddedResource Remove="Features\Roles\DTOs\Response\**" />
     <None Remove="Features\A-Example\**" />
+    <None Remove="Features\Roles\DTOs\Response\**" />
   </ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="AutoMapper" Version="13.0.1" />
 		<PackageReference Include="FluentValidation" Version="11.9.1" />
 		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.1" />
+		<PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" Version="7.1.9" />
 		<PackageReference Include="MediatR" Version="12.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="8.0.8" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
@@ -30,10 +34,6 @@
 	
 	<ItemGroup>
 	  <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <Folder Include="Features\Roles\DTOs\Response\" />
 	</ItemGroup>
 
 

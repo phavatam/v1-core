@@ -8,13 +8,11 @@ namespace eDocCore.Application.Features.Auth.Validators
 {
     public class RegisterUserRequestValidator : AbstractValidator<RegisterUserRequest>
     {
-        private readonly IAuthService _authService;
         private readonly IRoleService _roleService;
         private readonly IUserService _userService;
 
         public RegisterUserRequestValidator(IAuthService authService, IRoleService roleService, IUserService userService)
         {
-            _authService = authService;
             _roleService = roleService;
             _userService = userService;
 
@@ -42,7 +40,7 @@ namespace eDocCore.Application.Features.Auth.Validators
 
         private bool ExistLoginName(string loginName)
         {
-            var user = _userService.GetUserByLoginName(loginName).Result;
+            var user = _userService.GetByLoginName(loginName).Result;
             return user == null;
         }
 

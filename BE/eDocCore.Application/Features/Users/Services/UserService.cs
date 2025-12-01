@@ -43,8 +43,9 @@ namespace eDocCore.Application.Features.Users.Services
             {
                 // var keywordPredicate = PredicateBuilder.False<User>();
                 predicate = predicate.And(x =>
-                (x.FullName != null && x.FullName.Contains(request.Keyword)) ||
-                (x.LoginName != null && x.LoginName.Contains(request.Keyword)));
+                (x.FullName != null && x.FullName.Contains(request.Keyword.Trim())) ||
+                (x.Email != null && x.Email.Contains(request.Keyword.Trim())) ||
+                (x.LoginName != null && x.LoginName.Contains(request.Keyword.Trim())));
             }
 
             if (!string.IsNullOrEmpty(request.LoginName))

@@ -14,7 +14,7 @@ namespace eDocCore.Application.Features.Users.DTOs
 
         public string? FullName { get; set; }
 
-        public bool? Gender { get; set; }
+        public byte? Gender { get; set; }
 
         public string? Email { get; set; }
 

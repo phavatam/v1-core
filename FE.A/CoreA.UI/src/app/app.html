@@ -1,14 +1,16 @@
 @if (!isLoginRoute)
 {
-<div class="container-standard">
+<div>
   <app-sidebar></app-sidebar>
   <app-header></app-header>
-  <main class="bst-main">
+  <main class="bst-main bg-neutral-blue-300">
     <router-outlet></router-outlet>
   </main>
   <app-footer></app-footer>
 </div>
 }
 @else {
-<app-login></app-login>
+<div class="container-standard">
+  <app-login></app-login>
+</div>
 }

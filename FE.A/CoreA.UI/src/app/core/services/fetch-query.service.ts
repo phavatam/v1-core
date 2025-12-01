@@ -1,4 +1,4 @@
-import { environment } from '../global-variables';
+import { environment } from '../../../environments/global-variables';
 
 export class FetchQueryService {
   static async get<T>(endpoint: string, params?: any): Promise<T> {
@@ -30,5 +30,4 @@ export class FetchQueryService {
     if (!response.ok) throw new Error(await response.text());
     return response.json();
   }
-  // Có thể bổ sung các phương thức put, delete nếu cần
 }

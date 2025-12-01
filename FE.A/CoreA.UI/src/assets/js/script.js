@@ -2,10 +2,8 @@
 window.onload = function () {
     // sidebar only expands on desktop by default
     let device = detectDevice();
-    console.log("Detected device:", device);
     if (device === "Desktop") {
         let sidebar = document.getElementById("bst-sidebar");
-        console.log("Sidebar element:", sidebar);
         if (!sidebar) {
             return;
         }

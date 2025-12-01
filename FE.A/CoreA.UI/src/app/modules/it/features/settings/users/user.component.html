@@ -1,0 +1,446 @@
+<div class="container-fluid p-3 ng-scope">
+
+    <div class="table-rounded-toolbar">
+        <!-- toolbar -->
+        <div class="toolbar">
+            <div class="row">
+                <div class="col-12 col-lg-8">
+                    <div class="group poppins-medium text-grey-300">
+                        <h2 class="widget-title">Users</h2>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-8">
+                    <div
+                        class="d-flex align-items-start justify-content-start gap-2 flex-column flex-lg-row align-items-lg-center">
+                        <input type="text" class="form-control ng-valid ng-dirty ng-valid-parse ng-touched ng-empty"
+                            style="width: 300px; height: 40px" id="FieldFilter" placeholder="Search for..."
+                            (keypress)="ifEnter($event)" [(ngModel)]="searchKeyword" />
+                        <div class="dropdown d-flex gap-1">
+                            <button class="btn btn-primary rounded-3 poppins-regular display-9  py-2 px-3" type="button"
+                                (click)="search()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-search" viewBox="0 0 16 16">
+                                    <path
+                                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0">
+                                    </path>
+                                </svg>
+                                &nbsp;Search
+                            </button>
+                            <button class="btn btn-outline-cyan rounded-3 poppins-regular display-10 py-2 px-3 "
+                                type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <svg fill="currentColor" class="bi bi-check-square" width="16" height="16"
+                                    viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="m0 1016.081 409.186 409.073 79.85-79.736-272.867-272.979h1136.415V959.611H216.169l272.866-272.866-79.85-79.85L0 1016.082ZM1465.592 305.32l315.445 315.445h-315.445V305.32Zm402.184 242.372-329.224-329.11C1507.042 187.07 1463.334 169 1418.835 169h-743.83v677.647h112.94V281.941h564.706v451.765h451.765v903.53H787.946V1185.47H675.003v564.705h1242.353V667.522c0-44.498-18.07-88.207-49.581-119.83Z"
+                                        fill-rule="evenodd"></path>
+                                </svg>&nbsp; Export
+                            </button>
+                        </div>
+                        <div class="input-group-append">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-4 m-auto">
+                    <div class="d-flex gap-1 justify-content-lg-end">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-funnel" viewBox="0 0 16 16">
+                                <path
+                                    d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z">
+                                </path>
+                            </svg>
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-2xl modal-dialog-centered">
+                                <div class="modal-content p-3 rounded-4">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title modal-title-style1" id="exampleModalLabel">
+                                            SEARCH
+                                        </h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form>
+                                            <div class="row mb-3">
+                                                <div class="col">
+                                                    <label for="exampleInputText1" class="form-label">Keyword</label>
+                                                    <input type="text" class="form-control" id="exampleInputText1"
+                                                        aria-describedby="textHelp" value="Search" />
+                                                </div>
+                                                <div class="col">
+                                                    <label for="exampleSelect1" class="form-label">Year</label>
+                                                    <select id="exampleSelect1" class="form-select"
+                                                        aria-label="Default select example">
+                                                        <option selected="">2024</option>
+                                                        <option value="1">One</option>
+                                                        <option value="2">Two</option>
+                                                        <option value="3">Three</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col">
+                                                    <label for="exampleSelect1" class="form-label">Requestor</label>
+                                                    <select id="exampleSelect1" class="form-select"
+                                                        aria-label="Default select example">
+                                                        <option selected="">
+                                                            FACILITY MANAGEMENT (G5)
+                                                        </option>
+                                                        <option value="1">One</option>
+                                                        <option value="2">Two</option>
+                                                        <option value="3">Three</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col">
+                                                    <label for="exampleDatetime1" class="form-label">Created
+                                                        Date</label>
+                                                    <div id="exampleDatetime1" class="datetime-wrapper">
+                                                        <input id="datetime-range-picker" type="text"
+                                                            class="form-control flatpickr-input"
+                                                            placeholder="Datetime range picker" readonly="readonly" />
+                                                        <span class="datetime-icon">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20px"
+                                                                height="20px" fill="currentColor" class="bi bi-calendar"
+                                                                viewBox="0 0 16 16">
+                                                                <path
+                                                                    d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z">
+                                                                </path>
+                                                            </svg>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col">
+                                                    <label for="exampleSelect1" class="form-label">Contractor</label>
+                                                    <select id="exampleSelect1" class="form-select"
+                                                        aria-label="Default select example">
+                                                        <option selected="">
+                                                            FACILITY MANAGEMENT (G5)
+                                                        </option>
+                                                        <option value="1">One</option>
+                                                        <option value="2">Two</option>
+                                                        <option value="3">Three</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 d-flex align-items-center justify-content-lg-between">
+                                                <div class="form-group">
+                                                    <span class="form-label">Confidentiality</span>
+                                                    <div class="d-flex gap-4">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="flexRadioDefault" id="flexRadioDefault1"
+                                                                checked="" />
+                                                            <label class="form-check-label" for="flexRadioDefault1">
+                                                                Confidentiality
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="flexRadioDefault" id="flexRadioDefault2" />
+                                                            <label class="form-check-label" for="flexRadioDefault2">
+                                                                Non-Confidentiality
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="flexRadioDefault" id="flexRadioDefault3" />
+                                                            <label class="form-check-label" for="flexRadioDefault3">
+                                                                All
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button type="button"
+                                                        class="btn btn-white rounded-3 poppins-regular display-9">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                            fill="currentColor" class="bi bi-arrow-repeat"
+                                                            viewBox="0 0 16 16">
+                                                            <path
+                                                                d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9">
+                                                            </path>
+                                                            <path fill-rule="evenodd"
+                                                                d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z">
+                                                            </path>
+                                                        </svg>
+                                                        &nbsp;Reset
+                                                    </button>
+                                                    &nbsp;
+                                                    <button type="button"
+                                                        class="btn btn-primary rounded-3 poppins-regular display-9">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                            fill="currentColor" class="bi bi-search"
+                                                            viewBox="0 0 16 16">
+                                                            <path
+                                                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0">
+                                                            </path>
+                                                        </svg>
+                                                        &nbsp;Search
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dropdown d-flex align-items-center">
+                            <button class="btn-none dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-gear" viewBox="0 0 16 16">
+                                    <path
+                                        d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0">
+                                    </path>
+                                    <path
+                                        d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z">
+                                    </path>
+                                </svg>
+                            </button>
+                            <div class="dropdown-menu poppins-regular display-9 w-max py-2 px-3 border-0 shadow">
+                                <!-- section -->
+                                <p class="ps-3">Show all columns</p>
+                                <ul class="p-0">
+                                    <li>
+                                        <div class="form-check">
+                                            <input class="form-check-input dark-style" type="checkbox"
+                                                id="darkCheckbox" />
+                                            <label class="form-check-label" for="darkCheckbox">
+                                                From
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="form-check">
+                                            <input class="form-check-input dark-style" type="checkbox"
+                                                id="darkCheckbox" />
+                                            <label class="form-check-label" for="darkCheckbox">
+                                                To
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="form-check">
+                                            <input class="form-check-input dark-style" type="checkbox" id="darkCheckbox"
+                                                checked="" />
+                                            <label class="form-check-label" for="darkCheckbox">
+                                                Month of use
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="form-check">
+                                            <input class="form-check-input dark-style" type="checkbox" id="darkCheckbox"
+                                                checked="" />
+                                            <label class="form-check-label" for="darkCheckbox">
+                                                Request for
+                                            </label>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <!-- section -->
+                                <p class="ps-3">Reset</p>
+                                <div class="text-center">
+                                    <button type="button"
+                                        class="btn btn-dark rounded-3 poppins-regular display-9 py-2 px-5">
+                                        Save config
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BREAKLINE -->
+            <div class="h-1r"></div>
+            <!-- table -->
+            <div class="table-wrapper overflow-auto">
+                <table class="table table-borderless table-rounded leading-18 table-fixed-column">
+                    <thead class="stickybar-1" style="background-color: #e8e8e8">
+                        <tr>
+                            <th scope="col" class="fixed-column fw-bold" data-key="status">
+                                #
+                            </th>
+                            <th scope="col" class="fixed-column fw-bold" data-key="ref-num">
+                                Login Name
+                            </th>
+                            <th scope="col" class="fw-bold">Full Name</th>
+                            <th scope="col" class="fw-bold">Email</th>
+                            <th scope="col" class="fw-bold">Gender</th>
+                            <th scope="col" class="fw-bold">Is Active</th>
+                            <th scope="col" class="fw-bold">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                        @for (user of users; track user.id) {
+                        <tr>
+                            <td>{{$index + 1}}</td>
+                            <td class="text-primary">
+                                @if (user.isEditing) {
+                                <input type="text"
+                                    class="form-control form-control-sm ng-pristine ng-untouched ng-valid ng-not-empty"
+                                    [disabled]="!user.isEditing" [(ngModel)]="user.loginName" />
+                                }
+                                @else {
+                                <a  style="cursor: pointer;">{{user.loginName}}</a>
+                                }
+                            </td>
+                            <td>
+                                @if (user.isEditing) {
+                                <input type="text"
+                                    class="form-control form-control-sm ng-pristine ng-untouched ng-valid ng-not-empty"
+                                    [disabled]="!user.isEditing" [(ngModel)]="user.fullName" />
+                                } @else {
+                                {{user.fullName}}
+                                }
+                            </td>
+                            <td>
+                                @if (user.isEditing) {
+                                <input type="text"
+                                    class="form-control form-control-sm ng-pristine ng-untouched ng-valid ng-not-empty"
+                                    [disabled]="!user.isEditing" [(ngModel)]="user.email" />
+                                } @else {
+                                {{user.email}}
+                                }
+                            </td>
+                            <td>
+                                @if (user.isEditing) {
+                                <select class="form-select form-select-sm" [disabled]="!user.isEditing"
+                                    [(ngModel)]="user.gender">
+                                    <option *ngFor="let gender of genderDataSource" [ngValue]="gender.value">
+                                        {{gender.label}}</option>
+                                </select>
+                                } @else {
+                                {{user.gender | gender}}
+                                }
+                            </td>
+                            <td>
+                                <input type="checkbox" [(ngModel)]="user.isActive" [checked]="user.isActive"
+                                    [disabled]="!user.isEditing" />
+                            </td>
+                            <td>
+                                @if (user.isEditing){
+                                <button type="button" class="mx-1 p-1 btn-border" title="Save"
+                                    style="border: 1px solid #38B6FF" (click)="updateUser(user)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                        fill="none" stroke="#38B6FF" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z">
+                                        </path>
+                                        <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                                        <polyline points="7 3 7 8 15 8"></polyline>
+                                    </svg>
+                                </button>
+                                <button type="button" class="mx-1 p-1 btn-border" title="Cancel"
+                                    style="border: 1px solid black" (click)="cancelEdit(user)">
+                                    <svg width="16" height="16" viewBox="0 0 512 512" version="1.1"
+                                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                        <title>cancel</title>
+                                        <g id="Page-1" stroke="currentColor" stroke-width="1" fill="currentColor"
+                                            fill-rule="evenodd">
+                                            <g id="work-case" fill="currentColor"
+                                                transform="translate(91.520000, 91.520000)">
+                                                <polygon id="Close"
+                                                    points="328.96 30.2933333 298.666667 1.42108547e-14 164.48 134.4 30.2933333 1.42108547e-14 1.42108547e-14 30.2933333 134.4 164.48 1.42108547e-14 298.666667 30.2933333 328.96 164.48 194.56 298.666667 328.96 328.96 298.666667 194.56 164.48">
+                                                </polygon>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </button>
+                                } @else {
+                                <button type="button" class="mx-1 p-1 btn-border" title="Edit"
+                                    style="border: 1px solid #38B6FF" (click)="editUser(user)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#38B6FF"
+                                        class="bi bi-pencil" viewBox="0 0 16 16">
+                                        <path
+                                            d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325">
+                                        </path>
+                                    </svg>
+                                </button>
+                                <button type="button" class="mx-1 p-1 btn-border" title="Delete"
+                                    style="border: 1px solid rgba(255, 0, 0, 0.5)" (click)="deleteUser(user)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        fill="rgba(255, 0, 0, 0.5)" viewBox="0 0 16 16">
+                                        <path
+                                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z">
+                                        </path>
+                                        <path
+                                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z">
+                                        </path>
+                                    </svg>
+                                </button>
+                                }
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <!-- pagination -->
+            <div class="d-flex flex-column align-items-center flex-lg-row justify-content-lg-between opensans-semibold">
+                <!-- pagination: page numbers -->
+                <div class="d-flex align-items-center gap-2 display-9 leading-19">
+                    <p class="m-0">Page</p>
+                    <select class="form-select" aria-label="Default select example">
+                        <option selected value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                    <p class="m-0 text-nowrap">of 10</p>
+                </div>
+                <!-- pagination: page navigations -->
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination pagination-style1 isolate gap-2">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M11 17l-5-5 5-5M18 17l-5-5 5-5" />
+                                    </svg>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="page-item active">
+                            <a class="page-link" href="#">1</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">2</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">3</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M13 17l5-5-5-5M6 17l5-5-5-5" />
+                                    </svg>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<custom-bootstrap-modal
+    [isVisible]="isModalVisible()"
+    [title]="modalTitle()"
+    [message]="modalMessage()"
+    (confirmAction)="handleConfirm()"
+    (closeAction)="emitFromPopup()"
+></custom-bootstrap-modal>

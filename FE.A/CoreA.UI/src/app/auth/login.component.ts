@@ -2,6 +2,10 @@ import { Component } from '@angular/core';
 import { AuthService } from '../core/services/auth.service';
 import { NotifyService } from '../core/services/notify.service';
 import { FormsModule } from '@angular/forms';
+import { Router } from "@angular/router"
+import { ToastrService } from 'ngx-toastr';
+import { provideToastr } from 'ngx-toastr';
+
 
 @Component({
     selector: 'app-login',
@@ -19,8 +23,10 @@ export class LoginComponent {
     currentYear = new Date().getFullYear();
     constructor(
         private authService: AuthService,
-        private notify: NotifyService
-    ) {}
+        private notify: NotifyService,
+        private router: Router,
+        private toastr: ToastrService
+    ) { }
 
     toggleShowPassword() {
         console.log('Toggling password visibility');
@@ -34,9 +40,12 @@ export class LoginComponent {
             this.password = "M@tkhau1";
             const res = await this.authService.login(this.username, this.password);
             if (res?.isSuccess && res?.data?.accessToken) {
-                document.cookie = `accessToken=${res.data.accessToken}; path=/;`;
-                this.error = '';
-                window.location.href = '/home';
+                this.toastr.success('Login successful!', 'Welcome');
+                setTimeout(() => {
+                    document.cookie = `accessToken=${res.data.accessToken}; path=/;`;
+                    this.error = '';
+                    window.location.href = '/home';
+                }, 1000); // Đợi 1.5 giây
             } else {
                 this.error = res?.message || 'Invalid credentials';
                 this.notify.error(this.error);

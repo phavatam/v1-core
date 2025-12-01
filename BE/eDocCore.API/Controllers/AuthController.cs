@@ -84,6 +84,7 @@ namespace eDocCore.API.Controllers
         }
 
         [HttpPost("login")]
+        [MapToApiVersion(1.0)]
         [MapToApiVersion(2.0)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

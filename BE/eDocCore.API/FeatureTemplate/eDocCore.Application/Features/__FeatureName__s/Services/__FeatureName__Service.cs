@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 
 namespace eDocCore.Application.Features.__FeatureName__s.Services
 {
-    public class __FeatureName__Service : I__FeatureName__Service
+    public class __FeatureName__Service : GenericService<__ModelName__, __FeatureName__Dto>, I__FeatureName__Service
     {
         private readonly I__FeatureName__Repository ___FeatureName__Repository;
         private readonly IMapper _mapper;
@@ -21,7 +21,7 @@ namespace eDocCore.Application.Features.__FeatureName__s.Services
         private readonly ILogger<__FeatureName__Service> _logger;
         private readonly ICurrentUser _currentUser;
 
-        public __FeatureName__Service(I__FeatureName__Repository __FeatureName__Repository, IMapper mapper, IUnitOfWork unitOfWork, ILogger<__FeatureName__Service> logger,  ICurrentUser currentUser)
+        public __FeatureName__Service(I__FeatureName__Repository __FeatureName__Repository, IMapper mapper, IUnitOfWork unitOfWork, ILogger<__FeatureName__Service> logger,  ICurrentUser currentUser, IGenericRepository<__ModelName__> genericRepository) : base(unitOfWork, mapper, genericRepository)
         {
             ___FeatureName__Repository = __FeatureName__Repository;
             _mapper = mapper;
@@ -73,22 +73,20 @@ namespace eDocCore.Application.Features.__FeatureName__s.Services
             }
         }
 
-        public async Task<ResultDTO<__FeatureName__Dto>> Update(Update__FeatureName__Request request)
+        public async Task<ResultDTO<__FeatureName__Dto>> Update(Guid id, Update__FeatureName__Request request)
         {
             await _unitOfWork.BeginTransactionAsync();
             try
             {
                 if (request.Id == Guid.Empty) return ResultDTO<__FeatureName__Dto>.Failure(400, "Id is required");
 
-                var existing = await ___FeatureName__Repository.GetByIdAsync(request.Id);
-                _mapper.Map(request, existing);
+                var existing = await ___FeatureName__Repository.GetByIdAsync(id);
+                if (existing == null) return ResultDTO<__FeatureName__Dto>.Failure(400, "Item not found");
 
-                if (existing != null)
-                {
-                    await ___FeatureName__Repository.UpdateAsync(existing);
-                    await _unitOfWork.CommitAsync();
-                    _logger.LogInformation("Updated __FeatureName__ {__FeatureName__Id} by {UserId}", request.Id, _currentUser.UserId);
-                }
+                _mapper.Map(request, existing);
+                await ___FeatureName__Repository.UpdateAsync(existing);
+                await _unitOfWork.CommitAsync();
+                _logger.LogInformation("Updated __FeatureName__ {__FeatureName__Id} by {UserId}", request.Id, _currentUser.UserId);
                 return ResultDTO<__FeatureName__Dto>.Success();
             }
             catch (Exception ex)

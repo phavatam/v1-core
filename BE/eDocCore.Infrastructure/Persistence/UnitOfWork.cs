@@ -9,10 +9,29 @@ namespace eDocCore.Infrastructure.Persistence
     {
         private readonly ApplicationDbContext _context;
         private IDbContextTransaction? _transaction;
+        private Dictionary<Type, object> _repositories;
+        private bool _disposed;
 
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
+            _repositories = new Dictionary<Type, object>();
+        }
+
+        public IGenericRepository<T> Repository<T>() where T : class
+        {
+            if (_repositories == null)
+            {
+                _repositories = new Dictionary<Type, object>();
+            }
+
+            var type = typeof(T);
+            if (!_repositories.ContainsKey(type))
+            {
+                _repositories[type] = new GenericRepository<T>(_context);
+            }
+
+            return (IGenericRepository<T>)_repositories[type];
         }
 
         public async Task BeginTransactionAsync()
@@ -48,6 +67,30 @@ namespace eDocCore.Infrastructure.Persistence
 
             // Clear tracked changes to avoid inconsistent state after rollback
             _context.ChangeTracker.Clear();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed && disposing)
+            {
+                if (_transaction != null)
+                {
+                    _transaction.Dispose();
+                    _transaction = null;
+                }
+
+                if (_context != null)
+                {
+                    _context.Dispose();
+                }
+            }
+            _disposed = true;
         }
     }
 }

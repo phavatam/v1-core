@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using eDocCore.Domain.Interfaces;
 
 namespace eDocCore.Domain.Entities;
 
-public partial class User
+public partial class User 
 {
     public Guid Id { get; set; }
 
@@ -18,6 +19,8 @@ public partial class User
     public string? Email { get; set; }
 
     public bool IsActive { get; set; }
+
+    public string? Description { get; set; }
 
     public DateTimeOffset Created { get; set; }
 

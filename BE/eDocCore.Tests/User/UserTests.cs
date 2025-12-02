@@ -22,7 +22,7 @@ namespace eDocCore.Tests.User
             {
                 LoginName = "testuser",
                 FullName = "Test User",
-                Gender = true,
+                Gender = 1,
                 Email = "test@example.com",
                 IsActive = true
             };

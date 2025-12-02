@@ -2,3 +2,5 @@
 /CodeChunks.db-wal
 /SemanticSymbols.db
 /SemanticSymbols.db-wal
+/SemanticSymbols.db-shm
+/CodeChunks.db-shm

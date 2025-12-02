@@ -4,6 +4,7 @@ using eDocCore.Application.Features.__FeatureName__s.DTOs;
 using eDocCore.Application.Features.__FeatureName__s.DTOs.Request;
 using eDocCore.Application.Features.__FeatureName__s.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Deltas;
 using System.Net;
 
 namespace eDocCore.API.Controllers
@@ -68,15 +69,33 @@ namespace eDocCore.API.Controllers
             }
         }
 
-        [HttpPut]
-        public async Task<ActionResult> Update(Update__FeatureName__Request args)
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Update(Guid id, [FromBody] Update__FeatureName__Request args)
         {
             try
             {
-                var result = await ___FeatureName__Service.Update(args);
+                var result = await ___FeatureName__Service.Update(id, args);
                 if (!result.IsSuccess)
                 {
                     return BadRequest(ResultDTO.Failure(400, result.Message ?? "", HttpContext.TraceIdentifier));
+                }
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ResultDTO.Failure((int)HttpStatusCode.InternalServerError, ex.Message, HttpContext.TraceIdentifier));
+            }
+        }
+
+        [HttpPatch]
+        public async Task<ActionResult> Update(Guid id, Delta<__FeatureName__Dto> request)
+        {
+            try
+            {
+                var result = await ___FeatureName__Service.Patch(id, request);
+                if (result == null)
+                {
+                    return BadRequest(ResultDTO.Failure(400, "Failure", HttpContext.TraceIdentifier));
                 }
                 return Ok(result);
             }

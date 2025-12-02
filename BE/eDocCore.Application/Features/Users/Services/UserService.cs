@@ -3,27 +3,20 @@ using eDocCore.Application.Common;
 using eDocCore.Application.Features.Users.DTOs;
 using eDocCore.Domain.Entities;
 using eDocCore.Domain.Interfaces.Extend;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using eDocCore.Domain.Interfaces;
-using System.Linq.Expressions;
 using eDocCore.Application.Features.Users.DTOs.Request;
 using LinqKit;
-using eDocCore.Domain.Shared.Enum;
 
 namespace eDocCore.Application.Features.Users.Services
 {
-    public class UserService : IUserService
+    public class UserService :  GenericService<User, UserDTO>, IUserService
     {
         private IUnitOfWork _uow;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        // private readonly IGenericRepository<User> _genericRepository;
+        private readonly IGenericRepository<User> _genericRepository;
 
-        public UserService(IUserRepository userRepository, IMapper mapper, IUnitOfWork uow)
+        public UserService(IUserRepository userRepository, IMapper mapper, IUnitOfWork uow, IGenericRepository<User> genericRepository) : base(uow, mapper, genericRepository)
         {
             _userRepository = userRepository;
             _mapper = mapper;
@@ -98,7 +91,7 @@ namespace eDocCore.Application.Features.Users.Services
             return ResultDTO<UserDTO>.Success(_mapper.Map<UserDTO>(newUser));
         }
 
-        public async Task<ResultDTO<UserDTO>> Update(UpdateUserRequest request, CancellationToken ct = default)
+        public async Task<ResultDTO<UserDTO>> Update(Guid id,UpdateUserRequest request, CancellationToken ct = default)
         {
             await _uow.BeginTransactionAsync();
             var user = await _userRepository.GetByIdAsync(request.Id ?? Guid.Empty);
@@ -118,6 +111,7 @@ namespace eDocCore.Application.Features.Users.Services
             return ResultDTO<UserDTO>.Success(_mapper.Map<UserDTO>(user));
         }
 
+
         public async Task<ResultDTO<bool>> Delete(Guid userId, CancellationToken ct = default)
         {
             await _uow.BeginTransactionAsync();
@@ -131,5 +125,6 @@ namespace eDocCore.Application.Features.Users.Services
             await _uow.CommitAsync();
             return ResultDTO<bool>.Success();
         }
+
     }
 }

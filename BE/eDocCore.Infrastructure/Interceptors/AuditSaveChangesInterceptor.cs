@@ -28,6 +28,7 @@ namespace eDocCore.Infrastructure.Interceptors
             {
                 if (entry.State == EntityState.Added)
                 {
+                    entry.Entity.Id = Guid.NewGuid();
                     entry.Entity.Created = DateTime.UtcNow;
                     entry.Entity.Modified = DateTime.UtcNow;
                 }

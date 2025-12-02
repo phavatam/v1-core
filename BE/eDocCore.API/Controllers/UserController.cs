@@ -10,6 +10,7 @@ using eDocCore.Application.Features.Users.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Deltas;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
@@ -148,13 +149,13 @@ namespace eDocCore.API.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [MapToApiVersion(1.0)]
-        public async Task<ActionResult> Update(UpdateUserRequest request)
+        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateUserRequest request)
         {
             try
             {
-                var result = await _userService.Update(request);
+                var result = await _userService.Update(id, request);
                 if (!result.IsSuccess)
                 {
                     result.TraceId = HttpContext.TraceIdentifier;
@@ -172,6 +173,32 @@ namespace eDocCore.API.Controllers
                 });
             }
         }
+
+
+        [HttpPatch("{id}")]
+        [MapToApiVersion(1.0)]
+        public async Task<ActionResult> Patch(Guid id, [FromBody] Delta<UserDTO> request)
+        {
+            try
+            {
+                var result = await _userService.Patch(id, request);
+                if (result == null)
+                {
+                    return BadRequest(result);
+                }
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Lỗi Server không mong muốn. TraceId: {TraceId}", HttpContext.TraceIdentifier);
+                return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    error = "Đã xảy ra lỗi hệ thống không mong muốn. Vui lòng liên hệ hỗ trợ.",
+                    traceId = HttpContext.TraceIdentifier
+                });
+            }
+        }
+
 
         [HttpDelete("{id}")]
         [MapToApiVersion(1.0)]

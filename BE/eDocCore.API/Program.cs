@@ -7,10 +7,12 @@ using eDocCore.Infrastructure;
 using eDocCore.Infrastructure.Authorization;
 using eDocCore.Infrastructure.Authorization.Handle;
 using eDocCore.Infrastructure.Interceptors;
+using eDocCore.Infrastructure.Persistence;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
@@ -241,6 +243,16 @@ var app = builder.Build();
 
 #region Cấu hình phần App Exception Handler (.NET 8)
 app.UseExceptionHandler(); // Dòng này sẽ sử dụng GlobalExceptionHandler đã đăng ký ở trên
+#endregion
+
+#region Cấu hình migration
+// Tự động migrate khi ứng dụng khởi động
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate(); // Tự động cập nhật schema theo migration mới nhất
+    Log.Information("Database migration completed successfully at {Time}", DateTime.UtcNow);
+}
 #endregion
 
 // Configure the HTTP request pipeline.

@@ -1,6 +1,4 @@
-﻿using eDocCore.API.Persistence.Repositories;
-using eDocCore.Application.Common.Interfaces;
-using eDocCore.Application.Features.Menus.Services;
+﻿using eDocCore.Application.Common.Interfaces;
 using eDocCore.Domain.Interfaces;
 using eDocCore.Domain.Interfaces.Extend;
 using eDocCore.Infrastructure.Identity;
@@ -11,7 +9,6 @@ using eDocCore.Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace eDocCore.Infrastructure
 {
@@ -31,16 +28,14 @@ namespace eDocCore.Infrastructure
                 sqlServerOptions =>
                 {
                     sqlServerOptions.CommandTimeout(CommandTimeoutSeconds); // Thiết lập CommandTimeout cho DbContext
-                })
+                    sqlServerOptions.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName); // ensure migrations are in the right assembly
+                });
                 #region (3.5+)
                 //.UseInternalServiceProvider(new ServiceCollection()
                 //   .AddEntityFrameworkSqlServer()
                 //   .AddSingleton<IQueryCompiler, LinqKitQueryCompiler>()
                 //   .BuildServiceProvider()
                 #endregion
-                ;
-
-                options.AddInterceptors(auditInterceptor);
             });
 
             #endregion

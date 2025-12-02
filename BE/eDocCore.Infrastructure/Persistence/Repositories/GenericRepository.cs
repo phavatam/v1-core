@@ -4,25 +4,37 @@ using eDocCore.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-public class GenericRepository<T> : IGenericRepository<T> where T : class, IAuditableEntity
+public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
     protected readonly ApplicationDbContext _context;
+    protected readonly DbSet<T> _dbSet;
 
-    // IMapper đã được loại bỏ để Repository chỉ tập trung vào Data Access
     public GenericRepository(ApplicationDbContext context)
     {
         _context = context;
+        _dbSet = context.Set<T>();
     }
 
     // === 1. CRUD Cơ bản & Gộp Overloads ===
 
     public virtual async Task<T?> GetByIdAsync(Guid id, bool asNoTracking = false, CancellationToken ct = default)
     {
-        var set = _context.Set<T>().AsQueryable();
-        if (asNoTracking) set = set.AsNoTracking();
 
-        // Sử dụng FirstOrDefaultAsync thay vì FindAsync để áp dụng AsNoTracking
-        return await set.FirstOrDefaultAsync(e => e.Id == id, ct);
+        //var set = _context.Set<T>().AsQueryable();
+        //if (asNoTracking) set = set.AsNoTracking();
+        //return await set.FirstOrDefaultAsync(e => e.Id == id, ct);
+
+        //var set = _context.Set<T>().AsQueryable();
+        //if (asNoTracking) set = set.AsNoTracking();
+
+        //// Tạo biểu thức lambda: e => e.Id == id (bằng reflection)
+        //var param = Expression.Parameter(typeof(T), "e");
+        //var prop = Expression.PropertyOrField(param, "Id");
+        //var body = Expression.Equal(prop, Expression.Constant(id));
+        //var lambda = Expression.Lambda<Func<T, bool>>(body, param);
+
+        //return await set.FirstOrDefaultAsync(lambda, ct);
+        return await _dbSet.FindAsync(id, ct);
     }
 
     public virtual async Task<IReadOnlyList<T>> GetAllAsync(bool asNoTracking = false, CancellationToken ct = default)
@@ -35,11 +47,13 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IAudi
     public virtual async Task<T> AddAsync(T entity, CancellationToken ct = default)
     {
         var now = DateTimeOffset.UtcNow;
-        if (entity.Id == Guid.Empty)
-            entity.Id = Guid.NewGuid();
-        //if (entity.Created == default)
-        //    entity.Created = now;
-        //entity.Modified = now;
+
+        // Nếu entity implement IAuditableEntity thì set Id
+        if (entity is IAuditableEntity auditable)
+        {
+            if (auditable.Id == Guid.Empty)
+                auditable.Id = Guid.NewGuid();
+        }
 
         await _context.Set<T>().AddAsync(entity, ct);
         // Defer SaveChanges
@@ -60,8 +74,8 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IAudi
         entry.State = EntityState.Modified;
 
         // Đảm bảo các thuộc tính Auditing không được chỉnh sửa (Trừ Modified)
-        entry.Property(e => e.Id).IsModified = false;
-        entry.Property(e => e.Created).IsModified = false;
+        //entry.Property(e => e.Id).IsModified = false;
+        //entry.Property(e => e.Created).IsModified = false;
 
         return entity;
     }
@@ -86,14 +100,13 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IAudi
 
     public virtual async Task AddRangeAsync(IEnumerable<T> entities, CancellationToken ct = default)
     {
-        var now = DateTimeOffset.UtcNow;
         foreach (var entity in entities)
         {
-            if (entity.Id == Guid.Empty)
-                entity.Id = Guid.NewGuid();
-            if (entity.Created == default)
-                entity.Created = now;
-            entity.Modified = now;
+            if (entity is IAuditableEntity auditable)
+            {
+                if (auditable.Id == Guid.Empty)
+                    auditable.Id = Guid.NewGuid();
+            }
         }
         await _context.Set<T>().AddRangeAsync(entities, ct);
     }
@@ -103,7 +116,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IAudi
         var now = DateTimeOffset.UtcNow;
         foreach (var entity in entities)
         {
-            entity.Modified = now;
+            //entity.Modified = now;
             var entry = _context.Entry(entity);
             if (entry.State == EntityState.Detached)
             {
@@ -111,7 +124,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IAudi
                 entry = _context.Entry(entity);
             }
             entry.State = EntityState.Modified;
-            entry.Property(e => e.Created).IsModified = false;
+            //entry.Property(e => e.Created).IsModified = false;
         }
         return Task.CompletedTask;
     }
@@ -211,7 +224,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class, IAudi
         else
         {
             // Bắt buộc phải có OrderBy trước Skip/Take
-            query = query.OrderBy(e => e.Id);
+            query = query.OrderBy(e => EF.Property<Guid>(e, "Id"));
         }
 
         if (asNoTracking) query = query.AsNoTracking();

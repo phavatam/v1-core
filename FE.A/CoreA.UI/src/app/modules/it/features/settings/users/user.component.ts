@@ -1,5 +1,5 @@
 import { Component, OnInit, signal } from "@angular/core";
-import { HRService, UserDTOResponse } from '../../../../../core/services/HR/hr.service';
+import { ITService, UserDTOResponse } from '../../../../../core/services/IT/it.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from "@angular/forms";
 import { GenderPipe } from "../../../../../shared/pipes/gender.pipe";
@@ -35,7 +35,7 @@ export class UserComponent implements OnInit {
     { value: 3, label: 'Khác' },
   ];
 
-  constructor(private hrService: HRService, private toastr: ToastrService) {
+  constructor(private itService: ITService, private toastr: ToastrService) {
     console.log("UserComponent constructor called");
   }
 
@@ -68,7 +68,7 @@ export class UserComponent implements OnInit {
 
   handleConfirm(): void {
     if (this.selectedUser) {
-      this.hrService.updateUser(this.selectedUser).subscribe({
+      this.itService.updateUser(this.selectedUser).subscribe({
         next: (res) => {
           if (res.isSuccess) {
             this.toastr.success('User updated successfully!', 'Success');
@@ -99,7 +99,7 @@ export class UserComponent implements OnInit {
   deleteUser(user: UserUI): void {
     if (confirm(`Bạn có chắc chắn muốn xóa user "${user.fullName}"?`)) {
       console.log("Delete user:", user);
-      this.hrService.deleteUser(user.id).subscribe({
+      this.itService.deleteUser(user.id).subscribe({
         next: (res) => {
           if (res.isSuccess) {
             this.toastr.success('User deleted successfully!', 'SuccessF');
@@ -116,7 +116,7 @@ export class UserComponent implements OnInit {
   //#endregion
 
   getListUsers(keyword: string = ''): void {
-    this.hrService.getListUsers({ keyword: keyword }).subscribe({
+    this.itService.getListUsers({ keyword: keyword }).subscribe({
       next: (res) => {
         this.users = res.data.items.map(u => ({
           ...u,

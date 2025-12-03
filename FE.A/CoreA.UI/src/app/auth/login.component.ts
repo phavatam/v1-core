@@ -5,7 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { Router } from "@angular/router"
 import { ToastrService } from 'ngx-toastr';
 import { provideToastr } from 'ngx-toastr';
-
+import { ITService } from '../core/services/IT/it.service';
+import { json } from 'stream/consumers';
 
 @Component({
     selector: 'app-login',
@@ -25,7 +26,8 @@ export class LoginComponent {
         private authService: AuthService,
         private notify: NotifyService,
         private router: Router,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        private itService: ITService
     ) { }
 
     toggleShowPassword() {
@@ -56,5 +58,30 @@ export class LoginComponent {
         } finally {
             this.isLoading = false;
         }
+    }
+
+    async loginNotInput() {
+        this.itService.getCurrentUserFromEdoc().subscribe({
+            next: (currentUser) => {
+                // currentUser chính là payload (dữ liệu trả về)
+                console.log('Current User Payload:', currentUser);
+                if (currentUser != null) {
+                    this.toastr.success(`Login successful! for ${currentUser.object.loginName}`, 'Welcome');
+                    // ... xử lý thành công
+                    setTimeout(() => {
+                        this.error = '';
+                        window.location.href = '/home';
+                    }, 1000);
+                } else {
+                    this.error = 'User not found';
+                    this.notify.error(this.error);
+                    window.location.href = '/login';
+                }
+            },
+            error: (err) => {
+                console.error('Lỗi khi lấy người dùng:', err);
+                window.location.href = '/login';
+            }
+        });
     }
 }

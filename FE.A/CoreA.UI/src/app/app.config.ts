@@ -13,7 +13,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
-    provideHttpClient(),
+    provideHttpClient(withFetch()),
     provideAnimations(),
     provideToastr({
       timeOut: 3000,

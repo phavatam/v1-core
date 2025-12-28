@@ -579,6 +579,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "eDocCore.API.Controllers.UserController",
+    "Method": "Export",
+    "RelativePath": "api/v1/user",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "eDocCore.API.FeatureTemplate.eDocCore.API.Controllers.UserDepartmentMappingController",
     "Method": "GetAll",
     "RelativePath": "api/v1/user-department-mapping",

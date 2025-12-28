@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("eDocCore.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f1cc5d70e5c14437fa9bf31634f9c89625d8f310")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cada67893ed7858751a891d9178e5c97c17454bc")]
 [assembly: System.Reflection.AssemblyProductAttribute("eDocCore.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("eDocCore.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,4 +1,4 @@
-﻿using eDocCore.WebHost.AppHost.Config;
+using eDocCore.WebHost.AppHost.Config;
 using System.Diagnostics;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
@@ -32,4 +32,5 @@ if (File.Exists(yamlPath))
 
 var builder = DistributedApplication.CreateBuilder(args);
 var apiService = builder.AddProject<Projects.eDocCore_API>("eDocCoreApi");
+builder.AddProject<Projects.eDocCore_Auth_API>("edoccore-auth-api");
 builder.Build().Run();

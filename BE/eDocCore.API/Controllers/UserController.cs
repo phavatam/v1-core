@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using eDocCore.Application.Common;
 using eDocCore.Application.Common.Exceptions;
+using eDocCore.Application.Common.Export;
 using eDocCore.Application.Features.Auth.DTOs.Request;
 using eDocCore.Application.Features.Users.Commands;
 using eDocCore.Application.Features.Users.DTOs;
@@ -225,6 +226,59 @@ namespace eDocCore.API.Controllers
             }
         }
 
+
+        [HttpGet]
+        [MapToApiVersion(1.0)]
+        public async Task<ActionResult> Export()
+        {
+            try
+            {
+
+                // 1. Chuẩn bị dữ liệu cho từng Sheet
+                var products = new List<Product>
+                {
+                    new Product { Id = 1, Name = "Laptop X", Price = 1500m },
+                    new Product { Id = 2, Name = "Keyboard Y", Price = 75m }
+                };
+
+                var customers = new List<Customer>
+                {
+                    new Customer { CustomerId = 101, FullName = "Nguyễn Văn A", City = "Hà Nội" },
+                    new Customer { CustomerId = 102, FullName = "Trần Thị B", City = "HCM" }
+                };
+
+                // 2. Tạo danh sách SheetData
+                var sheetsToExport = new List<SheetData>
+                {
+                    new SheetData { SheetName = "BaoCaoSanPham", DataList = products },
+                    new SheetData { SheetName = "DanhSachKhachHang", DataList = customers }
+                };
+
+                // 3. Gọi hàm Export
+                byte[] fileBytesSingle = ExcelExporter.ExportDataToExcel(customers);
+                byte[] fileBytes = ExcelExporter.ExportMultipleSheets(sheetsToExport);
+
+
+                // Thiết lập kiểu MIME cho file Excel(.xlsx)
+                string mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+                // Thiết lập tên file sẽ được tải xuống
+                string fileName = $"DanhSach_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+
+                // Trả về FileResult, đây là chuẩn để kích hoạt download trên trình duyệt
+                return File(fileBytes, mimeType, fileName);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Lỗi Server không mong muốn. TraceId: {TraceId}", HttpContext.TraceIdentifier);
+                return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    error = "Đã xảy ra lỗi hệ thống không mong muốn. Vui lòng liên hệ hỗ trợ.",
+                    traceId = HttpContext.TraceIdentifier
+                });
+            }
+        }
+
         /*/// <summary>
         /// Lấy danh sách User
         /// </summary>
@@ -263,5 +317,19 @@ namespace eDocCore.API.Controllers
             if (!result) return NotFound();
             return NoContent();
         }*/
+    }
+
+    public class Product
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public decimal Price { get; set; }
+    }
+
+    public class Customer
+    {
+        public int CustomerId { get; set; }
+        public string FullName { get; set; } = string.Empty;
+        public string City { get; set; } = string.Empty;
     }
 }

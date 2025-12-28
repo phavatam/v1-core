@@ -2,7 +2,9 @@
 using eDocCore.Domain.Interfaces;
 using eDocCore.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Linq.Dynamic.Core;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
@@ -235,6 +237,71 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
                               .Select(selector);
 
         var items = await itemsQuery.ToListAsync(ct);
+        return (items, total);
+    }
+
+    // Giả định: T là Entity và TResult là DTO
+    public virtual async Task<(IReadOnlyList<TResult> Items, int TotalItems)> GetPagedProjectedDynamicFilterAsync<TResult>(
+        int page,
+        int pageSize,
+        Expression<Func<T, TResult>> selector, // Biểu thức ánh xạ (Projection) bắt buộc
+        string? dynamicFilter = null,           // 👈 Đã thay đổi: Nhận chuỗi filter động
+        string? dynamicOrderBy = null,          // 👈 Đã thay đổi: Nhận chuỗi orderBy động
+        bool asNoTracking = true,
+        CancellationToken ct = default) // Giả định T là Entity (hoặc có định nghĩa)
+    {
+        if (page < 1) page = 1;
+        if (pageSize < 1) pageSize = 10;
+
+        var query = _context.Set<T>().AsQueryable();
+
+        // 1. ÁP DỤNG DYNAMIC FILTER
+        if (!string.IsNullOrWhiteSpace(dynamicFilter))
+        {
+            // ⚠️ Lưu ý: Trong môi trường thực tế, cần validation chuỗi dynamicFilter tại đây
+            try
+            {
+                query = query.Where(dynamicFilter); // Sử dụng phương thức mở rộng của Dynamic LINQ
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi cú pháp filter không hợp lệ
+                throw new ArgumentException($"Lỗi cú pháp Filter: {dynamicFilter}", nameof(dynamicFilter), ex);
+            }
+        }
+
+        // Lấy tổng số lượng trước khi phân trang (Rất quan trọng)
+        var total = await query.CountAsync(ct);
+
+        // 2. ÁP DỤNG DYNAMIC ORDERBY
+        if (!string.IsNullOrWhiteSpace(dynamicOrderBy))
+        {
+            try
+            {
+                query = query.OrderBy(dynamicOrderBy); // Sử dụng phương thức mở rộng của Dynamic LINQ
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi cú pháp OrderBy không hợp lệ
+                throw new ArgumentException($"Lỗi cú pháp OrderBy: {dynamicOrderBy}", nameof(dynamicOrderBy), ex);
+            }
+        }
+        else
+        {
+            // Bắt buộc phải có OrderBy trước Skip/Take
+            // Giả sử Entity T có thuộc tính "Id" (hoặc Guid Id)
+            query = query.OrderBy("Id asc");
+        }
+
+        if (asNoTracking) query = query.AsNoTracking();
+
+        // 3. Áp dụng Phân trang và Projection
+        var itemsQuery = query.Skip((page - 1) * pageSize)
+                              .Take(pageSize)
+                              .Select(selector);
+
+        var items = await itemsQuery.ToListAsync(ct);
+
         return (items, total);
     }
 

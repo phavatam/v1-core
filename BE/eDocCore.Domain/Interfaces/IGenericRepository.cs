@@ -89,6 +89,15 @@ namespace eDocCore.Domain.Interfaces
             bool asNoTracking = true,
             CancellationToken ct = default);
 
+        Task<(IReadOnlyList<TResult> Items, int TotalItems)> GetPagedProjectedDynamicFilterAsync<TResult>(
+        int page,
+        int pageSize,
+        Expression<Func<T, TResult>> selector, // Biểu thức ánh xạ (Projection) bắt buộc
+        string? dynamicFilter = null,           // 👈 Đã thay đổi: Nhận chuỗi filter động
+        string? dynamicOrderBy = null,          // 👈 Đã thay đổi: Nhận chuỗi orderBy động
+        bool asNoTracking = true,
+        CancellationToken ct = default); // Giả định T là Entity (hoặc có định nghĩa)
+
         // === 6. Aggregation (Tính toán tập hợp) ===
 
         /// <summary>Tính tổng các giá trị thỏa mãn điều kiện.</summary>

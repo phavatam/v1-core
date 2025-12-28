@@ -19,6 +19,6 @@ export const appConfig: ApplicationConfig = {
       timeOut: 3000,
       positionClass: 'toast-top-right',
       closeButton: true,
-    }), // Ép kiểu vì provideToastr nhận một phần cấu hình
+    }),
   ]
 };

@@ -42,11 +42,17 @@ namespace eDocCore.Infrastructure
 
             // Đăng ký Generic Repository cho tất cả entities
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            services.AddScoped<IRoleRepository, RoleRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IMenuRepository, MenuRepository>();
-            services.AddScoped<IUserTypeRepository, UserTypeRepository>();
-            services.AddScoped<IResignationApplicationRepository, ResignationApplicationRepository>();
+            //services.AddScoped<IRoleRepository, RoleRepository>();
+            //services.AddScoped<IUserRepository, UserRepository>();
+            //services.AddScoped<IMenuRepository, MenuRepository>();
+            //services.AddScoped<IUserTypeRepository, UserTypeRepository>();
+            //services.AddScoped<IResignationApplicationRepository, ResignationApplicationRepository>();
+            
+            services.Scan(scan => scan
+            .FromAssemblies(typeof(DependencyInjection).Assembly)
+            .AddClasses(classes => classes.Where(t => t.Name.EndsWith("Repository")))
+            .AsMatchingInterface()
+            .WithScopedLifetime());
 
             // Unit of Work (giữ tạm; cân nhắc bỏ SaveChanges trong repo nếu dùng UoW thực sự)
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -58,6 +64,7 @@ namespace eDocCore.Infrastructure
             // JWT
             services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
             services.AddScoped<IJwtTokenService, JwtTokenService>();
+
 
             return services;
         }

@@ -1,0 +1,12 @@
+D:\OtherSourceCode\v1-core\BE\eDocCore.Domain\bin\Debug\net10.0\eDocCore.Domain.deps.json
+D:\OtherSourceCode\v1-core\BE\eDocCore.Domain\bin\Debug\net10.0\eDocCore.Domain.dll
+D:\OtherSourceCode\v1-core\BE\eDocCore.Domain\bin\Debug\net10.0\eDocCore.Domain.pdb
+D:\OtherSourceCode\v1-core\BE\eDocCore.Domain\obj\Debug\net10.0\eDocCore.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\OtherSourceCode\v1-core\BE\eDocCore.Domain\obj\Debug\net10.0\eDocCore.Domain.AssemblyInfoInputs.cache
+D:\OtherSourceCode\v1-core\BE\eDocCore.Domain\obj\Debug\net10.0\eDocCore.Domain.AssemblyInfo.cs
+D:\OtherSourceCode\v1-core\BE\eDocCore.Domain\obj\Debug\net10.0\eDocCore.Domain.csproj.CoreCompileInputs.cache
+D:\OtherSourceCode\v1-core\BE\eDocCore.Domain\obj\Debug\net10.0\eDocCore.Domain.sourcelink.json
+D:\OtherSourceCode\v1-core\BE\eDocCore.Domain\obj\Debug\net10.0\eDocCore.Domain.dll
+D:\OtherSourceCode\v1-core\BE\eDocCore.Domain\obj\Debug\net10.0\refint\eDocCore.Domain.dll
+D:\OtherSourceCode\v1-core\BE\eDocCore.Domain\obj\Debug\net10.0\eDocCore.Domain.pdb
+D:\OtherSourceCode\v1-core\BE\eDocCore.Domain\obj\Debug\net10.0\ref\eDocCore.Domain.dll

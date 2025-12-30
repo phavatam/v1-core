@@ -83,6 +83,7 @@ namespace eDocCore.API.Controllers
 
         [HttpPost("get-list")]
         [MapToApiVersion(1.0)]
+        [Authorize]
         public async Task<ActionResult> Get(GetUserRequest request)
         {
             try

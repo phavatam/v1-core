@@ -11,19 +11,12 @@ using MediatR;
 
 namespace eDocCore.Application.Features.Users.Services
 {
-    public class UserService :  GenericService<User, UserDTO>, IUserService
+    public class UserService(IUserRepository userRepository, IMapper mapper, IUnitOfWork uow, IGenericRepository<User> genericRepository) :  GenericService<User, UserDTO>(uow, mapper, genericRepository), IUserService
     {
-        private IUnitOfWork _uow;
-        private readonly IUserRepository _userRepository;
-        private readonly IMapper _mapper;
-        private readonly IGenericRepository<User> _genericRepository;
+        private IUnitOfWork _uow = uow;
+        private readonly IUserRepository _userRepository = userRepository;
+        private new readonly IMapper _mapper = mapper;
 
-        public UserService(IUserRepository userRepository, IMapper mapper, IUnitOfWork uow, IGenericRepository<User> genericRepository) : base(uow, mapper, genericRepository)
-        {
-            _userRepository = userRepository;
-            _mapper = mapper;
-            _uow = uow;
-        }
         public async Task<ResultDTO<ArrayResultDTO>> Get(GetUserRequest request, CancellationToken ct)
         {
             //Expression<Func<User, bool>> predicate = x =>

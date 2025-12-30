@@ -7,6 +7,6 @@ namespace eDocCore.Application.Common.Export
     public class SheetData
     {
         public string SheetName { get; set; } = string.Empty;
-        public object DataList { get; set; } = null;
+        public object DataList { get; set; }
     }
 }

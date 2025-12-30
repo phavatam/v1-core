@@ -95,6 +95,27 @@ builder.Services.AddSwaggerGen(options =>
             });
         }
     }
+
+    // Add JWT bearer to Swagger
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT"
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+            },
+            new string[] {}
+        }
+    });
 });
 #endregion
 
@@ -167,7 +188,6 @@ builder.Services.AddAuthorization(options =>
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 #region Cấu hình CORS
 builder.Services.AddCors(options =>
@@ -204,31 +224,6 @@ builder.Services.Configure<ProblemDetailsOptions>(options =>
         context.ProblemDetails.Type = null;
     };
 });
-#endregion
-
-#region Cấu hình Quy ước tùy chỉnh (Custom Convention) + OData
-// Build EDM model for OData
-var odataBuilder = new ODataConventionModelBuilder();
-odataBuilder.EntitySet<UserDTO>("Users");
-var edmModel = odataBuilder.GetEdmModel();
-
-builder.Services.AddControllers(options =>
-{
-    options.Conventions.Add(new KebabCaseControllerConvention());
-})
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-    })
-    .AddOData(opt => opt
-        .AddRouteComponents("odata", edmModel)
-        .Select()
-        .Filter()
-        .OrderBy()
-        .Expand()
-        .Count()
-        .SetMaxTop(100));
-
 #endregion
 
 #region Cấu hình Exception Handler chuẩn mới (.NET 8)

@@ -16,8 +16,8 @@ namespace eDocCore.Application.Features.__FeatureName__s.Services
     public class __FeatureName__Service : GenericService<__ModelName__, __FeatureName__Dto>, I__FeatureName__Service
     {
         private readonly I__FeatureName__Repository ___FeatureName__Repository;
-        private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
+        private new readonly IMapper _mapper;
+        private new readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<__FeatureName__Service> _logger;
         private readonly ICurrentUser _currentUser;
 

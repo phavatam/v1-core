@@ -17,6 +17,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 
 namespace eDocCore.Application.Features.Auth.Services
 {
@@ -27,19 +28,22 @@ namespace eDocCore.Application.Features.Auth.Services
         private readonly IMapper _mapper;
         private readonly ILogger<AuthService> _logger;
         private readonly IOptionsMonitor<AppSettingDTO> _optionsMonitor;
+        private readonly IConfiguration _configuration;
         private readonly int ExpireTime = 8;
 
         public AuthService(IUserRepository userRepository, 
             IUnitOfWork unitOfWork, ILogger<AuthService> logger, 
             IMapper mapper, 
             IOptionsMonitor<AppSettingDTO> optionsMonitor,
-            IUserService userService)
+            IUserService userService,
+            IConfiguration configuration)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
             _mapper = mapper;
             _optionsMonitor = optionsMonitor;
             _userService = userService;
+            _configuration = configuration;
         }
 
         public async Task<UserDTO?> RegisterAsync(RegisterUserRequest request, CancellationToken ct = default)
@@ -101,22 +105,29 @@ namespace eDocCore.Application.Features.Auth.Services
 
         private string GenerateTokenDPD(UserDTO user)
         {
+            var jwtSection = _configuration.GetSection("Jwt");
+            var key = jwtSection["Key"] ?? _optionsMonitor.CurrentValue.SecretKey;
+            var issuer = jwtSection["Issuer"];
+            var audience = jwtSection["Audience"];
+
             var jwtTokenHandler = new JwtSecurityTokenHandler();
-            var secretKeyBytes = Encoding.UTF8.GetBytes(_optionsMonitor.CurrentValue.SecretKey);
+            var secretKeyBytes = Encoding.UTF8.GetBytes(key);
 
             var tokenDescription = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                    new Claim(JwtRegisteredClaimNames.Name, user.FullName ?? ""),
-                    new Claim(JwtRegisteredClaimNames.Email, user.Email ?? ""),
+                    new Claim(JwtRegisteredClaimNames.Name, user.FullName ?? string.Empty),
+                    new Claim(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
+                    new Claim("Role", "Member"),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 }),
                 Expires = DateTime.UtcNow.AddHours(8),
-                //Expires = DateTime.UtcNow.AddMinutes(15),
+                Issuer = issuer,
+                Audience = audience,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKeyBytes),
-                    SecurityAlgorithms.HmacSha512Signature)
+                    SecurityAlgorithms.HmacSha256Signature)
             };
 
             var token = jwtTokenHandler.CreateToken(tokenDescription);
@@ -127,19 +138,26 @@ namespace eDocCore.Application.Features.Auth.Services
 
         private TokenDTO GenerateToken(UserDTO user)
         {
+            var jwtSection = _configuration.GetSection("Jwt");
+            var key = jwtSection["Key"] ?? _optionsMonitor.CurrentValue.SecretKey;
+            var issuer = jwtSection["Issuer"];
+            var audience = jwtSection["Audience"];
+
             var jwtTokenHandler = new JwtSecurityTokenHandler();
-            var secretKeyBytes = Encoding.UTF8.GetBytes(_optionsMonitor.CurrentValue.SecretKey);
+            var secretKeyBytes = Encoding.UTF8.GetBytes(key);
 
             var tokenDescription = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] {
                     new Claim("UserId", user.Id.ToString()),
-                    new Claim("FullName", user.FullName ?? ""),
+                    new Claim("FullName", user.FullName ?? string.Empty),
                     new Claim("LoginName", user.LoginName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 }),
                 Expires = DateTime.UtcNow.AddHours(ExpireTime),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKeyBytes), SecurityAlgorithms.HmacSha512)
+                Issuer = issuer,
+                Audience = audience,
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKeyBytes), SecurityAlgorithms.HmacSha256)
             };
 
             var token = jwtTokenHandler.CreateToken(tokenDescription);

@@ -28,20 +28,30 @@ namespace eDocCore.API.Middlewares
                 return;
             }
 
+            #region Check role when authenticated
             if (context.User.Identity?.IsAuthenticated == true && _allowedRoles.Length > 0)
             {
-                var userRoles = context.User.Claims
-                    .Where(c => c.Type == ClaimTypes.Role)
-                    .Select(c => c.Value)
-                    .ToList();
+                //var userRoles = context.User.Claims
+                //    .Where(c => c.Type == ClaimTypes.Role)
+                //    .Select(c => c.Value)
+                //    .ToList();
 
-                if (!_allowedRoles.Any(role => userRoles.Contains(role)))
+                //if (!_allowedRoles.Any(role => userRoles.Contains(role)))
+                //{
+                //    context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                //    await context.Response.WriteAsync("Forbidden: You do not have the required role.");
+                //    return;
+                //}
+
+                var valid = context.User.Claims.Where(x => x.Type.Equals("Role") && x.Value.Equals("Member")).Any();
+                if (!valid)
                 {
                     context.Response.StatusCode = StatusCodes.Status403Forbidden;
                     await context.Response.WriteAsync("Forbidden: You do not have the required role.");
                     return;
                 }
             }
+            #endregion
             await _next(context);
         }
     }

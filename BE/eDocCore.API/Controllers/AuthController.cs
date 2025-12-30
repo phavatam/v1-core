@@ -45,6 +45,7 @@ namespace eDocCore.API.Controllers
         [MapToApiVersion(2.0)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [AllowAnonymous]
         public async Task<ActionResult> Register([FromBody] RegisterUserRequest request, CancellationToken ct)
         {
             Console.WriteLine("Register");
@@ -88,6 +89,7 @@ namespace eDocCore.API.Controllers
         [MapToApiVersion(2.0)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [AllowAnonymous]
         public async Task<ActionResult> Login([FromBody] LoginRequest request, CancellationToken ct)
         {
             // Manually validate the request using FluentValidation

@@ -4,8 +4,10 @@ using eDocCore.Application.Common.Exceptions;
 using eDocCore.Application.Common.Security;
 using eDocCore.Application.Features.Auth.DTOs;
 using eDocCore.Application.Features.Auth.DTOs.Request;
+using eDocCore.Application.Features.Users.Commands;
 using eDocCore.Application.Features.Users.DTOs;
-using eDocCore.Domain.Entities;
+using eDocCore.Application.Features.Users.DTOs.Request;
+using eDocCore.Application.Features.Users.Services;
 using eDocCore.Domain.Interfaces;
 using eDocCore.Domain.Interfaces.Extend;
 using Microsoft.Extensions.Logging;
@@ -20,24 +22,24 @@ namespace eDocCore.Application.Features.Auth.Services
 {
     public class AuthService : IAuthService
     {
-        private readonly IUserRepository _userRepository;
-        private readonly IRoleRepository _roleRepository;
-        private readonly IGenericRepository<UserRole> _userRole;
+        private readonly IUserService _userService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILogger<AuthService> _logger;
         private readonly IOptionsMonitor<AppSettingDTO> _optionsMonitor;
         private readonly int ExpireTime = 8;
 
-        public AuthService(IUserRepository userRepository, IGenericRepository<UserRole> userRole, IRoleRepository roleRepository, IUnitOfWork unitOfWork, ILogger<AuthService> logger, IMapper mapper, IOptionsMonitor<AppSettingDTO> optionsMonitor)
+        public AuthService(IUserRepository userRepository, 
+            IUnitOfWork unitOfWork, ILogger<AuthService> logger, 
+            IMapper mapper, 
+            IOptionsMonitor<AppSettingDTO> optionsMonitor,
+            IUserService userService)
         {
-            _userRepository = userRepository;
-            _userRole = userRole;
-            _roleRepository = roleRepository;
             _unitOfWork = unitOfWork;
             _logger = logger;
             _mapper = mapper;
             _optionsMonitor = optionsMonitor;
+            _userService = userService;
         }
 
         public async Task<UserDTO?> RegisterAsync(RegisterUserRequest request, CancellationToken ct = default)
@@ -45,7 +47,7 @@ namespace eDocCore.Application.Features.Auth.Services
             try
             {
                 // Tạo người dùng
-                var user = new User
+                var user = new CreateUserRequest
                 {
                     LoginName = request.LoginName,
                     Password = PasswordHasher.Hash(request.Password),
@@ -53,10 +55,10 @@ namespace eDocCore.Application.Features.Auth.Services
                     Email = request.Email,
                     IsActive = true,
                 };
-                await _userRepository.AddAsync(user);
+
+                var createSuccess = await _userService.Create(user, ct);
 
                 // Gán vai trò mặc định
-                await AssignDefaultRole(user.Id);
                 await _unitOfWork.CommitAsync();
                 return _mapper.Map<UserDTO>(user);
             }
@@ -68,18 +70,10 @@ namespace eDocCore.Application.Features.Auth.Services
             }
         }
 
-        private async Task AssignDefaultRole(Guid userId)
-        {
-            var roleDefault = await _roleRepository.FirstOrDefaultAsync(x => x.Name == "Member");
-            if (roleDefault == null) throw new BusinessRuleException("Default role 'Member' not found");
-
-            var userRole = new UserRole { UserId = userId, RoleId = roleDefault.Id };
-            await _userRole.AddAsync(userRole);
-        }
 
         public async Task<ResultDTO<TokenDTO>> Login(LoginRequest request, CancellationToken ct = default)
         {
-            var user = await _userRepository.GetByLoginNameAsync(request.LoginName);
+            var user = await _userService.GetByLoginName(request.LoginName);
             if (user == null)
             {
                 return ResultDTO<TokenDTO>.Failure((int) System.Net.HttpStatusCode.Unauthorized, "Invalid login credentials.");
@@ -90,10 +84,11 @@ namespace eDocCore.Application.Features.Auth.Services
                 return ResultDTO<TokenDTO>.Failure((int) System.Net.HttpStatusCode.Forbidden, "User account is inactive.");
             }
 
-            if (!PasswordHasher.Verify(user.Password ?? "", request.Password))
+            if (await _userService.VerifyPassword(user.Id, request.Password) == false)
             {
-                return ResultDTO<TokenDTO>.Failure((int)System.Net.HttpStatusCode.Unauthorized, "Invalid login credentials.");
+                return ResultDTO<TokenDTO>.Failure((int) System.Net.HttpStatusCode.Unauthorized, "Invalid login credentials.");
             }
+
             //var token = GenerateToken(user);
             var token = GenerateTokenDPD(user);
             var generateData = new TokenDTO()
@@ -104,7 +99,7 @@ namespace eDocCore.Application.Features.Auth.Services
             return ResultDTO<TokenDTO>.Success(generateData); 
         }
 
-        private string GenerateTokenDPD(User user)
+        private string GenerateTokenDPD(UserDTO user)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
             var secretKeyBytes = Encoding.UTF8.GetBytes(_optionsMonitor.CurrentValue.SecretKey);
@@ -130,7 +125,7 @@ namespace eDocCore.Application.Features.Auth.Services
             return accessToken;
         }
 
-        private TokenDTO GenerateToken(User user)
+        private TokenDTO GenerateToken(UserDTO user)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
             var secretKeyBytes = Encoding.UTF8.GetBytes(_optionsMonitor.CurrentValue.SecretKey);

@@ -177,7 +177,6 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     }
 
     // === 4. Eager Loading (Tải đối tượng liên quan) ===
-
     public virtual async Task<IReadOnlyList<T>> FindWithIncludesAsync(
         Expression<Func<T, bool>> predicate,
         Expression<Func<T, object>>[] includes,

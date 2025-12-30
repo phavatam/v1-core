@@ -1,6 +1,5 @@
 ﻿using eDocCore.Application.Features.Auth.DTOs.Request;
 using eDocCore.Application.Features.Auth.Services;
-using eDocCore.Application.Features.Roles.Services;
 using eDocCore.Application.Features.Users.Services;
 using FluentValidation;
 
@@ -8,12 +7,10 @@ namespace eDocCore.Application.Features.Auth.Validators
 {
     public class RegisterUserRequestValidator : AbstractValidator<RegisterUserRequest>
     {
-        private readonly IRoleService _roleService;
         private readonly IUserService _userService;
 
-        public RegisterUserRequestValidator(IAuthService authService, IRoleService roleService, IUserService userService)
+        public RegisterUserRequestValidator(IAuthService authService, IUserService userService)
         {
-            _roleService = roleService;
             _userService = userService;
 
             RuleFor(x => x.LoginName)
@@ -31,24 +28,13 @@ namespace eDocCore.Application.Features.Auth.Validators
                 .Matches("[a-z]").WithMessage("Password must contain at least one lowercase letter.")
                 .Matches("[0-9]").WithMessage("Password must contain at least one number.")
                 .Matches("[!@#$%^&*(),.?\":{}|<>]").WithMessage("Password must contain at least one special character.");
-
-            RuleFor(x => x)
-            .Must(x => ExistRoleMember("Member"))
-                .WithMessage("Role 'Member' does not exist.")
-                .WithName("OtherErrors");
         }
+
 
         private bool ExistLoginName(string loginName)
         {
             var user = _userService.GetByLoginName(loginName).Result;
             return user == null;
-        }
-
-        private bool ExistRoleMember(string roleName)
-        {
-            // Synchronous validation by preloading data
-            var roles = _roleService.GetRoleByNameAsync(roleName).Result;
-            return roles != null;
         }
     }
 }

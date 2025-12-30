@@ -13,10 +13,10 @@ namespace eDocCore.API.Controllers
     [Route("api/v1/[controller]")]
     public class __FeatureName__Controller : ControllerBase
     {
-        private readonly I__FeatureName__Service ___FeatureName__Service;
+        private readonly I__FeatureName__Service ___featureName__Service;
         public __FeatureName__Controller(I__FeatureName__Service __FeatureName__Service)
         {
-            ___FeatureName__Service = __FeatureName__Service;
+            ___featureName__Service = __FeatureName__Service;
         }
 
         [HttpGet]
@@ -24,7 +24,7 @@ namespace eDocCore.API.Controllers
         {
             try
             {
-                var result = await ___FeatureName__Service.Get(pageNumber, pageSize);
+                var result = await ___featureName__Service.Get(pageNumber, pageSize);
                 if (!result.IsSuccess)
                 {
                     return Ok(ResultDTO.Failure(400, "Lấy danh sách thất bại!", HttpContext.TraceIdentifier));
@@ -42,7 +42,7 @@ namespace eDocCore.API.Controllers
         {
             try
             {
-                var result = await ___FeatureName__Service.Get(id);
+                var result = await ___featureName__Service.Get(id);
                 return Ok(result != null ? ResultDTO<object>.Success(result) : ResultDTO.Failure(400, "Item not found!"));
             }
             catch (Exception ex)
@@ -56,7 +56,7 @@ namespace eDocCore.API.Controllers
         {
             try
             {
-                var result = await ___FeatureName__Service.Create(args);
+                var result = await ___featureName__Service.Create(args);
                 if (!result.IsSuccess)
                 {
                     return BadRequest(ResultDTO.Failure(400, result.Message ?? "", HttpContext.TraceIdentifier));
@@ -74,7 +74,7 @@ namespace eDocCore.API.Controllers
         {
             try
             {
-                var result = await ___FeatureName__Service.Update(id, args);
+                var result = await ___featureName__Service.Update(id, args);
                 if (!result.IsSuccess)
                 {
                     return BadRequest(ResultDTO.Failure(400, result.Message ?? "", HttpContext.TraceIdentifier));
@@ -92,7 +92,7 @@ namespace eDocCore.API.Controllers
         {
             try
             {
-                var result = await ___FeatureName__Service.Patch(id, request);
+                var result = await ___featureName__Service.Patch(id, request);
                 if (result == null)
                 {
                     return BadRequest(ResultDTO.Failure(400, "Failure", HttpContext.TraceIdentifier));
@@ -110,7 +110,7 @@ namespace eDocCore.API.Controllers
         {
             try
             {
-                var result = await ___FeatureName__Service.Delete(id);
+                var result = await ___featureName__Service.Delete(id);
                 return Ok(result);
             }
             catch (Exception ex)

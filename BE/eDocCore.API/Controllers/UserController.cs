@@ -81,7 +81,6 @@ namespace eDocCore.API.Controllers
             return dateTime;
         }
 
-
         [HttpPost("get-list")]
         [MapToApiVersion(1.0)]
         public async Task<ActionResult> Get(GetUserRequest request)

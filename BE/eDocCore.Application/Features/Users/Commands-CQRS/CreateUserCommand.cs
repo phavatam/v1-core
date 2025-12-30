@@ -6,6 +6,7 @@ namespace eDocCore.Application.Features.Users.Commands
     public class CreateUserCommand : IRequest<Guid>
     {
         public string LoginName { get; set; } = null!;
+        public string Password { get; set; } = null!;
         public string? FullName { get; set; }
         public byte? Gender { get; set; }
         public string? Email { get; set; }

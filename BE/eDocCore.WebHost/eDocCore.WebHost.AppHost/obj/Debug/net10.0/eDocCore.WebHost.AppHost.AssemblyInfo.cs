@@ -26,7 +26,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("eDocCore.WebHost.AppHost")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9ff78266a806327682c9db49a401b2803c66b299")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1e155a226f0d2e3035bb0abe2d7e9b568171a799")]
 [assembly: System.Reflection.AssemblyProductAttribute("eDocCore.WebHost.AppHost")]
 [assembly: System.Reflection.AssemblyTitleAttribute("eDocCore.WebHost.AppHost")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

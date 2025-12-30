@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("eDocCore.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9ff78266a806327682c9db49a401b2803c66b299")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e509ca894528442bb8cd30041c37679675588043")]
 [assembly: System.Reflection.AssemblyProductAttribute("eDocCore.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("eDocCore.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

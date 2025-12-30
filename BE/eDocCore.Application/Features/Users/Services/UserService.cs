@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using eDocCore.Application.Common;
+using eDocCore.Application.Common.Security;
 using eDocCore.Application.Features.Users.DTOs;
-using eDocCore.Domain.Entities;
-using eDocCore.Domain.Interfaces.Extend;
-using eDocCore.Domain.Interfaces;
 using eDocCore.Application.Features.Users.DTOs.Request;
+using eDocCore.Domain.Entities;
+using eDocCore.Domain.Interfaces;
+using eDocCore.Domain.Interfaces.Extend;
 using LinqKit;
+using MediatR;
 
 namespace eDocCore.Application.Features.Users.Services
 {
@@ -70,8 +72,14 @@ namespace eDocCore.Application.Features.Users.Services
         }
         public async Task<UserDTO?> GetByLoginName(string loginName, CancellationToken ct = default)
         {
-            var user = await _userRepository.GetByLoginNameAsync(loginName);
+            var user = await _userRepository.FirstOrDefaultAsync(x => x.LoginName == loginName);
             return user == null ? null : _mapper.Map<UserDTO>(user);
+        }
+
+        public async Task<bool> VerifyPassword(Guid userId, string newPassword)
+        {
+            var user = await _userRepository.GetByIdAsync(userId);
+            return PasswordHasher.Verify(user?.Password ?? "", newPassword);
         }
 
         public async Task<ResultDTO<UserDTO>> Create(CreateUserRequest request, CancellationToken ct = default)
@@ -111,7 +119,6 @@ namespace eDocCore.Application.Features.Users.Services
             return ResultDTO<UserDTO>.Success(_mapper.Map<UserDTO>(user));
         }
 
-
         public async Task<ResultDTO<bool>> Delete(Guid userId, CancellationToken ct = default)
         {
             await _uow.BeginTransactionAsync();
@@ -125,6 +132,5 @@ namespace eDocCore.Application.Features.Users.Services
             await _uow.CommitAsync();
             return ResultDTO<bool>.Success();
         }
-
     }
 }

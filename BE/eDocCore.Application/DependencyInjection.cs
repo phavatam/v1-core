@@ -2,11 +2,7 @@
 using eDocCore.Application.Features.Auth.DTOs.Request;
 using eDocCore.Application.Features.Auth.Services;
 using eDocCore.Application.Features.Auth.Validators;
-using eDocCore.Application.Features.Menus.Services;
-using eDocCore.Application.Features.ResignationApplications.Services;
-using eDocCore.Application.Features.Roles.Services;
 using eDocCore.Application.Features.Users.Services;
-using eDocCore.Application.Features.UserTypes.Services;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;

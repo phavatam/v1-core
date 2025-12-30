@@ -8,11 +8,8 @@
 
   <ItemGroup>
     <Compile Remove="Features\A-Example\**" />
-    <Compile Remove="Features\Roles\DTOs\Response\**" />
     <EmbeddedResource Remove="Features\A-Example\**" />
-    <EmbeddedResource Remove="Features\Roles\DTOs\Response\**" />
     <None Remove="Features\A-Example\**" />
-    <None Remove="Features\Roles\DTOs\Response\**" />
   </ItemGroup>
 
 	<ItemGroup>

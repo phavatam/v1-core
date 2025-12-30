@@ -1,5 +1,4 @@
-﻿using eDocCore.Domain.Shared.Enum;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +9,7 @@ namespace eDocCore.Application.Features.Users.DTOs.Request
     public class CreateUserRequest
     {
         public string? LoginName { get; set; }
+        public string? Password { get; set; }
 
         public string? FullName { get; set; }
 

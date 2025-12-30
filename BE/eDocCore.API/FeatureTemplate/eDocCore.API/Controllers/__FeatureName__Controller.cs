@@ -3,6 +3,7 @@ using eDocCore.Application.Common.Models;
 using eDocCore.Application.Features.__FeatureName__s.DTOs;
 using eDocCore.Application.Features.__FeatureName__s.DTOs.Request;
 using eDocCore.Application.Features.__FeatureName__s.Services;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Deltas;
 using System.Net;

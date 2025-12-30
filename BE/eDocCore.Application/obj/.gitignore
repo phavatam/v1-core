@@ -1,1 +1,2 @@
 *.nuget.cache
+/eDocCore.Application.csproj.nuget.dgspec.json

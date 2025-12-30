@@ -177,7 +177,7 @@ namespace eDocCore.API.Controllers
 
         [HttpPatch("{id}")]
         [MapToApiVersion(1.0)]
-        public async Task<ActionResult> Patch(Guid id, [FromBody] Delta<UserDTO> request)
+        public async Task<ActionResult> Patch(Guid id, [FromBody] Microsoft.AspNetCore.OData.Deltas.Delta<UserDTO> request)
         {
             try
             {

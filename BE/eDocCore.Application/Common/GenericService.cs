@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using eDocCore.Application.Common.Interfaces;
 using eDocCore.Domain.Interfaces;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 
 namespace eDocCore.Application.Common
@@ -93,12 +95,10 @@ namespace eDocCore.Application.Common
                 throw new ApplicationException($"Entity of type {typeof(T).Name} with id {id} not found");
 
             var dto = _mapper.Map<TDto>(entity);
-
             await ValidateDto(dto);
-
             delta.Patch(dto);
-            _mapper.Map(dto, entity);
 
+            _mapper.Map(dto, entity);
             await _repository.SaveChangesAsync();
             await _unitOfWork.CommitAsync();
             return _mapper.Map<TDto>(entity);

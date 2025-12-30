@@ -1,3 +1,9 @@
 *.json
 *.Versioning.Http.dll
 *.dll
+/eDocCore.API.exe
+/eDocCore.API.pdb
+/eDocCore.Application.pdb
+/eDocCore.Domain.pdb
+/eDocCore.Infrastructure.pdb
+/eDocCore.Tests.pdb

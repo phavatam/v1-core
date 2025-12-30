@@ -12,6 +12,9 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.OData;
+using Microsoft.OData.ModelBuilder;
+using eDocCore.Application.Features.Users.DTOs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -136,7 +139,6 @@ builder.Services.AddAuthentication(options =>
 //builder.Services.AddAuthorization(); // ensure authorization services registered
 #endregion
 
-builder.Services.AddControllers();
 #region Cấu hình FluentValidation auto-validation
 builder.Services.AddFluentValidationAutoValidation();
 #endregion
@@ -204,11 +206,29 @@ builder.Services.Configure<ProblemDetailsOptions>(options =>
 });
 #endregion
 
-#region Cấu hình Quy ước tùy chỉnh (Custom Convention)
+#region Cấu hình Quy ước tùy chỉnh (Custom Convention) + OData
+// Build EDM model for OData
+var odataBuilder = new ODataConventionModelBuilder();
+odataBuilder.EntitySet<UserDTO>("Users");
+var edmModel = odataBuilder.GetEdmModel();
+
 builder.Services.AddControllers(options =>
 {
     options.Conventions.Add(new KebabCaseControllerConvention());
-});
+})
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+    })
+    .AddOData(opt => opt
+        .AddRouteComponents("odata", edmModel)
+        .Select()
+        .Filter()
+        .OrderBy()
+        .Expand()
+        .Count()
+        .SetMaxTop(100));
+
 #endregion
 
 #region Cấu hình Exception Handler chuẩn mới (.NET 8)

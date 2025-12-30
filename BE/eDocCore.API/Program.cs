@@ -8,7 +8,6 @@ using eDocCore.Infrastructure.Authorization;
 using eDocCore.Infrastructure.Authorization.Handle;
 using eDocCore.Infrastructure.Interceptors;
 using eDocCore.Infrastructure.Persistence;
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Localization;
@@ -29,6 +28,7 @@ using System;
 using System.Globalization;
 using System.Reflection;
 using System.Text;
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 

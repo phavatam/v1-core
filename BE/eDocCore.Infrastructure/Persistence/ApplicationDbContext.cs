@@ -26,6 +26,10 @@ public partial class ApplicationDbContext : DbContext
     {
         modelBuilder.Entity<User>(entity =>
         {
+            // Let the database generate Guid by default when inserting a new user via migrations (NEWID()).
+            //entity.Property(e => e.Id)
+            //    .ValueGeneratedOnAdd()
+            //    .HasDefaultValueSql("NEWID()");
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Email)
                 .HasMaxLength(100)

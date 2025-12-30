@@ -21,3 +21,9 @@ dotnet new edocfeature -n TênFeature -o ./ĐườngDẫnTớiThưMụcChứaFea
 dotnet new edocfeature --name {{NameFeature}} --output .
 
 dotnet new edocfeature --name ResignationApplication --ModelName ResignationApplication --output .
+
+
+dotnet tool update dotnet-ef --version 8.0.0 --allow-downgrade
+# Code first
+dotnet ef migrations add InitialCreate --project eDocCore.Infrastructure --startup-project eDocCore.API --context ApplicationDbContext
+dotnet ef database update --project eDocCore.Infrastructure --startup-project eDocCore.API --context ApplicationDbContext

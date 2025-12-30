@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using eDocCore.Domain.Interfaces;
 
 namespace eDocCore.Domain.Entities;
 
 public partial class User 
 {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
 
     public string LoginName { get; set; } = null!;
@@ -24,6 +28,7 @@ public partial class User
 
     public DateTimeOffset Modified { get; set; }
 
+    [Timestamp]
     public byte[] Version { get; set; } = null!;
 
 }
